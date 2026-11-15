@@ -1,1 +1,16 @@
 @import "tailwindcss";
+@keyframes carpetBreeze {
+  0% {
+    filter: brightness(0.96) contrast(1.02);
+  }
+  50% {
+    filter: brightness(1.04) contrast(1.05);
+  }
+  100% {
+    filter: brightness(0.96) contrast(1.02);
+  }
+}
+
+.carpet-wave {
+  animation: carpetBreeze 9s ease-in-out infinite;
+}
