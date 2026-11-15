@@ -26,8 +26,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-// Formspree'den aldığın form linkini buraya yapıştır:
-const FORMSPREE_URL = "https://formspree.io/f/https://formspree.io/f/xnpdpzwg";
+const FORMSPREE_URL = "https://formspree.io/f/xnpdpzwg";
 
 // Web Audio API ile sıfır gecikmeli mekanik tıklama sesi
 const playClickSound = (soundEnabled) => {
@@ -284,75 +283,88 @@ const MOVIES_DATA = [
   },
 ];
 
-// Özel Çizim "F" Logolu Sinematik Açılış Ekranı
+// Karizmatik Mavi "F" Logolu ve Şeffaf Cam Dokulu Açılış Ekranı
 const IntroSplash = ({ onEnter }) => {
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.08 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#060608] text-white px-6"
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.55, ease: "easeInOut" }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 backdrop-blur-xl text-white px-6"
     >
-      {/* Arka Plan Hafif Kızıl-Altın Işık */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.16)_0%,rgba(245,158,11,0.06)_35%,rgba(6,6,8,1)_75%)]" />
+      {/* Derin mavi atmosfer ışığı */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.14)_0%,rgba(15,23,42,0.45)_65%,rgba(0,0,0,0.75)_100%)]" />
 
-      {/* Özel Çizim Keskin "F" Logosu */}
       <motion.div
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ scale: 0.92, opacity: 0, y: 10 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
         className="relative flex flex-col items-center"
       >
-        <div className="relative flex h-28 w-28 items-center justify-center rounded-3xl border border-amber-500/30 bg-gradient-to-br from-red-950/80 via-black to-amber-950/60 shadow-[0_0_60px_rgba(220,38,38,0.35)]">
+        {/* Cam Dokulu Mavi F Logo Kutusu */}
+        <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl border border-sky-400/30 bg-white/[0.06] shadow-[0_8px_40px_rgba(14,165,233,0.22)] backdrop-blur-md">
           <svg
             viewBox="0 0 100 100"
-            className="h-16 w-16 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]"
+            className="h-14 w-14 drop-shadow-[0_0_16px_rgba(56,189,248,0.55)]"
             fill="none"
           >
             <defs>
-              <linearGradient id="farukLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FBBF24" />
-                <stop offset="50%" stopColor="#EF4444" />
-                <stop offset="100%" stopColor="#B91C1C" />
+              <linearGradient id="farukBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#7DD3FC" />
+                <stop offset="50%" stopColor="#38BDF8" />
+                <stop offset="100%" stopColor="#1D4ED8" />
+              </linearGradient>
+              <linearGradient id="farukBlueAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#E0F2FE" />
+                <stop offset="100%" stopColor="#0284C7" />
               </linearGradient>
             </defs>
-            {/* Keskin Geometrik F Harfi */}
+            {/* Karizmatik Keskin Geometrik F Monogram */}
             <path
-              d="M28 18H76L70 32H44V44H68L63 57H44V82H28V18Z"
-              fill="url(#farukLogoGrad)"
+              d="M27 18H77L71 31H42V44H67L62 56H42V82H27V18Z"
+              fill="url(#farukBlueGrad)"
             />
-            <circle cx="72" cy="76" r="5" fill="#FBBF24" />
+            {/* Alt-Sağ Keskin Detay Çizgisi */}
+            <path
+              d="M52 72H73L69 82H48L52 72Z"
+              fill="url(#farukBlueAccent)"
+            />
           </svg>
         </div>
 
+        {/* İsim ve Başlık */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.6 }}
-          className="mt-7 text-center"
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="mt-6 text-center"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/90">
-            FARUK OS • v2.0
+          <span className="text-[11px] font-semibold uppercase tracking-[0.35em] text-sky-300/85">
+            FARUK OS
           </span>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="mt-1.5 text-3xl sm:text-4xl font-bold tracking-tight text-white">
             Faruk Köçer
           </h1>
-          <p className="mt-1.5 text-sm text-white/60">
-            Kişisel Web Sitesi & Dijital Arşiv
+          <p className="mt-1 text-xs sm:text-sm text-white/60">
+            Kişisel Çalışma Masası & Dijital Arşiv
           </p>
         </motion.div>
 
+        {/* Glassmorphism (Buzlu Cam) Sisteme Gir Butonu */}
         <motion.button
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.85, duration: 0.5 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.96 }}
+          transition={{ delay: 0.35, duration: 0.45 }}
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={{ scale: 0.97 }}
           onClick={onEnter}
-          className="mt-9 group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-400/40 bg-gradient-to-r from-red-700 via-red-600 to-amber-600 px-8 py-3.5 text-sm font-bold tracking-wider uppercase text-white shadow-[0_0_30px_rgba(220,38,38,0.45)] cursor-pointer"
+          className="mt-8 group relative inline-flex items-center gap-3 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_8px_30px_rgba(2,132,199,0.25)] backdrop-blur-md transition-all duration-200 hover:border-sky-300/60 hover:bg-sky-400/25 hover:shadow-[0_8px_35px_rgba(56,189,248,0.35)] cursor-pointer"
         >
+          <span className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]" />
           <span>Sisteme Gir</span>
-          <span className="text-amber-200 transition-transform group-hover:translate-x-1">→</span>
+          <span className="text-sky-300 transition-transform duration-200 group-hover:translate-x-1">
+            →
+          </span>
         </motion.button>
       </motion.div>
     </motion.div>
@@ -457,12 +469,13 @@ export default function App() {
   const [now, setNow] = useState(new Date());
   const [slideIdx, setSlideIdx] = useState(0);
   const [musicPlaying, setMusicPlaying] = useState(false);
-  const [soundFx, setSoundFx] = useState(true);
+  const [soundFx] = useState(true);
   const [carpetOffset, setCarpetOffset] = useState({ x: 0, y: 0 });
 
   // Mesaj Bırak State'leri
   const [noteText, setNoteText] = useState("");
   const [noteStatus, setNoteStatus] = useState("idle"); // idle | sending | sent | error
+  const [noteErrorMsg, setNoteErrorMsg] = useState("");
 
   const audioRef = useRef(null);
 
@@ -539,12 +552,13 @@ export default function App() {
     setActiveFolder(null);
   };
 
-  // Anonim Mesaj Gönderme
+  // Anonim Mesaj Gönderme (Formspree uyumlu message alanı)
   const handleSendNote = async (e) => {
     e.preventDefault();
     if (!noteText.trim()) return;
     playClickSound(soundFx);
     setNoteStatus("sending");
+    setNoteErrorMsg("");
 
     try {
       const res = await fetch(FORMSPREE_URL, {
@@ -554,18 +568,24 @@ export default function App() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          mesaj: noteText,
+          message: noteText,
           tarih: new Date().toLocaleString("tr-TR"),
         }),
       });
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         setNoteStatus("sent");
         setNoteText("");
       } else {
         setNoteStatus("error");
+        setNoteErrorMsg(
+          data?.errors?.[0]?.message ||
+            "Formspree e-posta onayı tamamlanmamış olabilir. Gelen kutundaki onay mailini kontrol et."
+        );
       }
     } catch {
       setNoteStatus("error");
+      setNoteErrorMsg("Bağlantı hatası oluştu, internetini kontrol edip tekrar dene.");
     }
   };
 
@@ -725,7 +745,7 @@ export default function App() {
       );
     }
 
-    // 2. MÜZİKLERİM (Grup Görselleri + Arka Plan Müzik Kontrolü)
+    // 2. MÜZİKLERİM
     if (activeFolder.id === "muzikler") {
       return (
         <div>
@@ -802,12 +822,12 @@ export default function App() {
       );
     }
 
-    // 3. DİZİLERİM (Sağa Kaydırılabilir Kişisel Dizi Kartları)
+    // 3. DİZİLERİM
     if (activeFolder.id === "diziler") {
       return <HorizontalMediaCarousel items={SERIES_DATA} accentColor="emerald" />;
     }
 
-    // 4. FİLMLERİM (Sağa Kaydırılabilir Kişisel Film Kartları + Letterboxd)
+    // 4. FİLMLERİM
     if (activeFolder.id === "filmler") {
       return (
         <div className="space-y-6">
@@ -887,7 +907,7 @@ export default function App() {
       );
     }
 
-    // 6. BANA MESAJ BIRAK (Anonim Not Defteri)
+    // 6. BANA MESAJ BIRAK
     return (
       <div className="mx-auto max-w-xl">
         <div className="rounded-2xl border border-sky-400/25 bg-[#161923] p-6 shadow-xl">
@@ -922,9 +942,7 @@ export default function App() {
               />
 
               {noteStatus === "error" && (
-                <p className="text-xs text-rose-400">
-                  Gönderilirken bir sorun oluştu. Formspree bağlantısını kontrol edip tekrar dene.
-                </p>
+                <p className="text-xs text-rose-400">{noteErrorMsg}</p>
               )}
 
               <button
@@ -947,7 +965,7 @@ export default function App() {
       {/* Arka Plan Müzik Oynatıcısı */}
       <audio ref={audioRef} src="/muzik.mp3" loop preload="none" />
 
-      {/* Sinematik Açılış Ekranı */}
+      {/* Karizmatik Mavi Cam Açılış Ekranı */}
       <AnimatePresence>
         {!entered && <IntroSplash onEnter={handleEnterSystem} />}
       </AnimatePresence>
@@ -965,7 +983,7 @@ export default function App() {
       {/* Üst Durum Çubuğu */}
       <header className="relative z-20 flex items-center justify-between px-4 sm:px-6 py-2.5 text-xs font-medium text-white/85 bg-black/45 border-b border-white/10">
         <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-red-600 to-amber-500 text-[11px] font-black text-white">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-400/40 bg-sky-500/25 text-[11px] font-black text-sky-300">
             F
           </span>
           <span className="tracking-wide font-semibold text-white">Faruk OS</span>
@@ -992,7 +1010,7 @@ export default function App() {
 
       {/* Ana Masaüstü Alanı */}
       <main className="relative z-10 mx-auto flex min-h-[calc(100vh-84px)] max-w-5xl flex-col justify-between px-4 py-6 sm:px-10">
-        {/* Ortadaki Değişen Manzara & Ağrı Dağı Kartı (Saat sağ üstte olduğu için burada sadece görsel/atmosfer var) */}
+        {/* Ortadaki Değişen Manzara & Ağrı Dağı Kartı */}
         <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/20 bg-black/50 p-5 text-center shadow-2xl">
           <AnimatePresence mode="wait">
             <motion.div
