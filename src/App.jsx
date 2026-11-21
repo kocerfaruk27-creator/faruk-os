@@ -11,7 +11,6 @@ import {
   Wifi,
   Battery,
   ExternalLink,
-  Disc3,
   Cpu,
   Sprout,
   GraduationCap,
@@ -24,11 +23,20 @@ import {
   ChevronRight,
   Quote,
   CheckCircle2,
+  Sparkles,
+  Gamepad2,
+  Sun,
+  Moon,
+  Cookie,
+  RotateCcw,
+  Delete,
+  Play,
+  Pause,
 } from "lucide-react";
 
 const FORMSPREE_URL = "https://formspree.io/f/xnpdpzwg";
 
-// Web Audio API ile sıfır gecikmeli mekanik tıklama sesi
+// Web Audio API ile sıfır gecikmeli mekanik tıklama ve yılbaşı çanı tınısı
 const playClickSound = (soundEnabled) => {
   if (!soundEnabled) return;
   try {
@@ -49,6 +57,29 @@ const playClickSound = (soundEnabled) => {
   } catch (e) {}
 };
 
+const playTreeBellSound = () => {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const notes = [659.25, 880, 1174.66];
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      const startTime = ctx.currentTime + idx * 0.09;
+      osc.frequency.setValueAtTime(freq, startTime);
+      gain.gain.setValueAtTime(0.001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.055, startTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.65);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.7);
+    });
+  } catch (e) {}
+};
+
 const FOLDERS = [
   {
     id: "kariyer",
@@ -62,11 +93,11 @@ const FOLDERS = [
   {
     id: "muzikler",
     title: "Müziklerim",
-    subtitle: "En Sevdiklerim",
+    subtitle: "Kasetçalar & Listem",
     icon: Music,
     accent: "from-rose-500/30 to-red-700/30",
     iconColor: "text-rose-300",
-    tabs: ["Favori Gruplarım"],
+    tabs: ["Kasetçalar"],
   },
   {
     id: "diziler",
@@ -87,6 +118,24 @@ const FOLDERS = [
     tabs: ["Favori Filmler"],
   },
   {
+    id: "kurabiye",
+    title: "Şans Kurabiyesi",
+    subtitle: "Günün Pozitif Notu",
+    icon: Cookie,
+    accent: "from-yellow-500/30 to-amber-700/30",
+    iconColor: "text-yellow-300",
+    tabs: ["Kurabiyeni Kır"],
+  },
+  {
+    id: "oyun",
+    title: "Günün Oyunu",
+    subtitle: "Faruk Parolla",
+    icon: Gamepad2,
+    accent: "from-violet-500/30 to-fuchsia-700/30",
+    iconColor: "text-violet-300",
+    tabs: ["Kelime Tahmini"],
+  },
+  {
     id: "hakkimda",
     title: "Hakkımda",
     subtitle: "Ağrı, İzmir & GS",
@@ -103,24 +152,6 @@ const FOLDERS = [
     accent: "from-sky-500/30 to-cyan-700/30",
     iconColor: "text-sky-300",
     tabs: ["Bana Yaz"],
-  },
-];
-
-const HERO_SLIDES = [
-  {
-    image: "/images/agri.jpg",
-    location: "Ağrı Dağı • Memleketin Zirvesi",
-    note: "Köklerin sağlam olduğu yer",
-  },
-  {
-    image: "/images/manzara2.jpg",
-    location: "Ege • Yeni Rotalar",
-    note: "Saha çalışmaları ve gece yolculukları",
-  },
-  {
-    image: "/images/manzara3.jpg",
-    location: "Faruk'un Dijital Masası",
-    note: "Kendi sistemlerini kuran adam",
   },
 ];
 
@@ -283,91 +314,922 @@ const MOVIES_DATA = [
   },
 ];
 
-// Karizmatik Mavi "F" Logolu ve Şeffaf Cam Dokulu Açılış Ekranı
-const IntroSplash = ({ onEnter }) => {
+const FORTUNE_QUOTES = [
+  "Bugün ertelediğin o küçük adım, yarın en gurur duyduğun hikayene dönüşebilir.",
+  "Yüzündeki gülümseme, tanımadığın birinin bile gününü güzelleştirmeye yeter.",
+  "En güzel manzaralar, en dik yokuşların sonunda karşına çıkar. Yola devam!",
+  "Şu an tam olman gereken yerdesin; güzel tesadüfler çok yakında kapını çalacak.",
+  "Kendine biraz kahve veya çay ısmarla, bugün gerçekten iyi iş çıkardın.",
+  "Bazen hiçbir plan yapmamak, hayatın sana hazırladığı en güzel sürprize yer açar.",
+  "Enerjin o kadar temiz ki, girdiğin her ortama kendiliğinden huzur taşıyorsun.",
+  "Yeni yıl sana hiç beklemediğin bir anda 'İyi ki!' diyeceğin harika başlangıçlar getirsin.",
+  "Küçük bir mola ver, derin bir nefes al; her şey sandığından çok daha yolunda gidiyor.",
+  "Kalbinin sıcaklığı etrafındaki herkesi ısıtıyor, bunu sakın kaybetme.",
+  "Bugün şans senden yana; aklından geçen o güzel fikri hayata geçirmenin tam zamanı.",
+  "Hayat kısa, sevdiğin şarkıyı biraz daha aç ve anın tadını çıkar.",
+  "Senin gibi samimi insanların yolu her zaman açık ve aydınlık olur.",
+  "Zor sandığın düğümler, sabırla beklediğinde kendiliğinden çözülür.",
+  "Gözlerindeki ışıltı, en karanlık gecede bile yolunu bulmana yeter.",
+  "Bugün kendine nazik davran; dünyanın senin neşene ihtiyacı var.",
+  "Güzel haberler yolda! Çok yakında yüzünü güldürecek bir mesaj alacaksın.",
+  "Her yeni gün, bembeyaz bir sayfa ve yeni bir gülümseme fırsatıdır.",
+];
+
+const FIVE_LETTER_WORDS = [
+  "KASET",
+  "GÜNEŞ",
+  "KAHVE",
+  "ROMAN",
+  "ŞARKI",
+  "BULUT",
+  "DENİZ",
+  "ÇİÇEK",
+  "RADYO",
+  "HAYAL",
+  "KÖPRÜ",
+  "ZİRVE",
+  "SABAH",
+  "BAHÇE",
+  "MÜZİK",
+].filter((w) => w.length === 5);
+
+const KEYBOARD_ROWS = [
+  ["E", "R", "T", "Y", "U", "I", "O", "P", "Ğ", "Ü"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ş", "İ"],
+  ["ENTER", "Z", "C", "V", "B", "N", "M", "Ö", "Ç", "DEL"],
+];
+
+// Hafif ve Akıcı Kar Yağışı Katmanı
+const SnowfallLayer = ({ count = 24, zIndexClass = "z-[5]" }) => {
+  const flakes = React.useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: `${(i * 37 + 11) % 98}%`,
+        delay: (i % 7) * 0.85,
+        duration: 7.5 + (i % 6) * 1.4,
+        size: i % 4 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
+        drift: i % 2 === 0 ? 14 : -14,
+        opacity: i % 3 === 0 ? 0.72 : 0.42,
+      })),
+    [count]
+  );
+
+  return (
+    <div className={`pointer-events-none fixed inset-0 overflow-hidden ${zIndexClass}`}>
+      {flakes.map((flake) => (
+        <motion.span
+          key={flake.id}
+          initial={{ y: -20, x: 0, opacity: 0 }}
+          animate={{
+            y: ["0vh", "105vh"],
+            x: [0, flake.drift, 0],
+            opacity: [0, flake.opacity, flake.opacity, 0],
+          }}
+          transition={{
+            duration: flake.duration,
+            repeat: Infinity,
+            delay: flake.delay,
+            ease: "linear",
+          }}
+          style={{
+            left: flake.left,
+            width: flake.size,
+            height: flake.size,
+          }}
+          className="absolute top-0 rounded-full bg-white shadow-[0_0_5px_rgba(255,255,255,0.5)]"
+        />
+      ))}
+    </div>
+  );
+};
+
+// ---------- Seed'li rastgelelik: ağaç her açılışta AYNI, ama doğal görünür ----------
+const mulberry32 = (seed) => () => {
+  seed |= 0;
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+
+const PINE_CX = 150;
+const PINE_BASE = 372;
+const PINE_TOP = 60;
+const pineWidth = (t) => 108 * Math.pow(1 - t, 0.82) + 5;
+const f1 = (n) => Math.round(n * 10) / 10;
+const quadAt = (p0, p1, p2, u) => {
+  const a = (1 - u) * (1 - u);
+  const b = 2 * (1 - u) * u;
+  const c = u * u;
+  return { x: a * p0.x + b * p1.x + c * p2.x, y: a * p0.y + b * p1.y + c * p2.y };
+};
+
+// Ağaç geometrisi bir kez, rastgele ama sabit tohumla üretilir:
+// her dal elle çizilmiş gibi farklı uzunluk / sarkma / iğne yoğunluğuna sahip.
+const buildPine = () => {
+  const rnd = mulberry32(2027);
+  const GREENS = ["#2f6b52", "#3a7a5d", "#27593f", "#4b9174"];
+  const LIGHT = ["#5aa585", "#74b99a", "#4a8f72", "#8cc9ad"];
+  const LEVELS = 32;
+  const branches = [];
+  const twigs = [];
+  const snow = [];
+  const tips = [];
+
+  for (let i = 0; i < LEVELS; i++) {
+    const t = i / (LEVELS - 1);
+    const baseY = PINE_BASE - (PINE_BASE - PINE_TOP) * Math.pow(t, 0.92) + (rnd() - 0.5) * 4;
+
+    [-1, 1].forEach((side) => {
+      const L = pineWidth(t) * (0.78 + rnd() * 0.42);
+      const droop = (13 + rnd() * 9) * (1 - t * 0.55);
+      const p0 = { x: PINE_CX, y: baseY };
+      const p2 = { x: PINE_CX + side * L, y: baseY + droop + (rnd() - 0.5) * 3 };
+      const p1 = { x: PINE_CX + side * L * 0.52, y: baseY - 3 - rnd() * 5 };
+      const delay = 1.4 + t * 4.6 + (side > 0 ? 0.06 : 0) + rnd() * 0.08;
+
+      branches.push({
+        d: `M${f1(p0.x)} ${f1(p0.y)} Q${f1(p1.x)} ${f1(p1.y)} ${f1(p2.x)} ${f1(p2.y)}`,
+        w: f1(1.8 + (1 - t) * 3.4),
+        color: GREENS[Math.floor(rnd() * GREENS.length)],
+        delay,
+      });
+      tips.push({ x: p2.x, y: p2.y, t });
+
+      // Sarkan çam iğnesi demetleri
+      const count = t < 0.7 ? 5 : 3;
+      const s = 0.55 + 0.45 * (1 - t);
+      for (let k = 0; k <= count; k++) {
+        const u = k === count ? 1 : 0.18 + (k / count) * 0.78 + rnd() * 0.05;
+        const P = quadAt(p0, p1, p2, u);
+        const len = (8 + rnd() * 9) * s;
+        const end = { x: P.x + side * (1 + rnd() * 5) * s, y: P.y + len };
+        const ctrl = { x: P.x + side * rnd() * 3, y: P.y + len * 0.5 };
+        twigs.push({
+          d: `M${f1(P.x)} ${f1(P.y)} Q${f1(ctrl.x)} ${f1(ctrl.y)} ${f1(end.x)} ${f1(end.y)}`,
+          w: f1(0.9 + s * 0.5),
+          color: LIGHT[Math.floor(rnd() * LIGHT.length)],
+          delay: delay + u * 0.45 + 0.12,
+        });
+      }
+
+      // Dal üstündeki kar çizgisi (ressam en sonda ışık vurur)
+      if (rnd() < 0.75) {
+        const a = quadAt(p0, p1, p2, 0.22);
+        const b = quadAt(p0, p1, p2, 0.55);
+        const c = quadAt(p0, p1, p2, 0.85);
+        const ctl = { x: 2 * b.x - (a.x + c.x) / 2, y: 2 * b.y - (a.y + c.y) / 2 };
+        snow.push({
+          d: `M${f1(a.x)} ${f1(a.y - 1.6)} Q${f1(ctl.x)} ${f1(ctl.y - 1.6)} ${f1(c.x)} ${f1(c.y - 1.6)}`,
+          w: f1(1.3 + (1 - t) * 1.2),
+          delay: 6.0 + t * 1.3 + rnd() * 0.2,
+        });
+      }
+    });
+  }
+
+  // Dal uçlarına asılan süs topları
+  const pool = tips.filter((p) => p.t > 0.04 && p.t < 0.62);
+  const baubles = [];
+  for (let i = 0; i < 10 && pool.length; i++) {
+    const p = pool.splice(Math.floor(rnd() * pool.length), 1)[0];
+    const r = f1(3.2 + rnd() * 1.8);
+    baubles.push({ x: f1(p.x), y: f1(p.y + 3.5), r, kind: i % 3, delay: 8.0 + i * 0.11 });
+  }
+
+  // Işık kablosu (girlandlar) + ampuller
+  const garlands = [];
+  const lights = [];
+  const BULBS = ["#ffd27a", "#ffb4a8", "#bfe3ff", "#fff1c2"];
+  [0.06, 0.2, 0.34, 0.48, 0.62, 0.76].forEach((t, gi) => {
+    const y = PINE_BASE - (PINE_BASE - PINE_TOP) * Math.pow(t, 0.92) + 4;
+    const w = pineWidth(t) * 0.7;
+    const p0 = { x: PINE_CX - w, y: y - 3 };
+    const p1 = { x: PINE_CX, y: y + 13 };
+    const p2 = { x: PINE_CX + w, y: y - 3 };
+    const delay = 7.0 + gi * 0.15;
+    garlands.push({
+      d: `M${f1(p0.x)} ${f1(p0.y)} Q${f1(p1.x)} ${f1(p1.y)} ${f1(p2.x)} ${f1(p2.y)}`,
+      delay,
+    });
+    [0.12, 0.32, 0.5, 0.68, 0.88].forEach((u, k) => {
+      const P = quadAt(p0, p1, p2, u);
+      lights.push({
+        x: f1(P.x),
+        y: f1(P.y),
+        color: BULBS[(gi + k) % BULBS.length],
+        delay: delay + 0.9 + k * 0.12,
+        tw: 2.2 + ((gi + k) % 3) * 0.5,
+      });
+    });
+  });
+
+  // Tepedeki elle çizilmiş (hafif kusurlu) yıldız
+  const pts = [];
+  for (let k = 0; k < 10; k++) {
+    const r = (k % 2 === 0 ? 11 : 4.7) * (1 + (rnd() - 0.5) * 0.08);
+    const ang = -Math.PI / 2 + (k * Math.PI) / 5;
+    pts.push(`${f1(PINE_CX + Math.cos(ang) * r)} ${f1(44 + Math.sin(ang) * r)}`);
+  }
+
+  return { branches, twigs, snow, baubles, garlands, lights, starD: `M${pts.join(" L")} Z` };
+};
+
+const PINE = buildPine();
+
+const PINE_KEYFRAMES = `
+@keyframes pdraw{from{stroke-dashoffset:1;opacity:0}2%{opacity:1}to{stroke-dashoffset:0;opacity:1}}
+@keyframes pfade{from{opacity:0}to{opacity:1}}
+@keyframes ppop{0%{opacity:0;transform:scale(.2)}70%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1)}}
+@keyframes ptwinkle{0%,100%{opacity:.5}50%{opacity:1}}
+`;
+
+const drawStyle = (on, delay, dur) =>
+  on
+    ? {
+        strokeDasharray: 1,
+        strokeDashoffset: 1,
+        animation: `pdraw ${dur}s cubic-bezier(.4,0,.2,1) ${delay}s both`,
+      }
+    : undefined;
+
+const fadeStyle = (on, delay, dur = 0.7) =>
+  on ? { opacity: 0, animation: `pfade ${dur}s ease-out ${delay}s both` } : undefined;
+
+const popBase = { transformBox: "fill-box", transformOrigin: "center" };
+
+// Alttan yukarı, tek tek fırça darbeleriyle "çizilen" çam ağacı.
+// animated=false → ağaç hazır (masaüstü kartı için).
+const DrawnPine = ({ className = "h-72 w-64", animated = true, boost = false }) => {
+  const uid = React.useId().replace(/:/g, "");
+  const A = animated;
+
+  return (
+    <svg
+      viewBox="0 0 300 420"
+      className={`${className} overflow-visible select-none`}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <defs>
+        <radialGradient id={`${uid}-red`} cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#f4a3ad" />
+          <stop offset="45%" stopColor="#b3243b" />
+          <stop offset="100%" stopColor="#5c0d1d" />
+        </radialGradient>
+        <radialGradient id={`${uid}-gold`} cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#fbeeb5" />
+          <stop offset="45%" stopColor="#d9a441" />
+          <stop offset="100%" stopColor="#6b4514" />
+        </radialGradient>
+        <radialGradient id={`${uid}-ice`} cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#dff1ff" />
+          <stop offset="45%" stopColor="#5b8fb5" />
+          <stop offset="100%" stopColor="#1d3d57" />
+        </radialGradient>
+        <radialGradient id={`${uid}-halo`}>
+          <stop offset="0%" stopColor="#ffe9a8" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#ffe9a8" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <style>{PINE_KEYFRAMES}</style>
+
+      {/* 1 • Zemin: kar yığını çizgileri */}
+      <ellipse cx="150" cy="398" rx="96" ry="9" fill="rgba(0,0,0,0.35)" style={fadeStyle(A, 0.1, 1)} />
+      <path d="M28 397 C70 388 110 392 150 390 C195 388 232 393 274 396" stroke="#b9cfd8" strokeWidth="2" pathLength={1} style={drawStyle(A, 0.1, 0.9)} />
+      <path d="M70 404 C110 399 190 400 232 404" stroke="#8aa3ae" strokeWidth="1.4" pathLength={1} style={drawStyle(A, 0.35, 0.8)} />
+      <path d="M116 392 C128 383 142 386 150 388 C160 385 172 384 186 392" stroke="#eef6f9" strokeWidth="1.8" pathLength={1} style={drawStyle(A, 0.55, 0.8)} />
+
+      {/* 2 • Gövde: aşağıdan yukarı */}
+      <path d="M150 396 L150 300" stroke="#5b3d2b" strokeWidth="9" pathLength={1} style={drawStyle(A, 0.9, 0.8)} />
+      <path d="M147 394 L147.5 306" stroke="#8a6446" strokeWidth="1.6" pathLength={1} style={drawStyle(A, 1.1, 0.7)} />
+      <path d="M152.5 394 L152 310" stroke="#3a2518" strokeWidth="1.4" pathLength={1} style={drawStyle(A, 1.15, 0.7)} />
+      <path d="M150 300 L150 56" stroke="#4a3123" strokeWidth="3" pathLength={1} style={drawStyle(A, 1.3, 4.8)} />
+
+      {/* 3 • Dallar: en alttan tepeye */}
+      {PINE.branches.map((b, i) => (
+        <g key={`br${i}`}>
+          <path d={b.d} stroke="rgba(5,18,12,0.75)" strokeWidth={b.w + 1.6} transform="translate(0 2.4)" pathLength={1} style={drawStyle(A, b.delay, 0.5)} />
+          <path d={b.d} stroke={b.color} strokeWidth={b.w} pathLength={1} style={drawStyle(A, b.delay, 0.5)} />
+        </g>
+      ))}
+
+      {/* 4 • Sarkan iğne yaprakları */}
+      {PINE.twigs.map((tw, i) => (
+        <path key={`tw${i}`} d={tw.d} stroke={tw.color} strokeWidth={tw.w} pathLength={1} style={drawStyle(A, tw.delay, 0.3)} />
+      ))}
+
+      {/* 5 • Kar vurguları */}
+      {PINE.snow.map((s, i) => (
+        <path key={`sn${i}`} d={s.d} stroke="rgba(232,244,240,0.85)" strokeWidth={s.w} pathLength={1} style={drawStyle(A, s.delay, 0.45)} />
+      ))}
+
+      {/* 6 • Işık kablosu */}
+      {PINE.garlands.map((g, i) => (
+        <path key={`ga${i}`} d={g.d} stroke="rgba(240,205,120,0.55)" strokeWidth="1" pathLength={1} style={drawStyle(A, g.delay, 0.9)} />
+      ))}
+
+      {/* 7 • Süs topları */}
+      {PINE.baubles.map((b, i) => (
+        <g key={`ba${i}`} style={A ? { ...popBase, animation: `ppop .5s ease-out ${b.delay}s both` } : undefined}>
+          <path d={`M${b.x} ${f1(b.y - 3.5)} L${b.x} ${b.y}`} stroke="#c9b27a" strokeWidth="0.8" />
+          <circle cx={b.x} cy={f1(b.y + b.r)} r={b.r} fill={`url(#${uid}-${["red", "gold", "ice"][b.kind]})`} />
+          <circle cx={f1(b.x - b.r * 0.3)} cy={f1(b.y + b.r * 0.7)} r={f1(b.r * 0.22)} fill="rgba(255,255,255,0.8)" />
+        </g>
+      ))}
+
+      {/* 8 • Ampuller */}
+      {PINE.lights.map((l, i) => (
+        <g
+          key={`li${i}`}
+          style={{
+            ...popBase,
+            animation: A
+              ? `ppop .5s ease-out ${l.delay}s both, ptwinkle ${boost ? 0.5 : l.tw}s ease-in-out ${l.delay + 0.6}s infinite`
+              : `ptwinkle ${boost ? 0.5 : l.tw}s ease-in-out ${(i % 5) * 0.3}s infinite`,
+          }}
+        >
+          <circle cx={l.x} cy={l.y} r={boost ? 6.5 : 5} fill={l.color} opacity="0.22" />
+          <circle cx={l.x} cy={l.y} r={boost ? 2.8 : 2.1} fill={l.color} />
+        </g>
+      ))}
+
+      {/* 9 • Yıldız: önce çizgi, sonra altın dolgu */}
+      <circle cx="150" cy="44" r="24" fill={`url(#${uid}-halo)`} style={fadeStyle(A, 9.0, 1)} />
+      <path d={PINE.starD} fill="#f3cf62" style={fadeStyle(A, 8.9, 0.6)} />
+      <path d={PINE.starD} stroke="#f7dd86" strokeWidth="1.5" pathLength={1} style={drawStyle(A, 8.3, 0.7)} />
+    </svg>
+  );
+};
+
+// Ressamın ağacı alttan yukarı çizdiği sinematik giriş
+const ChristmasIntroSplash = ({ onEnter }) => {
+  const [ready, setReady] = useState(false);
+  const reduced = React.useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+    []
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), reduced ? 400 : 8800);
+    return () => clearTimeout(timer);
+  }, [reduced]);
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.04 }}
-      transition={{ duration: 0.55, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 backdrop-blur-xl text-white px-6"
+      exit={{ opacity: 0, scale: 1.02 }}
+      transition={{ duration: 0.95, ease: "easeInOut" }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#05070b] px-6 text-white"
     >
-      {/* Derin mavi atmosfer ışığı */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.14)_0%,rgba(15,23,42,0.45)_65%,rgba(0,0,0,0.75)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(30,64,56,0.22)_0%,rgba(5,7,11,1)_70%)]" />
+      <SnowfallLayer count={20} zIndexClass="z-0" />
 
-      <motion.div
-        initial={{ scale: 0.92, opacity: 0, y: 10 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex flex-col items-center"
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.45 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        onClick={onEnter}
+        className="absolute right-5 top-5 z-20 cursor-pointer rounded-full border border-white/15 bg-white/5 px-3.5 py-1 text-[11px] tracking-wider text-white/75 backdrop-blur-sm"
       >
-        {/* Cam Dokulu Mavi F Logo Kutusu */}
-        <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl border border-sky-400/30 bg-white/[0.06] shadow-[0_8px_40px_rgba(14,165,233,0.22)] backdrop-blur-md">
-          <svg
-            viewBox="0 0 100 100"
-            className="h-14 w-14 drop-shadow-[0_0_16px_rgba(56,189,248,0.55)]"
-            fill="none"
-          >
-            <defs>
-              <linearGradient id="farukBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#7DD3FC" />
-                <stop offset="50%" stopColor="#38BDF8" />
-                <stop offset="100%" stopColor="#1D4ED8" />
-              </linearGradient>
-              <linearGradient id="farukBlueAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#E0F2FE" />
-                <stop offset="100%" stopColor="#0284C7" />
-              </linearGradient>
-            </defs>
-            {/* Karizmatik Keskin Geometrik F Monogram */}
-            <path
-              d="M27 18H77L71 31H42V44H67L62 56H42V82H27V18Z"
-              fill="url(#farukBlueGrad)"
-            />
-            {/* Alt-Sağ Keskin Detay Çizgisi */}
-            <path
-              d="M52 72H73L69 82H48L52 72Z"
-              fill="url(#farukBlueAccent)"
-            />
-          </svg>
-        </div>
+        Geç →
+      </motion.button>
 
-        {/* İsim ve Başlık */}
+      <div className="relative z-10 flex flex-col items-center">
+        <DrawnPine
+          animated={!reduced}
+          className="h-[20rem] w-[14.5rem] sm:h-[24rem] sm:w-[17rem]"
+        />
+
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="mt-6 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 10 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="mt-1 text-center"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-[0.35em] text-sky-300/85">
-            FARUK OS
+          <span className="text-[11px] font-medium tracking-[0.3em] text-sky-300/75">
+            YENİ YIL • 2027
           </span>
-          <h1 className="mt-1.5 text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            Faruk Köçer
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Mutlu Yıllar
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-white/60">
-            Kişisel Çalışma Masası & Dijital Arşiv
+          <p className="mx-auto mt-2 max-w-xs text-xs leading-relaxed text-white/60 sm:text-sm">
+            2027, tam senin yılın olsun.
           </p>
         </motion.div>
 
-        {/* Glassmorphism (Buzlu Cam) Sisteme Gir Butonu */}
         <motion.button
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.45 }}
+          animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 10 }}
+          transition={{ duration: 0.8, delay: 0.35 }}
           whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}
           onClick={onEnter}
-          className="mt-8 group relative inline-flex items-center gap-3 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_8px_30px_rgba(2,132,199,0.25)] backdrop-blur-md transition-all duration-200 hover:border-sky-300/60 hover:bg-sky-400/25 hover:shadow-[0_8px_35px_rgba(56,189,248,0.35)] cursor-pointer"
+          disabled={!ready}
+          className="group relative mt-6 inline-flex cursor-pointer items-center gap-3 rounded-2xl border border-sky-400/40 bg-sky-500/20 px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_8px_32px_rgba(14,165,233,0.28)] backdrop-blur-md transition-all hover:border-sky-300/70 hover:bg-sky-500/30"
         >
           <span className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]" />
-          <span>Sisteme Gir</span>
-          <span className="text-sky-300 transition-transform duration-200 group-hover:translate-x-1">
-            →
-          </span>
+          <span>Faruk ile Tanış</span>
+          <span className="text-sky-300 transition-transform duration-200 group-hover:translate-x-1">→</span>
         </motion.button>
-      </motion.div>
+      </div>
     </motion.div>
+  );
+};
+
+// Dokununca dilek çıkaran masaüstü ağacı
+const WISHES_2027 = [
+  "2027 senin yılın olsun.",
+  "Bu yıl ertelediğin her şeye cesaretle “evet” diyeceksin.",
+  "Yeni yılda her şey tıkır tıkır çalışsın, hiç alarm vermesin.",
+  "Sağlık, huzur ve bol kahkaha: 2027'nin üçlü paketi sana geliyor.",
+  "Bu yıl hayal ettiğin kapılar, sen çalmadan açılacak.",
+  "Küçük adımların 2027'de büyük bir hikâyeye dönüşecek.",
+  "Yeni yıl, kalbinin en sevdiği şarkıyı çalsın.",
+  "Bu yıl kendine de en az başkalarına gösterdiğin kadar nazik ol.",
+  "2027'de aradığın cevaplar, beklemediğin bir anda yanına gelecek.",
+  "Yolun açık, enerjin yüksek, şansın yanında olsun.",
+  "Bu yıl yorulduğunda dinlen, ama asla vazgeçme.",
+  "Güzel haberler, sıcak sohbetler ve sevdiklerinle dolu bir yıl dilerim.",
+  "2027, kendine verdiği sözleri tutan sana ait.",
+];
+
+const DesktopChristmasWidget = ({ isDayMode }) => {
+  const [wobbleKey, setWobbleKey] = useState(0);
+  const [boost, setBoost] = useState(false);
+  const [wishIdx, setWishIdx] = useState(null);
+  const [sparks, setSparks] = useState([]);
+  const boostTimer = useRef(null);
+
+  useEffect(() => () => clearTimeout(boostTimer.current), []);
+
+  const handleTreeTap = () => {
+    playTreeBellSound();
+    setWobbleKey((p) => p + 1);
+    setBoost(true);
+    clearTimeout(boostTimer.current);
+    boostTimer.current = setTimeout(() => setBoost(false), 1800);
+
+    setWishIdx((prev) => {
+      let n = Math.floor(Math.random() * WISHES_2027.length);
+      if (n === prev) n = (n + 1) % WISHES_2027.length;
+      return n;
+    });
+
+    const stamp = Date.now();
+    const burst = Array.from({ length: 12 }, (_, i) => {
+      const ang = (Math.PI * 2 * i) / 12 + Math.random() * 0.5;
+      const dist = 40 + Math.random() * 50;
+      return {
+        id: `${stamp}-${i}`,
+        dx: Math.cos(ang) * dist,
+        dy: Math.sin(ang) * dist - 20,
+        size: 3 + Math.random() * 4,
+      };
+    });
+    setSparks((s) => [...s, ...burst]);
+    setTimeout(() => setSparks((s) => s.filter((p) => !burst.some((b) => b.id === p.id))), 1300);
+  };
+
+  return (
+    <div
+      onClick={handleTreeTap}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && handleTreeTap()}
+      title="Ağaca dokun!"
+      className={`group relative mx-auto w-full max-w-md cursor-pointer overflow-hidden rounded-3xl border px-5 py-4 shadow-2xl transition-colors ${
+        isDayMode
+          ? "border-white/30 bg-black/35 hover:bg-black/45"
+          : "border-white/20 bg-black/50 hover:bg-black/60"
+      }`}
+    >
+      <div className="pointer-events-none absolute -left-8 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-amber-400/15 blur-2xl" />
+      <div className="pointer-events-none absolute bottom-2 right-4 h-28 w-28 rounded-full bg-emerald-500/10 blur-2xl" />
+
+      <div className="relative z-10 flex items-center justify-between gap-3 sm:gap-5">
+        <div className="relative shrink-0">
+          <motion.div
+            key={wobbleKey}
+            animate={
+              wobbleKey > 0
+                ? { rotate: [0, -5, 4.5, -3.5, 2.5, -1.2, 0], scale: [1, 1.04, 1] }
+                : { rotate: 0 }
+            }
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+            style={{ transformOrigin: "50% 92%" }}
+          >
+            <DrawnPine animated={false} boost={boost} className="h-40 w-28 sm:h-44 sm:w-32" />
+          </motion.div>
+
+          {sparks.map((p) => (
+            <motion.span
+              key={p.id}
+              initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+              animate={{ x: p.dx, y: p.dy, opacity: 0, scale: 0.2 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="pointer-events-none absolute left-1/2 top-[40%] rounded-full bg-amber-200 shadow-[0_0_8px_rgba(253,230,138,0.9)]"
+              style={{ width: p.size, height: p.size }}
+            />
+          ))}
+        </div>
+
+        <div className="flex-1 pr-1 text-left">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/25 bg-amber-400/10 px-2.5 py-0.5 text-[10px] font-medium tracking-wider text-amber-200">
+            YENİ YIL • 2027
+          </span>
+
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            Mutlu Yıllar
+          </h2>
+
+          <div className="mt-1.5 min-h-[4.2rem]">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={wishIdx === null ? "idle" : wishIdx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className={
+                  wishIdx === null
+                    ? "text-xs leading-relaxed text-white/75"
+                    : "text-sm font-semibold italic leading-relaxed text-amber-100"
+                }
+              >
+                {wishIdx === null
+                  ? "Yeni yıl sana sağlık, huzur ve yüzünü güldürecek güzel sürprizler getirsin."
+                  : `“${WISHES_2027[wishIdx]}”`}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          <p className="mt-1 text-[11px] font-medium text-amber-200/80 transition-colors group-hover:text-amber-200">
+            {wishIdx === null ? "Ağaca dokun, bir dilek çıksın →" : "Bir dilek daha için dokun →"}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Retro Kasetçalar Bileşeni
+const CassettePlayer = ({ musicPlaying, onToggleMusic, soundFx }) => {
+  return (
+    <div className="mb-6 rounded-3xl border border-amber-400/25 bg-gradient-to-br from-[#1d1924] via-[#151822] to-[#1f161b] p-5 shadow-2xl">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+        <div className="relative w-full max-w-xs rounded-2xl border-2 border-white/20 bg-[#252836] p-3.5 shadow-inner">
+          <div className="rounded-xl bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-600 p-0.5">
+            <div className="rounded-[10px] bg-[#161822] px-3 py-2">
+              <div className="flex items-center justify-between text-[10px] font-bold tracking-widest text-amber-300">
+                <span>SIDE A • FARUK MIX</span>
+                <span>90 MIN</span>
+              </div>
+              <div className="mt-0.5 truncate text-xs font-semibold text-white">
+                Last Christmas & Gece Seçkisi
+              </div>
+
+              <div className="mt-2.5 flex items-center justify-center gap-6 rounded-lg bg-black/60 py-2 border border-white/10">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-full border-2 border-dashed border-amber-300/80 bg-white/5 ${
+                    musicPlaying ? "animate-spin" : ""
+                  }`}
+                  style={{ animationDuration: "3.5s" }}
+                >
+                  <div className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+                </div>
+
+                <div className="h-4 w-12 rounded bg-amber-950/70 border border-white/10 flex items-center justify-center">
+                  <div className="h-1.5 w-9 bg-amber-700/60 rounded-full" />
+                </div>
+
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-full border-2 border-dashed border-amber-300/80 bg-white/5 ${
+                    musicPlaying ? "animate-spin" : ""
+                  }`}
+                  style={{ animationDuration: "3.5s" }}
+                >
+                  <div className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 text-center sm:text-left">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/15 px-3 py-1 text-[11px] font-semibold text-rose-300">
+            {musicPlaying ? "● Şu An Çalıyor" : "❚❚ Duraklatıldı"}
+          </span>
+          <h3 className="mt-2 text-lg font-bold text-white">Faruk'un Kasetçaları</h3>
+          <p className="mt-1 text-xs leading-relaxed text-white/70">
+            Siteye girdiğinde seni karşılayan yılbaşı atmosferi ve gece vardiyası şarkıları. Kaseti istediğin an durdurup başlatabilirsin.
+          </p>
+
+          <button
+            onClick={() => {
+              playClickSound(soundFx);
+              onToggleMusic();
+            }}
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 px-5 py-2.5 text-xs font-bold text-white shadow-lg transition hover:opacity-90 cursor-pointer"
+          >
+            {musicPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            <span>{musicPlaying ? "Kaseti Durdur" : "Kaseti Çal"}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Şans Kurabiyesi Bileşeni
+const FortuneCookieApp = ({ soundFx }) => {
+  const [cracked, setCracked] = useState(false);
+  const [quoteIdx, setQuoteIdx] = useState(() =>
+    Math.floor(Math.random() * FORTUNE_QUOTES.length)
+  );
+
+  const handleCrack = () => {
+    playClickSound(soundFx);
+    if (!cracked) {
+      setCracked(true);
+    } else {
+      setCracked(false);
+      setTimeout(() => {
+        setQuoteIdx((prev) => {
+          let next = Math.floor(Math.random() * FORTUNE_QUOTES.length);
+          if (next === prev) next = (prev + 1) % FORTUNE_QUOTES.length;
+          return next;
+        });
+        setCracked(true);
+      }, 220);
+    }
+  };
+
+  return (
+    <div className="mx-auto max-w-lg text-center py-4">
+      <div className="rounded-3xl border border-amber-400/25 bg-gradient-to-b from-amber-500/10 to-[#161923] p-6 sm:p-8 shadow-xl">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/15 px-3 py-1 text-xs font-semibold text-amber-300">
+          <Sparkles className="h-3.5 w-3.5" /> Günün Pozitif Enerjisi
+        </span>
+        <h3 className="mt-3 text-2xl font-bold text-white">Şans Kurabiyeni Kır</h3>
+        <p className="mt-1 text-xs sm:text-sm text-white/70">
+          Kurabiyeye dokun, içinden bugüne özel güzel bir mesaj çıksın.
+        </p>
+
+        <div className="my-8 flex flex-col items-center justify-center">
+          <motion.button
+            whileHover={{ scale: 1.06, rotate: [-1, 2, -1, 0] }}
+            whileTap={{ scale: 0.92 }}
+            onClick={handleCrack}
+            className="relative flex h-32 w-32 items-center justify-center rounded-full border border-amber-400/30 bg-gradient-to-br from-amber-400/20 to-orange-600/20 shadow-[0_0_40px_rgba(251,191,36,0.2)] cursor-pointer"
+          >
+            <Cookie
+              className={`h-16 w-16 text-amber-300 transition-transform duration-300 ${
+                cracked ? "scale-90 rotate-12 opacity-80" : "scale-100"
+              }`}
+            />
+          </motion.button>
+
+          <AnimatePresence mode="wait">
+            {cracked ? (
+              <motion.div
+                key={quoteIdx}
+                initial={{ opacity: 0, y: 14, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35 }}
+                className="mt-6 w-full rounded-2xl border border-amber-300/35 bg-[#fffbeb] p-5 text-stone-900 shadow-xl"
+              >
+                <p className="text-sm sm:text-base font-semibold leading-relaxed italic">
+                  "{FORTUNE_QUOTES[quoteIdx]}"
+                </p>
+              </motion.div>
+            ) : (
+              <p className="mt-4 text-xs text-amber-200/80 animate-pulse">
+                ↑ Kurabiyeye dokun ↑
+              </p>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <button
+          onClick={handleCrack}
+          className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 text-xs sm:text-sm font-bold text-stone-950 shadow-lg transition hover:bg-amber-400 cursor-pointer"
+        >
+          <RotateCcw className="h-4 w-4" />
+          <span>{cracked ? "Yeni Kurabiye Kır" : "Kurabiyeyi Kır"}</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Günün Oyunu: Parolla (5 Harfli Türkçe Kelime Tahmini)
+const ParollaGame = ({ soundFx }) => {
+  const [targetWord, setTargetWord] = useState(() => {
+    const dayIndex = new Date().getDate() % FIVE_LETTER_WORDS.length;
+    return FIVE_LETTER_WORDS[dayIndex];
+  });
+  const [guesses, setGuesses] = useState([]);
+  const [currentGuess, setCurrentGuess] = useState("");
+  const [status, setStatus] = useState("playing");
+  const [shakeMsg, setShakeMsg] = useState("");
+
+  const resetNewWord = () => {
+    playClickSound(soundFx);
+    const randomWord =
+      FIVE_LETTER_WORDS[Math.floor(Math.random() * FIVE_LETTER_WORDS.length)];
+    setTargetWord(randomWord);
+    setGuesses([]);
+    setCurrentGuess("");
+    setStatus("playing");
+    setShakeMsg("");
+  };
+
+  const handleKey = (key) => {
+    playClickSound(soundFx);
+    if (status !== "playing") return;
+    setShakeMsg("");
+
+    if (key === "DEL") {
+      setCurrentGuess((prev) => prev.slice(0, -1));
+      return;
+    }
+
+    if (key === "ENTER") {
+      if (currentGuess.length < 5) {
+        setShakeMsg("5 harfli bir kelime yazmalısın!");
+        return;
+      }
+      const nextGuesses = [...guesses, currentGuess];
+      setGuesses(nextGuesses);
+      setCurrentGuess("");
+
+      if (currentGuess === targetWord) {
+        setStatus("won");
+      } else if (nextGuesses.length >= 6) {
+        setStatus("lost");
+      }
+      return;
+    }
+
+    if (currentGuess.length < 5) {
+      setCurrentGuess((prev) => prev + key);
+    }
+  };
+
+  const getLetterColors = (guess) => {
+    const result = Array(5).fill("absent");
+    const targetArr = targetWord.split("");
+    const guessArr = guess.split("");
+
+    guessArr.forEach((char, i) => {
+      if (char === targetArr[i]) {
+        result[i] = "correct";
+        targetArr[i] = null;
+      }
+    });
+
+    guessArr.forEach((char, i) => {
+      if (result[i] === "correct") return;
+      const foundIdx = targetArr.indexOf(char);
+      if (foundIdx !== -1) {
+        result[i] = "present";
+        targetArr[foundIdx] = null;
+      }
+    });
+
+    return result;
+  };
+
+  const keyStatuses = {};
+  guesses.forEach((guess) => {
+    const colors = getLetterColors(guess);
+    guess.split("").forEach((char, i) => {
+      const current = keyStatuses[char];
+      if (colors[i] === "correct") keyStatuses[char] = "correct";
+      else if (colors[i] === "present" && current !== "correct")
+        keyStatuses[char] = "present";
+      else if (!current) keyStatuses[char] = "absent";
+    });
+  });
+
+  return (
+    <div className="mx-auto max-w-md flex flex-col items-center">
+      <div className="mb-3 flex w-full items-center justify-between">
+        <div>
+          <h3 className="text-lg font-bold text-white">Faruk Parolla</h3>
+          <p className="text-xs text-white/65">5 harfli gizli kelimeyi 6 denemede bul</p>
+        </div>
+        <button
+          onClick={resetNewWord}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 cursor-pointer"
+        >
+          <RotateCcw className="h-3.5 w-3.5" />
+          <span>Yeni Kelime</span>
+        </button>
+      </div>
+
+      {shakeMsg && (
+        <div className="mb-2 rounded-lg bg-amber-500/20 border border-amber-400/40 px-3 py-1 text-xs text-amber-200">
+          {shakeMsg}
+        </div>
+      )}
+
+      <div className="grid grid-rows-6 gap-1.5 my-2">
+        {Array.from({ length: 6 }).map((_, rowIdx) => {
+          const isSubmitted = rowIdx < guesses.length;
+          const isCurrent = rowIdx === guesses.length;
+          const word = isSubmitted
+            ? guesses[rowIdx]
+            : isCurrent
+            ? currentGuess.padEnd(5, " ")
+            : "     ";
+          const colors = isSubmitted ? getLetterColors(word) : [];
+
+          return (
+            <div key={rowIdx} className="grid grid-cols-5 gap-1.5">
+              {word.split("").map((char, colIdx) => {
+                let boxStyle = "border-white/20 bg-white/5 text-white";
+                if (isSubmitted) {
+                  if (colors[colIdx] === "correct")
+                    boxStyle = "border-emerald-400 bg-emerald-600 text-white";
+                  else if (colors[colIdx] === "present")
+                    boxStyle = "border-amber-400 bg-amber-500 text-stone-950";
+                  else boxStyle = "border-white/10 bg-white/10 text-white/50";
+                } else if (char !== " ") {
+                  boxStyle = "border-violet-400/60 bg-violet-500/15 text-white";
+                }
+
+                return (
+                  <div
+                    key={colIdx}
+                    className={`flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl border text-lg font-extrabold transition-colors ${boxStyle}`}
+                  >
+                    {char !== " " ? char : ""}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      {status !== "playing" && (
+        <div
+          className={`my-2 w-full rounded-2xl border p-3.5 text-center ${
+            status === "won"
+              ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+              : "border-rose-400/40 bg-rose-500/15 text-rose-200"
+          }`}
+        >
+          <p className="text-sm font-bold">
+            {status === "won"
+              ? `Tebrikler! "${targetWord}" kelimesini buldun 🎉`
+              : `Olsun! Doğru kelime: ${targetWord}`}
+          </p>
+          <button
+            onClick={resetNewWord}
+            className="mt-2 rounded-xl bg-white/15 px-4 py-1.5 text-xs font-semibold text-white hover:bg-white/25 cursor-pointer"
+          >
+            Tekrar Oyna
+          </button>
+        </div>
+      )}
+
+      <div className="mt-3 w-full space-y-1.5">
+        {KEYBOARD_ROWS.map((row, rIdx) => (
+          <div key={rIdx} className="flex justify-center gap-1">
+            {row.map((k) => {
+              const st = keyStatuses[k];
+              let btnColor = "bg-white/15 text-white hover:bg-white/25";
+              if (st === "correct") btnColor = "bg-emerald-600 text-white";
+              else if (st === "present") btnColor = "bg-amber-500 text-stone-950";
+              else if (st === "absent") btnColor = "bg-white/5 text-white/35";
+
+              const isWide = k === "ENTER" || k === "DEL";
+
+              return (
+                <button
+                  key={k}
+                  onClick={() => handleKey(k)}
+                  className={`${
+                    isWide ? "px-2.5 text-[11px]" : "flex-1 max-w-[34px] text-xs"
+                  } h-10 rounded-lg font-bold transition active:scale-90 cursor-pointer flex items-center justify-center ${btnColor}`}
+                >
+                  {k === "DEL" ? <Delete className="h-4 w-4" /> : k}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -383,7 +1245,6 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
 
   return (
     <div className="relative">
-      {/* Sağ / Sol Kaydırma Okları */}
       <div className="mb-3 flex items-center justify-between">
         <span className="text-xs text-white/55">
           Sağa kaydırarak veya okları kullanarak gezebilirsin →
@@ -406,7 +1267,6 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
         </div>
       </div>
 
-      {/* Yatay Kaydırma Alanı */}
       <div
         ref={scrollRef}
         className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth"
@@ -418,7 +1278,6 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
             className="snap-start shrink-0 w-[85vw] sm:w-[370px] flex flex-col justify-between overflow-hidden rounded-2xl border border-white/15 bg-[#181a24] shadow-xl"
           >
             <div>
-              {/* Görsel Alanı */}
               <div className={`relative h-52 w-full bg-gradient-to-br ${item.gradient}`}>
                 <img
                   src={item.image}
@@ -437,7 +1296,6 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
                 </span>
               </div>
 
-              {/* İçerik & Replik */}
               <div className="p-5">
                 <h3 className="text-xl font-bold text-white">{item.title}</h3>
 
@@ -467,14 +1325,19 @@ export default function App() {
   const [activeFolder, setActiveFolder] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const [now, setNow] = useState(new Date());
-  const [slideIdx, setSlideIdx] = useState(0);
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [soundFx] = useState(true);
   const [carpetOffset, setCarpetOffset] = useState({ x: 0, y: 0 });
 
+  // Gece / Gündüz Otomatik Atmosfer Modu (07:00 - 19:00 arası gündüz)
+  const [isDayMode, setIsDayMode] = useState(() => {
+    const h = new Date().getHours();
+    return h >= 7 && h < 19;
+  });
+
   // Mesaj Bırak State'leri
   const [noteText, setNoteText] = useState("");
-  const [noteStatus, setNoteStatus] = useState("idle"); // idle | sending | sent | error
+  const [noteStatus, setNoteStatus] = useState("idle");
   const [noteErrorMsg, setNoteErrorMsg] = useState("");
 
   const audioRef = useRef(null);
@@ -484,15 +1347,6 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Orta masaüstü slayt değişimi (6 saniyede bir)
-  useEffect(() => {
-    const slideTimer = setInterval(() => {
-      setSlideIdx((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 6000);
-    return () => clearInterval(slideTimer);
-  }, []);
-
-  // Fare hareketi ve telefon dokunuşuna göre halı esnemesi
   useEffect(() => {
     const handleMove = (clientX, clientY) => {
       const nx = (clientX / window.innerWidth - 0.5) * 18;
@@ -515,12 +1369,12 @@ export default function App() {
     };
   }, []);
 
-  // Açılış ekranından sisteme giriş
+  // Açılış ekranından "Faruk ile Tanış" butonuna basınca müzik başlar
   const handleEnterSystem = () => {
     playClickSound(true);
     setEntered(true);
     if (audioRef.current) {
-      audioRef.current.volume = 0.35;
+      audioRef.current.volume = 0.4;
       audioRef.current
         .play()
         .then(() => setMusicPlaying(true))
@@ -552,7 +1406,6 @@ export default function App() {
     setActiveFolder(null);
   };
 
-  // Anonim Mesaj Gönderme (Formspree uyumlu message alanı)
   const handleSendNote = async (e) => {
     e.preventDefault();
     if (!noteText.trim()) return;
@@ -599,8 +1452,6 @@ export default function App() {
     month: "long",
     weekday: "long",
   });
-
-  const currentSlide = HERO_SLIDES[slideIdx];
 
   const renderFolderContent = () => {
     if (!activeFolder) return null;
@@ -745,36 +1596,15 @@ export default function App() {
       );
     }
 
-    // 2. MÜZİKLERİM
+    // 2. MÜZİKLERİM (KASETÇALAR + GRUPLAR)
     if (activeFolder.id === "muzikler") {
       return (
         <div>
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-rose-500/25 bg-rose-500/10 p-4">
-            <div className="flex items-center gap-3">
-              <div
-                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-500/20 border border-rose-400/40 ${
-                  musicPlaying ? "animate-spin" : ""
-                }`}
-                style={{ animationDuration: "8s" }}
-              >
-                <Disc3 className="h-6 w-6 text-rose-300" />
-              </div>
-              <div>
-                <h3 className="font-bold text-white">Arka Plan Müziği & Favori Gruplarım</h3>
-                <p className="text-xs text-white/70">
-                  {musicPlaying ? "Şu an arka planda müzik çalıyor" : "Müzik duraklatıldı"}
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={toggleMusic}
-              className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2 text-xs font-semibold text-white hover:bg-rose-500 cursor-pointer"
-            >
-              {musicPlaying ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              <span>{musicPlaying ? "Müziği Durdur" : "Müziği Başlat"}</span>
-            </button>
-          </div>
+          <CassettePlayer
+            musicPlaying={musicPlaying}
+            onToggleMusic={toggleMusic}
+            soundFx={soundFx}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {MUSIC_DATA.map((item) => (
@@ -854,7 +1684,17 @@ export default function App() {
       );
     }
 
-    // 5. HAKKIMDA
+    // 5. ŞANS KURABİYESİ
+    if (activeFolder.id === "kurabiye") {
+      return <FortuneCookieApp soundFx={soundFx} />;
+    }
+
+    // 6. GÜNÜN OYUNU (PAROLLA)
+    if (activeFolder.id === "oyun") {
+      return <ParollaGame soundFx={soundFx} />;
+    }
+
+    // 7. HAKKIMDA
     if (activeFolder.id === "hakkimda") {
       return (
         <div className="space-y-6">
@@ -907,7 +1747,7 @@ export default function App() {
       );
     }
 
-    // 6. BANA MESAJ BIRAK
+    // 8. BANA MESAJ BIRAK
     return (
       <div className="mx-auto max-w-xl">
         <div className="rounded-2xl border border-sky-400/25 bg-[#161923] p-6 shadow-xl">
@@ -962,15 +1802,15 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden select-none text-white font-sans bg-[#14080d]">
-      {/* Arka Plan Müzik Oynatıcısı */}
-      <audio ref={audioRef} src="/muzik.mp3" loop preload="none" />
+      {/* Arka Plan Müzik Oynatıcısı (public/muzik.mp3) */}
+      <audio ref={audioRef} src="/muzik.mp3" loop preload="auto" />
 
-      {/* Karizmatik Mavi Cam Açılış Ekranı */}
+      {/* Sinematik Yılbaşı Açılış Ekranı */}
       <AnimatePresence>
-        {!entered && <IntroSplash onEnter={handleEnterSystem} />}
+        {!entered && <ChristmasIntroSplash onEnter={handleEnterSystem} />}
       </AnimatePresence>
 
-      {/* Canlı Dalgalanan & Fare/Dokunuşa Duyarlı İran Halısı */}
+      {/* Canlı Dalgalanan & Fare/Dokunuşa Duyarlı Arka Plan */}
       <div
         className="fixed inset-[-24px] bg-cover bg-center carpet-wave transition-transform duration-300 ease-out will-change-transform"
         style={{
@@ -978,20 +1818,52 @@ export default function App() {
           transform: `translate3d(${carpetOffset.x}px, ${carpetOffset.y}px, 0) scale(1.06)`,
         }}
       />
-      <div className="fixed inset-0 bg-black/45 pointer-events-none" />
 
-      {/* Üst Durum Çubuğu */}
-      <header className="relative z-20 flex items-center justify-between px-4 sm:px-6 py-2.5 text-xs font-medium text-white/85 bg-black/45 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-400/40 bg-sky-500/25 text-[11px] font-black text-sky-300">
-            F
-          </span>
-          <span className="tracking-wide font-semibold text-white">Faruk OS</span>
+      {/* Gece / Gündüz Otomatik Atmosfer Katmanı */}
+      <div
+        className={`fixed inset-0 pointer-events-none transition-colors duration-700 ${
+          isDayMode
+            ? "bg-gradient-to-b from-amber-500/10 via-sky-900/20 to-black/35"
+            : "bg-gradient-to-b from-[#040711]/65 via-black/50 to-black/70"
+        }`}
+      />
+
+      {/* Masaüstü Arka Plan Kar Yağışı */}
+      {entered && <SnowfallLayer count={26} zIndexClass="z-[5]" />}
+
+      {/* Üst Sistem Durum Çubuğu */}
+      <header
+        className={`relative z-20 flex items-center justify-between px-4 sm:px-6 py-2.5 text-xs font-medium border-b transition-colors duration-500 ${
+          isDayMode
+            ? "bg-black/25 border-white/20 text-white backdrop-blur-md"
+            : "bg-black/55 border-white/10 text-white/85 backdrop-blur-md"
+        }`}
+      >
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-white/20 bg-white/10 shadow-inner">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white" fill="currentColor">
+              <path d="M6 4h12v3H9.5v3.5H16v3H9.5V20H6V4z" />
+            </svg>
+          </div>
+          <span className="tracking-tight font-semibold text-white">Faruk OS</span>
         </div>
 
-        <div className="hidden sm:block text-white/70">{formattedDate}</div>
+        <div className="hidden sm:block text-white/80">{formattedDate}</div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Gece / Gündüz Modu Değiştirici */}
+          <button
+            onClick={() => {
+              playClickSound(soundFx);
+              setIsDayMode((prev) => !prev);
+            }}
+            title={isDayMode ? "Gece Moduna Geç" : "Gündüz Moduna Geç"}
+            className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/10 px-2 py-1 text-[11px] text-amber-200 hover:bg-white/20 cursor-pointer"
+          >
+            {isDayMode ? <Sun className="h-3.5 w-3.5 text-amber-300" /> : <Moon className="h-3.5 w-3.5 text-sky-300" />}
+            <span className="hidden md:inline">{isDayMode ? "Gündüz" : "Gece"}</span>
+          </button>
+
           {/* Müzik Aç/Kapa Butonu */}
           <button
             onClick={toggleMusic}
@@ -999,7 +1871,7 @@ export default function App() {
             className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/10 px-2 py-1 text-[11px] text-amber-200 hover:bg-white/20 cursor-pointer"
           >
             {musicPlaying ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-            <span className="hidden sm:inline">{musicPlaying ? "Müzik Açık" : "Müzik Kapalı"}</span>
+            <span className="hidden sm:inline">{musicPlaying ? "Çalıyor" : "Sessiz"}</span>
           </button>
 
           <Wifi className="w-3.5 h-3.5" />
@@ -1009,69 +1881,34 @@ export default function App() {
       </header>
 
       {/* Ana Masaüstü Alanı */}
-      <main className="relative z-10 mx-auto flex min-h-[calc(100vh-84px)] max-w-5xl flex-col justify-between px-4 py-6 sm:px-10">
-        {/* Ortadaki Değişen Manzara & Ağrı Dağı Kartı */}
-        <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/20 bg-black/50 p-5 text-center shadow-2xl">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide.image}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 0.72, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9 }}
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `url('${currentSlide.image}'), linear-gradient(135deg, #1e293b 0%, #0f172a 100%)`,
-              }}
-            />
-          </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
-
-          <div className="relative z-10 pt-16 pb-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs font-medium text-amber-200">
-              <MapPin className="h-3.5 w-3.5 text-amber-400" />
-              <span>{currentSlide.location}</span>
-            </div>
-            <p className="mt-2 text-xs text-white/80 drop-shadow">{currentSlide.note}</p>
-
-            {/* Slayt Noktaları */}
-            <div className="mt-3 flex justify-center gap-1.5">
-              {HERO_SLIDES.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    playClickSound(soundFx);
-                    setSlideIdx(i);
-                  }}
-                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                    slideIdx === i ? "w-5 bg-amber-400" : "w-1.5 bg-white/40"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+      <main className="relative z-10 mx-auto flex min-h-[calc(100vh-52px)] max-w-5xl flex-col justify-between px-4 py-5 sm:px-10">
+        {/* Üstte İnteraktif Yılbaşı Çam Ağacı & 2027 Dilek Kartı */}
+        <DesktopChristmasWidget isDayMode={isDayMode} />
 
         {/* Klasör Izgarası */}
-        <div className="my-auto py-6">
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-6 sm:gap-4">
+        <div className="my-auto py-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
             {FOLDERS.map((folder) => {
               const Icon = folder.icon;
               return (
                 <button
                   key={folder.id}
                   onClick={() => openFolder(folder)}
-                  className="group flex flex-col items-center rounded-3xl border border-white/15 bg-black/45 p-4 shadow-lg transition-transform duration-150 hover:-translate-y-1 hover:bg-black/60 hover:border-white/35 active:scale-95 cursor-pointer"
+                  className={`group flex flex-col items-center rounded-3xl border p-4 shadow-lg transition-transform duration-150 hover:-translate-y-1 active:scale-95 cursor-pointer ${
+                    isDayMode
+                      ? "border-white/25 bg-black/35 hover:bg-black/50"
+                      : "border-white/15 bg-black/50 hover:bg-black/65"
+                  }`}
                 >
                   <div
-                    className={`flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/20`}
+                    className={`flex h-13 w-13 sm:h-15 sm:w-15 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/20`}
                   >
-                    <Icon className={`h-7 w-7 sm:h-8 sm:w-8 ${folder.iconColor}`} />
+                    <Icon className={`h-6 w-6 sm:h-7 sm:w-7 ${folder.iconColor}`} />
                   </div>
                   <span className="mt-2.5 text-sm font-semibold tracking-wide text-white">
                     {folder.title}
                   </span>
-                  <span className="mt-0.5 text-[11px] text-white/65 text-center leading-tight">
+                  <span className="mt-0.5 text-[11px] text-white/70 text-center leading-tight">
                     {folder.subtitle}
                   </span>
                 </button>
@@ -1080,9 +1917,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* Alt Floating Dock */}
-        <div className="mx-auto flex items-center gap-2.5 rounded-3xl border border-white/20 bg-black/55 px-3.5 py-2 shadow-2xl">
-          {FOLDERS.map((folder) => {
+        {/* Alt Hızlı Erişim Çubuğu */}
+        <div className="mx-auto flex items-center gap-3 rounded-3xl border border-white/20 bg-black/55 px-4 py-2 shadow-2xl">
+          {FOLDERS.filter((f) =>
+            ["kurabiye", "oyun", "muzikler", "mesaj"].includes(f.id)
+          ).map((folder) => {
             const Icon = folder.icon;
             return (
               <button
