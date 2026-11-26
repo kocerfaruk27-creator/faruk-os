@@ -1070,11 +1070,13 @@ const TreeArtwork = ({ compact = false }) => {
   );
 };
 
-// İnteraktif Hikayeli Giriş Sahnesi: Süslü Çam Ağacı, Kardan Adam, Buzda Kayıp Düşen Karakter & "Faruk Mutlu Yıllar Diler" Tabelası
-// Sinematik 2027 Giris Sahnesi: Geri Sayim, Havai Fisekler ve Cam Kar Kuresi
+// Sinematik 2027 Giris Sahnesi: Mobil Performans & GPU Hizlandirma Optimize
 const IntroSplash = ({ onEnter }) => {
   const [sceneKey, setSceneKey] = useState(0);
   const [phase, setPhase] = useState("three");
+  const [isMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
 
   useEffect(() => {
     setPhase("three");
@@ -1084,32 +1086,54 @@ const IntroSplash = ({ onEnter }) => {
       setTimeout(() => {
         setPhase("midnight");
         try {
-          confetti({
-            particleCount: 150,
-            spread: 105,
-            startVelocity: 42,
-            gravity: 0.78,
-            ticks: 230,
-            scalar: 1.05,
-            origin: { x: 0.5, y: 0.48 },
-            colors: ["#f7d889", "#ffffff", "#9ed8e8", "#d8b4fe", "#86efac"],
-          });
-          setTimeout(() => confetti({
-            particleCount: 75,
-            angle: 60,
-            spread: 65,
-            startVelocity: 38,
-            origin: { x: 0.08, y: 0.62 },
-            colors: ["#f7d889", "#ffffff", "#9ed8e8"],
-          }), 260);
-          setTimeout(() => confetti({
-            particleCount: 75,
-            angle: 120,
-            spread: 65,
-            startVelocity: 38,
-            origin: { x: 0.92, y: 0.62 },
-            colors: ["#f7d889", "#ffffff", "#86efac"],
-          }), 420);
+          if (isMobile) {
+            confetti({
+              particleCount: 38,
+              spread: 75,
+              startVelocity: 32,
+              gravity: 0.9,
+              ticks: 110,
+              scalar: 0.9,
+              disableForReducedMotion: true,
+              origin: { x: 0.5, y: 0.5 },
+              colors: ["#f7d889", "#ffffff", "#9ed8e8", "#86efac"],
+            });
+          } else {
+            confetti({
+              particleCount: 150,
+              spread: 105,
+              startVelocity: 42,
+              gravity: 0.78,
+              ticks: 230,
+              scalar: 1.05,
+              origin: { x: 0.5, y: 0.48 },
+              colors: ["#f7d889", "#ffffff", "#9ed8e8", "#d8b4fe", "#86efac"],
+            });
+            setTimeout(
+              () =>
+                confetti({
+                  particleCount: 75,
+                  angle: 60,
+                  spread: 65,
+                  startVelocity: 38,
+                  origin: { x: 0.08, y: 0.62 },
+                  colors: ["#f7d889", "#ffffff", "#9ed8e8"],
+                }),
+              260
+            );
+            setTimeout(
+              () =>
+                confetti({
+                  particleCount: 75,
+                  angle: 120,
+                  spread: 65,
+                  startVelocity: 38,
+                  origin: { x: 0.92, y: 0.62 },
+                  colors: ["#f7d889", "#ffffff", "#86efac"],
+                }),
+              420
+            );
+          }
         } catch (e) {}
       }, 2850),
       setTimeout(() => setPhase("globe"), 4700),
@@ -1117,7 +1141,7 @@ const IntroSplash = ({ onEnter }) => {
       setTimeout(() => setPhase("ready"), 7900),
     ];
     return () => timers.forEach(clearTimeout);
-  }, [sceneKey]);
+  }, [sceneKey, isMobile]);
 
   const replay = () => setSceneKey((value) => value + 1);
   const countdown = phase === "three" || phase === "two" || phase === "one";
@@ -1126,16 +1150,20 @@ const IntroSplash = ({ onEnter }) => {
   const showGreeting = phase === "greeting" || phase === "ready";
   const numeral = phase === "three" ? "3" : phase === "two" ? "2" : "1";
 
-  const stars = Array.from({ length: 34 }, (_, i) => ({
+  const starCount = isMobile ? 8 : 34;
+  const snowCount = isMobile ? 8 : 42;
+  const globeSnowCount = isMobile ? 4 : 18;
+
+  const stars = Array.from({ length: starCount }, (_, i) => ({
     left: `${(i * 37 + 5) % 97}%`,
     top: `${(i * 23 + 4) % 72}%`,
-    delay: (i * 0.17) % 2.8,
+    delay: (i * 0.25) % 2.8,
     size: i % 6 === 0 ? 3 : 2,
   }));
-  const snow = Array.from({ length: 42 }, (_, i) => ({
+  const snow = Array.from({ length: snowCount }, (_, i) => ({
     left: `${(i * 29 + 3) % 100}%`,
-    delay: (i * 0.31) % 6,
-    duration: 6 + (i % 5) * 1.25,
+    delay: (i * 0.4) % 5,
+    duration: 7 + (i % 4) * 1.4,
     size: i % 5 === 0 ? 4 : 2.5,
   }));
 
@@ -1143,46 +1171,112 @@ const IntroSplash = ({ onEnter }) => {
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#050b12] px-4 py-4 text-white sm:px-6 sm:py-6"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.025, filter: "blur(5px)" }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
     >
       {/* Derin gece, ufuk parlamasi ve kuzey isiklari */}
-      <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 22%, rgba(32,91,105,.38), transparent 52%), radial-gradient(ellipse at 12% 82%, rgba(30,64,85,.32), transparent 48%), linear-gradient(180deg,#03070d 0%,#081722 58%,#10232b 100%)" }} />
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-36 left-1/2 h-80 w-[135vw] -translate-x-1/2 rounded-[50%] opacity-40 blur-3xl"
-        style={{ background: "linear-gradient(90deg,rgba(16,185,129,.22),rgba(56,189,248,.32),rgba(167,139,250,.2),rgba(52,211,153,.24))" }}
-        animate={{ x: ["-51%", "-47%", "-51%"], scaleY: [1, 1.2, 1], opacity: [0.24, 0.48, 0.24] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 22%, rgba(32,91,105,.38), transparent 52%), radial-gradient(ellipse at 12% 82%, rgba(30,64,85,.32), transparent 48%), linear-gradient(180deg,#03070d 0%,#081722 58%,#10232b 100%)",
+        }}
       />
+      {!isMobile ? (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-36 left-1/2 h-80 w-[135vw] -translate-x-1/2 rounded-[50%] opacity-40 blur-3xl will-change-transform"
+          style={{
+            background:
+              "linear-gradient(90deg,rgba(16,185,129,.22),rgba(56,189,248,.32),rgba(167,139,250,.2),rgba(52,211,153,.24))",
+          }}
+          animate={{ x: ["-51%", "-47%", "-51%"], scaleY: [1, 1.2, 1], opacity: [0.24, 0.48, 0.24] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[120vw] -translate-x-1/2 rounded-[50%] opacity-35"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(56,189,248,.28), rgba(16,185,129,.14) 55%, transparent 75%)",
+          }}
+        />
+      )}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {stars.map((star, i) => (
-          <motion.span key={`star-${i}`} className="absolute rounded-full bg-sky-100" style={{ left: star.left, top: star.top, width: star.size, height: star.size }} animate={{ opacity: [0.18, 0.95, 0.18], scale: [0.8, 1.3, 0.8] }} transition={{ duration: 2.4 + (i % 4) * 0.5, repeat: Infinity, delay: star.delay }} />
+          <span
+            key={`star-${i}`}
+            className="absolute rounded-full bg-sky-100 animate-pulse"
+            style={{
+              left: star.left,
+              top: star.top,
+              width: star.size,
+              height: star.size,
+              animationDelay: `${star.delay}s`,
+              animationDuration: `${2.5 + (i % 3)}s`,
+            }}
+          />
         ))}
         {snow.map((flake, i) => (
-          <motion.span key={`snow-${i}`} className="absolute rounded-full bg-white/80" style={{ left: flake.left, top: "-5%", width: flake.size, height: flake.size, boxShadow: "0 0 8px rgba(255,255,255,.4)" }} animate={{ y: ["0vh", "112vh"], x: [0, i % 2 ? 20 : -18, 0], opacity: [0, 0.82, 0.15] }} transition={{ duration: flake.duration, repeat: Infinity, ease: "linear", delay: flake.delay }} />
+          <motion.span
+            key={`snow-${i}`}
+            className="absolute rounded-full bg-white/75 will-change-transform"
+            style={{ left: flake.left, top: "-5%", width: flake.size, height: flake.size }}
+            animate={{ y: ["0vh", "110vh"] }}
+            transition={{ duration: flake.duration, repeat: Infinity, ease: "linear", delay: flake.delay }}
+          />
         ))}
       </div>
 
       {/* Uzak dag silueti */}
-      <svg viewBox="0 0 1200 210" preserveAspectRatio="none" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-28 w-full sm:h-40">
+      <svg
+        viewBox="0 0 1200 210"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 w-full sm:h-40"
+      >
         <defs>
-          <linearGradient id="farukMountain" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#284653" /><stop offset="100%" stopColor="#07121b" /></linearGradient>
-          <linearGradient id="farukSnow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#dcebf0" stopOpacity=".42" /><stop offset="100%" stopColor="#10212a" stopOpacity=".94" /></linearGradient>
+          <linearGradient id="farukMountain" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#284653" />
+            <stop offset="100%" stopColor="#07121b" />
+          </linearGradient>
+          <linearGradient id="farukSnow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#dcebf0" stopOpacity=".42" />
+            <stop offset="100%" stopColor="#10212a" stopOpacity=".94" />
+          </linearGradient>
         </defs>
-        <path d="M0 130 130 58 240 119 390 35 540 124 690 48 840 120 1000 44 1120 112 1200 70V210H0Z" fill="url(#farukMountain)" />
-        <path d="M0 160Q260 122 480 157T920 151T1200 145V210H0Z" fill="url(#farukSnow)" />
+        <path
+          d="M0 130 130 58 240 119 390 35 540 124 690 48 840 120 1000 44 1120 112 1200 70V210H0Z"
+          fill="url(#farukMountain)"
+        />
+        <path
+          d="M0 160Q260 122 480 157T920 151T1200 145V210H0Z"
+          fill="url(#farukSnow)"
+        />
       </svg>
 
       {/* Ust kontrol satiri */}
       <div className="relative z-20 flex w-full max-w-5xl items-center justify-between gap-3">
-        <span className="rounded-full border border-white/20 bg-white/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-[.24em] text-amber-100/90">FARUK OS <span className="text-white/45">/</span> 2027</span>
+        <span className="rounded-full border border-white/20 bg-white/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-[.24em] text-amber-100/90">
+          FARUK OS <span className="text-white/45">/</span> 2027
+        </span>
         <div className="flex items-center gap-2">
           {phase === "ready" && (
-            <button onClick={replay} className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] text-white/90 transition hover:bg-white/20 cursor-pointer">↻ Tekrar izle</button>
+            <button
+              onClick={replay}
+              className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] text-white/90 transition hover:bg-white/20 cursor-pointer"
+            >
+              ↻ Tekrar izle
+            </button>
           )}
-          <button onClick={onEnter} className="rounded-full border border-white/25 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 cursor-pointer">Atla →</button>
+          <button
+            onClick={onEnter}
+            className="rounded-full border border-white/25 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 cursor-pointer"
+          >
+            Atla →
+          </button>
         </div>
       </div>
 
@@ -1190,12 +1284,45 @@ const IntroSplash = ({ onEnter }) => {
       <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-5xl flex-col items-center justify-center py-3">
         <AnimatePresence mode="wait">
           {countdown && (
-            <motion.div key="countdown" initial={{ opacity: 0, scale: 0.82, filter: "blur(12px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, scale: 1.28, filter: "blur(10px)" }} transition={{ duration: 0.48 }} className="flex flex-col items-center text-center">
-              <div className="relative flex h-56 w-56 items-center justify-center rounded-full border border-white/15 bg-white/[.035] shadow-[0_0_90px_rgba(56,189,248,.13)] sm:h-64 sm:w-64">
-                <motion.div className="absolute inset-3 rounded-full border border-sky-200/20" animate={{ rotate: 360 }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }} />
-                <motion.div className="absolute inset-6 rounded-full border border-dashed border-amber-200/25" animate={{ rotate: -360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} />
-                <motion.span key={numeral} initial={{ opacity: 0, y: 18, scale: 0.55, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, y: -16, scale: 1.35 }} transition={{ type: "spring", stiffness: 210, damping: 16 }} className="font-mono text-8xl font-black text-white drop-shadow-[0_0_30px_rgba(125,211,252,.75)] sm:text-9xl">{numeral}</motion.span>
-                <motion.div className="absolute inset-0 rounded-full border-2 border-sky-200/50" initial={{ scale: 0.85, opacity: 0.7 }} animate={{ scale: 1.32, opacity: 0 }} transition={{ duration: 1.1, repeat: Infinity, ease: "easeOut" }} />
+            <motion.div
+              key="countdown"
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.15 }}
+              transition={{ duration: 0.32 }}
+              className="flex flex-col items-center text-center"
+            >
+              <div className="relative flex h-56 w-56 items-center justify-center rounded-full border border-white/15 bg-white/[.04] sm:h-64 sm:w-64 sm:shadow-[0_0_60px_rgba(56,189,248,.12)]">
+                <motion.div
+                  className="absolute inset-3 rounded-full border border-sky-200/20 will-change-transform"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                />
+                {!isMobile && (
+                  <motion.div
+                    className="absolute inset-6 rounded-full border border-dashed border-amber-200/25 will-change-transform"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                  />
+                )}
+                <motion.span
+                  key={numeral}
+                  initial={{ opacity: 0, y: 12, scale: 0.7 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 1.18 }}
+                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  className="font-mono text-8xl font-black text-white sm:text-9xl sm:drop-shadow-[0_0_20px_rgba(125,211,252,.6)]"
+                >
+                  {numeral}
+                </motion.span>
+                {!isMobile && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full border-2 border-sky-200/45 will-change-transform"
+                    initial={{ scale: 0.88, opacity: 0.65 }}
+                    animate={{ scale: 1.28, opacity: 0 }}
+                    transition={{ duration: 1.1, repeat: Infinity, ease: "easeOut" }}
+                  />
+                )}
               </div>
               <p className="mt-7 text-[10px] font-bold tracking-[.38em] text-sky-100/75">YENİ BİR BAŞLANGICA</p>
               <p className="mt-2 text-sm text-white/65">Son saniyeler...</p>
@@ -1203,61 +1330,194 @@ const IntroSplash = ({ onEnter }) => {
           )}
 
           {revealYear && (
-            <motion.div key="year" initial={{ opacity: 0, scale: 0.55, filter: "blur(18px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20 }} transition={{ type: "spring", stiffness: 135, damping: 15 }} className="relative flex flex-col items-center text-center">
-              <motion.div className="absolute -inset-16 rounded-full border border-amber-200/35" initial={{ scale: 0.4, opacity: 0.9 }} animate={{ scale: 2.3, opacity: 0 }} transition={{ duration: 1.7, ease: "easeOut" }} />
-              <span className="rounded-full border border-amber-200/45 bg-amber-300/10 px-4 py-1.5 text-[10px] font-bold tracking-[.35em] text-amber-100">00:00 · YENİ YIL</span>
-              <h1 className="mt-4 bg-gradient-to-b from-white via-amber-100 to-amber-400 bg-clip-text text-8xl font-black tracking-[-.07em] text-transparent drop-shadow-[0_12px_35px_rgba(251,191,36,.28)] sm:text-[10rem]">2027</h1>
-              <p className="mt-1 text-xs font-semibold tracking-[.32em] text-emerald-100/85 sm:text-sm">YENİ BİR YIL · YENİ İHTİMALLER</p>
+            <motion.div
+              key="year"
+              initial={{ opacity: 0, scale: 0.72 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="relative flex flex-col items-center text-center"
+            >
+              {!isMobile && (
+                <motion.div
+                  className="absolute -inset-12 rounded-full border border-amber-200/35 will-change-transform"
+                  initial={{ scale: 0.5, opacity: 0.85 }}
+                  animate={{ scale: 2.1, opacity: 0 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                />
+              )}
+              <span className="rounded-full border border-amber-200/45 bg-amber-300/10 px-4 py-1.5 text-[10px] font-bold tracking-[.35em] text-amber-100">
+                00:00 · YENİ YIL
+              </span>
+              <h1 className="mt-4 bg-gradient-to-b from-white via-amber-100 to-amber-400 bg-clip-text text-8xl font-black tracking-[-.07em] text-transparent sm:text-[10rem]">
+                2027
+              </h1>
+              <p className="mt-1 text-xs font-semibold tracking-[.32em] text-emerald-100/85 sm:text-sm">
+                YENİ BİR YIL · YENİ İHTİMALLER
+              </p>
             </motion.div>
           )}
 
           {showGlobe && (
-            <motion.div key="finale" initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:gap-12">
+            <motion.div
+              key="finale"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:gap-12"
+            >
               {/* Cam kar kuresi */}
-              <motion.div initial={{ scale: 0.72, rotate: -7, opacity: 0 }} animate={{ scale: 1, rotate: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 115, damping: 15 }} className="relative shrink-0">
-                <motion.div className="absolute -inset-8 rounded-full bg-sky-300/10 blur-3xl" animate={{ opacity: [0.25, 0.65, 0.25], scale: [0.9, 1.08, 0.9] }} transition={{ duration: 4, repeat: Infinity }} />
-                <svg viewBox="0 0 340 380" role="img" aria-label="2027 yazili, icinde isikli cam agac bulunan kar kuresi" className="relative h-64 w-56 drop-shadow-[0_28px_35px_rgba(0,0,0,.65)] sm:h-[21rem] sm:w-[19rem]">
+              <motion.div
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="relative shrink-0"
+              >
+                {!isMobile && (
+                  <motion.div
+                    className="absolute -inset-8 rounded-full bg-sky-300/10 blur-3xl"
+                    animate={{ opacity: [0.25, 0.65, 0.25], scale: [0.9, 1.08, 0.9] }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                  />
+                )}
+                <svg
+                  viewBox="0 0 340 380"
+                  role="img"
+                  aria-label="2027 yazili, icinde isikli cam agac bulunan kar kuresi"
+                  className="relative h-64 w-56 sm:h-[21rem] sm:w-[19rem] sm:drop-shadow-[0_28px_35px_rgba(0,0,0,.65)]"
+                >
                   <defs>
-                    <radialGradient id="snowGlass" cx="34%" cy="25%" r="75%"><stop offset="0%" stopColor="#b9e8f5" stopOpacity=".38"/><stop offset="48%" stopColor="#1d5267" stopOpacity=".35"/><stop offset="100%" stopColor="#06131f" stopOpacity=".92"/></radialGradient>
-                    <linearGradient id="snowBase" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#392a20"/><stop offset="25%" stopColor="#b58a4a"/><stop offset="52%" stopColor="#f1d28b"/><stop offset="78%" stopColor="#9a713b"/><stop offset="100%" stopColor="#33251c"/></linearGradient>
-                    <clipPath id="snowGlobeClip"><circle cx="170" cy="157" r="125"/></clipPath>
-                    <filter id="globeGlow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <radialGradient id="snowGlass" cx="34%" cy="25%" r="75%">
+                      <stop offset="0%" stopColor="#b9e8f5" stopOpacity=".38" />
+                      <stop offset="48%" stopColor="#1d5267" stopOpacity=".35" />
+                      <stop offset="100%" stopColor="#06131f" stopOpacity=".92" />
+                    </radialGradient>
+                    <linearGradient id="snowBase" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#392a20" />
+                      <stop offset="25%" stopColor="#b58a4a" />
+                      <stop offset="52%" stopColor="#f1d28b" />
+                      <stop offset="78%" stopColor="#9a713b" />
+                      <stop offset="100%" stopColor="#33251c" />
+                    </linearGradient>
+                    <clipPath id="snowGlobeClip">
+                      <circle cx="170" cy="157" r="125" />
+                    </clipPath>
+                    {!isMobile && (
+                      <filter id="globeGlow">
+                        <feGaussianBlur stdDeviation="5" result="blur" />
+                        <feMerge>
+                          <feMergeNode in="blur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    )}
                   </defs>
-                  <ellipse cx="170" cy="354" rx="112" ry="13" fill="#000" opacity=".42"/>
-                  <circle cx="170" cy="157" r="128" fill="url(#snowGlass)" stroke="#d9f5ff" strokeOpacity=".75" strokeWidth="3"/>
+                  <ellipse cx="170" cy="354" rx="112" ry="13" fill="#000" opacity=".42" />
+                  <circle cx="170" cy="157" r="128" fill="url(#snowGlass)" stroke="#d9f5ff" strokeOpacity=".75" strokeWidth="3" />
                   <g clipPath="url(#snowGlobeClip)">
-                    <path d="M40 246Q170 212 300 246V290H40Z" fill="#e8f4f7" opacity=".92"/>
-                    <path d="M40 255Q120 232 190 251T300 248V290H40Z" fill="#b7dce8" opacity=".65"/>
-                    <path d="M170 95L105 221Q170 239 235 221Z" fill="#123f30" stroke="#7bb78e" strokeOpacity=".55" strokeWidth="2"/>
-                    <path d="M170 66L119 174Q170 191 221 174Z" fill="#176044"/>
-                    <path d="M170 43L132 129Q170 145 208 129Z" fill="#207a50"/>
-                    <path d="M165 215H175V247H165Z" fill="#76513a"/>
-                    <path d="M170 42L170 221" stroke="#d2b36b" strokeOpacity=".45" strokeWidth="2"/>
-                    <path d="M132 135Q170 153 208 135M116 181Q170 204 224 181M103 220Q170 242 237 220" fill="none" stroke="#f3d98e" strokeWidth="3" strokeDasharray="5 5"/>
-                    {[[170,72],[145,113],[195,119],[128,161],[170,167],[211,165],[119,204],[151,211],[190,211],[225,201]].map(([x,y],i)=>(
-                      <motion.circle key={`light-${i}`} cx={x} cy={y} r="4.5" fill={["#ffe59a","#fca5a5","#9edcf2","#fef3c7"][i%4]} filter="url(#globeGlow)" animate={{ opacity:[.35,1,.4],scale:[.8,1.3,.8] }} transition={{ duration:1.5,repeat:Infinity,delay:i*.13 }}/>
-                    ))}
-                    <polygon points="170,22 176,37 192,38 180,48 184,64 170,55 156,64 160,48 148,38 164,37" fill="#ffe7a1" stroke="#f5bd56" strokeWidth="2"/>
-                    {Array.from({length:18},(_,i)=>(
-                      <motion.circle key={`globe-snow-${i}`} cx={65+(i*47)%210} cy={48+(i*31)%190} r={i%4===0?2.8:1.8} fill="#fff" animate={{ y:[0,24,0],opacity:[.25,.95,.25] }} transition={{ duration:2.8+(i%4)*.5,repeat:Infinity,delay:i*.12 }}/>
+                    <path d="M40 246Q170 212 300 246V290H40Z" fill="#e8f4f7" opacity=".92" />
+                    <path d="M40 255Q120 232 190 251T300 248V290H40Z" fill="#b7dce8" opacity=".65" />
+                    <path d="M170 95L105 221Q170 239 235 221Z" fill="#123f30" stroke="#7bb78e" strokeOpacity=".55" strokeWidth="2" />
+                    <path d="M170 66L119 174Q170 191 221 174Z" fill="#176044" />
+                    <path d="M170 43L132 129Q170 145 208 129Z" fill="#207a50" />
+                    <path d="M165 215H175V247H165Z" fill="#76513a" />
+                    <path d="M170 42L170 221" stroke="#d2b36b" strokeOpacity=".45" strokeWidth="2" />
+                    <path
+                      d="M132 135Q170 153 208 135M116 181Q170 204 224 181M103 220Q170 242 237 220"
+                      fill="none"
+                      stroke="#f3d98e"
+                      strokeWidth="3"
+                      strokeDasharray="5 5"
+                    />
+                    {[
+                      [170, 72],
+                      [145, 113],
+                      [195, 119],
+                      [128, 161],
+                      [170, 167],
+                      [211, 165],
+                      [119, 204],
+                      [151, 211],
+                      [190, 211],
+                      [225, 201],
+                    ].map(([x, y], i) =>
+                      isMobile ? (
+                        <circle
+                          key={`light-${i}`}
+                          cx={x}
+                          cy={y}
+                          r="4.5"
+                          fill={["#ffe59a", "#fca5a5", "#9edcf2", "#fef3c7"][i % 4]}
+                          opacity="0.92"
+                        />
+                      ) : (
+                        <motion.circle
+                          key={`light-${i}`}
+                          cx={x}
+                          cy={y}
+                          r="4.5"
+                          fill={["#ffe59a", "#fca5a5", "#9edcf2", "#fef3c7"][i % 4]}
+                          filter="url(#globeGlow)"
+                          animate={{ opacity: [0.4, 1, 0.45] }}
+                          transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.13 }}
+                        />
+                      )
+                    )}
+                    <polygon
+                      points="170,22 176,37 192,38 180,48 184,64 170,55 156,64 160,48 148,38 164,37"
+                      fill="#ffe7a1"
+                      stroke="#f5bd56"
+                      strokeWidth="2"
+                    />
+                    {Array.from({ length: globeSnowCount }, (_, i) => (
+                      <motion.circle
+                        key={`globe-snow-${i}`}
+                        cx={65 + ((i * 47) % 210)}
+                        cy={48 + ((i * 31) % 190)}
+                        r={i % 4 === 0 ? 2.8 : 1.8}
+                        fill="#fff"
+                        animate={{ y: [0, 20, 0] }}
+                        transition={{ duration: 3 + (i % 3) * 0.6, repeat: Infinity, delay: i * 0.2 }}
+                      />
                     ))}
                   </g>
-                  <path d="M82 112A100 100 0 0 1 145 47" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" opacity=".48"/>
-                  <path d="M73 146A111 111 0 0 1 91 91" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".3"/>
-                  <rect x="89" y="282" width="162" height="18" rx="8" fill="#d6b46c" stroke="#f8e4ad" strokeWidth="1.5"/>
-                  <path d="M70 298H270L257 343Q170 363 83 343Z" fill="url(#snowBase)" stroke="#e9ca87" strokeWidth="2"/>
-                  <rect x="123" y="310" width="94" height="25" rx="7" fill="#171b1d" stroke="#e4c47e" strokeWidth="1.5"/>
-                  <text x="170" y="328" textAnchor="middle" fill="#ffe6a0" fontSize="15" fontWeight="900" letterSpacing="3">2027</text>
+                  <path d="M82 112A100 100 0 0 1 145 47" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" opacity=".48" />
+                  <path d="M73 146A111 111 0 0 1 91 91" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".3" />
+                  <rect x="89" y="282" width="162" height="18" rx="8" fill="#d6b46c" stroke="#f8e4ad" strokeWidth="1.5" />
+                  <path d="M70 298H270L257 343Q170 363 83 343Z" fill="url(#snowBase)" stroke="#e9ca87" strokeWidth="2" />
+                  <rect x="123" y="310" width="94" height="25" rx="7" fill="#171b1d" stroke="#e4c47e" strokeWidth="1.5" />
+                  <text x="170" y="328" textAnchor="middle" fill="#ffe6a0" fontSize="15" fontWeight="900" letterSpacing="3">
+                    2027
+                  </text>
                 </svg>
               </motion.div>
 
               {showGreeting && (
-                <motion.div initial={{ opacity: 0, x: 28, scale: .96 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ duration: .75, delay: .12 }} className="flex max-w-md flex-col items-center rounded-[2rem] border border-amber-100/25 bg-white/[.065] px-6 py-6 text-center shadow-[0_25px_80px_rgba(0,0,0,.42)] backdrop-blur-xl md:items-start md:text-left sm:px-9 sm:py-8">
-                  <span className="rounded-full border border-amber-200/40 bg-amber-200/10 px-3.5 py-1.5 text-[10px] font-bold tracking-[.26em] text-amber-100">✦ HOŞ GELDİN 2027 ✦</span>
-                  <h1 className="mt-4 bg-gradient-to-r from-white via-amber-100 to-amber-300 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">Faruk Mutlu Yıllar Diler</h1>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-sky-50/80">Sağlık, huzur, güzel başlangıçlar ve emeklerinin karşılığını aldığın harika bir yıl olsun.</p>
+                <motion.div
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.08 }}
+                  className="flex max-w-md flex-col items-center rounded-[2rem] border border-amber-100/25 bg-[#0c1b26]/95 px-6 py-6 text-center shadow-[0_14px_35px_rgba(0,0,0,.45)] sm:bg-white/[.065] sm:backdrop-blur-xl md:items-start md:text-left sm:px-9 sm:py-8"
+                >
+                  <span className="rounded-full border border-amber-200/40 bg-amber-200/10 px-3.5 py-1.5 text-[10px] font-bold tracking-[.26em] text-amber-100">
+                    ✦ HOŞ GELDİN 2027 ✦
+                  </span>
+                  <h1 className="mt-4 bg-gradient-to-r from-white via-amber-100 to-amber-300 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">
+                    Faruk Mutlu Yıllar Diler
+                  </h1>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-sky-50/80">
+                    Sağlık, huzur, güzel başlangıçlar ve emeklerinin karşılığını aldığın harika bir yıl olsun.
+                  </p>
                   {phase === "ready" && (
-                    <motion.button onClick={onEnter} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} whileHover={{ scale: 1.035, y: -2 }} whileTap={{ scale: .97 }} transition={{ type: "spring", stiffness: 220, damping: 17 }} className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-amber-100/65 bg-gradient-to-r from-amber-300/20 via-emerald-300/15 to-sky-300/20 px-7 py-3.5 text-xs font-extrabold tracking-[.22em] text-amber-50 shadow-[0_12px_38px_rgba(251,191,36,.18)] transition hover:border-amber-100 hover:bg-amber-300/30 cursor-pointer md:w-auto sm:text-sm">
+                    <motion.button
+                      onClick={onEnter}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ scale: 1.035, y: -2 }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-amber-100/65 bg-gradient-to-r from-amber-300/20 via-emerald-300/15 to-sky-300/20 px-7 py-3.5 text-xs font-extrabold tracking-[.22em] text-amber-50 shadow-[0_12px_38px_rgba(251,191,36,.18)] transition hover:border-amber-100 hover:bg-amber-300/30 cursor-pointer md:w-auto sm:text-sm"
+                    >
                       SİSTEME GİR <span className="text-lg">→</span>
                     </motion.button>
                   )}
@@ -1269,12 +1529,16 @@ const IntroSplash = ({ onEnter }) => {
       </div>
 
       <div className="relative z-20 flex min-h-8 items-center justify-center pb-1">
-        {phase !== "ready" && <motion.div initial={{ opacity: 0 }} animate={{ opacity: .72 }} className="flex items-center gap-2 text-[10px] tracking-[.28em] text-white/65"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-200"/>2027 HAZIRLANIYOR</motion.div>}
+        {phase !== "ready" && (
+          <div className="flex items-center gap-2 text-[10px] tracking-[.28em] text-white/65">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-200" />
+            2027 HAZIRLANIYOR
+          </div>
+        )}
       </div>
     </motion.div>
   );
 };
-
 
 const NewYearFeature = ({ isDay, soundFx }) => {
   const [wishIndex, setWishIndex] = useState(0);
@@ -1673,7 +1937,7 @@ const FarukTerminal = ({ onOpenFolderById, onActivateGravity }) => {
         term.writeln("\r\n\x1b[1;36mKomutlar:\x1b[0m");
         term.writeln("  \x1b[33mwhoami\x1b[0m     -> Faruk Köçer özet profili");
         term.writeln("  \x1b[33mkariyer\x1b[0m    -> Kariyer penceresini açar");
-        term.writeln("  \x1b[33mfilmler\x1b[0m    -> Sinema akışını açar");
+        term.writeln("  \x1b[33mfilmler\x1b[0m    -> Sinema arşivini açar");
         term.writeln("  \x1b[33mmuzik\x1b[0m      -> Müzik arşivini açar");
         term.writeln("  \x1b[33mgravity\x1b[0m    -> Masaüstünde 2D yerçekimini başlatır!");
         term.writeln("  \x1b[33mmatrix\x1b[0m     -> Matrix fosfor temasını açar/kapatır");
@@ -1773,12 +2037,12 @@ const FarukTerminal = ({ onOpenFolderById, onActivateGravity }) => {
 
 // Matter.js 2D Yerçekimi / Fizik Motoru Katmanı (Mobil Dokunmatik & Fare Uyumlu)
 const PhysicsDesktopOverlay = ({ items, initialRects, onExit, onOpenFolder }) => {
-  const containerRef = useRef(null);
+  const physicsSurfaceRef = useRef(null);
   const cardRefs = useRef([]);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container || initialRects.length === 0) return;
+    const surface = physicsSurfaceRef.current;
+    if (!surface || initialRects.length === 0) return;
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -1820,7 +2084,7 @@ const PhysicsDesktopOverlay = ({ items, initialRects, onExit, onOpenFolder }) =>
       )
     );
 
-    const mouse = Matter.Mouse.create(container);
+    const mouse = Matter.Mouse.create(surface);
     const mouseConstraint = Matter.MouseConstraint.create(engine, {
       mouse,
       constraint: {
@@ -1856,48 +2120,51 @@ const PhysicsDesktopOverlay = ({ items, initialRects, onExit, onOpenFolder }) =>
   }, [initialRects]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-25 touch-none overflow-hidden select-none">
-      <div className="fixed top-14 left-1/2 z-30 flex w-[92vw] max-w-md -translate-x-1/2 items-center justify-between gap-2 rounded-full border border-amber-300/60 bg-black/80 px-4 py-2 text-xs text-white shadow-2xl">
+    <>
+      <div className="fixed top-14 left-1/2 z-[90] flex w-[92vw] max-w-md -translate-x-1/2 items-center justify-between gap-2 rounded-full border border-amber-300/60 bg-black/85 px-4 py-2 text-xs text-white shadow-2xl">
         <div className="flex items-center gap-2 min-w-0">
           <Orbit className="h-4 w-4 shrink-0 animate-spin text-amber-300" />
           <span className="truncate">2D Yerçekimi — Kartları tutup fırlat!</span>
         </div>
         <button
+          type="button"
           onClick={onExit}
-          className="shrink-0 rounded-full bg-amber-400 px-3.5 py-1 text-[11px] font-bold text-black transition hover:bg-amber-300 cursor-pointer"
+          className="shrink-0 rounded-full bg-amber-400 px-3.5 py-1.5 text-[11px] font-bold text-black transition hover:bg-amber-300 active:scale-95 cursor-pointer"
         >
           Toparla
         </button>
       </div>
 
-      {items.map((item, idx) => {
-        const Icon = item.icon;
-        const rect = initialRects[idx] || { width: 120, height: 120 };
-        return (
-          <div
-            key={`phys-${item.id}`}
-            ref={(el) => (cardRefs.current[idx] = el)}
-            onDoubleClick={() => {
-              if (!item.isGravityAction) onOpenFolder(item);
-            }}
-            style={{
-              width: rect.width,
-              height: rect.height,
-              left: 0,
-              top: 0,
-            }}
-            className="real-folder real-folder-night glass-text absolute flex cursor-grab flex-col items-center justify-center rounded-3xl p-3 active:cursor-grabbing"
-          >
+      <div ref={physicsSurfaceRef} className="fixed inset-0 z-[25] touch-none overflow-hidden select-none">
+        {items.map((item, idx) => {
+          const Icon = item.icon;
+          const rect = initialRects[idx] || { width: 120, height: 120 };
+          return (
             <div
-              className={`flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} border border-white/45`}
+              key={`phys-${item.id}`}
+              ref={(el) => (cardRefs.current[idx] = el)}
+              onDoubleClick={() => {
+                if (!item.isGravityAction) onOpenFolder(item);
+              }}
+              style={{
+                width: rect.width,
+                height: rect.height,
+                left: 0,
+                top: 0,
+              }}
+              className="real-folder real-folder-night glass-text absolute flex cursor-grab flex-col items-center justify-center rounded-3xl p-3 active:cursor-grabbing"
             >
-              <Icon className={`h-6 w-6 ${item.iconColor}`} />
+              <div
+                className={`flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} border border-white/45`}
+              >
+                <Icon className={`h-6 w-6 ${item.iconColor}`} />
+              </div>
+              <span className="mt-2 text-center text-xs font-bold text-white">{item.title}</span>
             </div>
-            <span className="mt-2 text-center text-xs font-bold text-white">{item.title}</span>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 
