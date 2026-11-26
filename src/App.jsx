@@ -94,7 +94,7 @@ const PLAYLIST_TRACKS = [
   { id: "where-is-my-mind", title: "Where Is My Mind?", artist: "Pixies", src: "/muzikler/where-is-my-mind.mp3" },
   { id: "koca-bir-sacmalik", title: "Koca Bir Saçmalık", artist: "Jakuzi", src: "/muzikler/koca-bir-sacmalik.mp3" },
   { id: "karam", title: "Karam", artist: "Hakan Peker", src: "/muzikler/karam.mp3" },
-  { id: "okyanus", title: "Okyanus", artist: "Derya Uluğ", src: "/muzikler/okyanus.mp3" },
+  { id: "okyanus", title: "Okyanus", artist: "Adamlar", src: "/muzikler/okyanus.mp3" },
   { id: "uctu-uctu", title: "Uçtu Uçtu", artist: "Adamlar", src: "/muzikler/uctu-uctu.mp3" },
   { id: "orda-ortada", title: "Orda Ortada", artist: "Adamlar", src: "/muzikler/orda-ortada.mp3" },
   { id: "yanmis-icinden", title: "Yanmış İçinden", artist: "Adamlar", src: "/muzikler/yanmis-icinden.mp3" },
