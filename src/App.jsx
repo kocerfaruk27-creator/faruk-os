@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import Matter from "matter-js";
+import { Terminal as XTerm } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import "@xterm/xterm/css/xterm.css";
+import { Howl } from "howler";
+import Lenis from "lenis";
+import gsap from "gsap";
 import {
   Briefcase,
   Music,
@@ -40,12 +50,13 @@ import {
   Heart,
   Shuffle,
   Command,
+  Orbit,
+  HelpCircle,
+  RotateCcw,
 } from "lucide-react";
 
-// Masaüstü arka planını değiştirmek için public/bg.jpg dosyasını değiştirmen yeterli.
 const FORMSPREE_URL = "https://formspree.io/f/xnpdpzwg";
 
-// Web Audio API ile sıfır gecikmeli hafif tıklama sesi
 const playClickSound = (soundEnabled) => {
   if (!soundEnabled) return;
   try {
@@ -139,9 +150,31 @@ const FOLDERS = [
     iconColor: "text-violet-300",
     tabs: ["Günün Kelimesi"],
   },
+  {
+    id: "terminal",
+    title: "Terminal",
+    subtitle: "Faruk Shell v3.1",
+    icon: Terminal,
+    accent: "from-lime-400/20 to-emerald-500/5",
+    iconColor: "text-lime-300",
+    tabs: ["Komut Satırı"],
+  },
 ];
 
-// Her gruba özel pencere renk teması
+const DESKTOP_ITEMS = [
+  ...FOLDERS,
+  {
+    id: "yercekimi",
+    title: "Yerçekimi",
+    subtitle: "2D Fizik Modu",
+    icon: Orbit,
+    accent: "from-amber-300/25 to-rose-500/10",
+    iconColor: "text-amber-200",
+    isGravityAction: true,
+    tabs: [],
+  },
+];
+
 const FOLDER_THEMES = {
   kariyer: {
     bg: "linear-gradient(145deg, #0b1118 0%, #19150d 52%, #0c131c 100%)",
@@ -191,9 +224,14 @@ const FOLDER_THEMES = {
     glow: "radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.18), transparent 48%), radial-gradient(circle at 15% 85%, rgba(236, 72, 153, 0.11), transparent 45%)",
     headerBg: "rgba(17, 9, 29, 0.78)",
   },
+  terminal: {
+    bg: "linear-gradient(145deg, #050a08 0%, #091611 52%, #040907 100%)",
+    border: "rgba(74, 222, 128, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(34, 197, 94, 0.16), transparent 48%), radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.10), transparent 45%)",
+    headerBg: "rgba(4, 10, 8, 0.85)",
+  },
 };
 
-// Her gruba özel sembol ve desen arka planı
 const FolderThemeBackdrop = ({ folderId }) => {
   const theme = FOLDER_THEMES[folderId] || FOLDER_THEMES.kariyer;
 
@@ -201,7 +239,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
     <div className="pointer-events-none absolute inset-0 overflow-hidden select-none" aria-hidden="true">
       <div className="absolute inset-0" style={{ background: theme.glow }} />
 
-      {/* 1. KARİYER: Devre yolları, dişli çark ve SCADA sinyal dalgası */}
       {folderId === "kariyer" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#fbbf24" strokeWidth="2">
@@ -218,7 +255,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 2. PROJELERİM: Blueprint ızgara, mikroçip ve bağlantı düğümleri */}
       {folderId === "projelerim" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <defs>
@@ -239,7 +275,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 3. MÜZİKLERİM: Plak olukları, notalar ve ekolayzır */}
       {folderId === "muzikler" && (
         <svg className="h-full w-full opacity-[0.12]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#fb7185" strokeWidth="2">
@@ -256,7 +291,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 4. DİZİLERİM: Retro TV, yayın dalgaları ve klaket */}
       {folderId === "diziler" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#34d399" strokeWidth="2.2">
@@ -271,7 +305,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 5. FİLMLERİM: 35mm film şeridi ve sinema makarası */}
       {folderId === "filmler" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#818cf8" strokeWidth="2">
@@ -289,7 +322,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 6. HAKKIMDA: Ağrı Dağı silüeti, Ege dalgaları ve yıldızlar */}
       {folderId === "hakkimda" && (
         <svg className="h-full w-full opacity-[0.12]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#fbbf24" strokeWidth="2.2">
@@ -302,7 +334,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 7. MESAJ BIRAK: Kağıt uçaklar ve not çizgileri */}
       {folderId === "mesaj" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#38bdf8" strokeWidth="2">
@@ -314,7 +345,6 @@ const FolderThemeBackdrop = ({ folderId }) => {
         </svg>
       )}
 
-      {/* 8. KELİME OYUNU: Harf karoları ve bulmaca ızgarası */}
       {folderId === "kelime" && (
         <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
           <g stroke="#c084fc" strokeWidth="2">
@@ -1040,61 +1070,671 @@ const TreeArtwork = ({ compact = false }) => {
   );
 };
 
-const IntroSplash = ({ onEnter }) => (
-  <motion.div
-    className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#111a19] px-5 text-white"
-    initial={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 1.1 }}
-  >
-    <div
-      className="absolute inset-0"
-      style={{
-        background:
-          "radial-gradient(ellipse at 50% 42%, rgba(52,83,67,.34), transparent 48%), linear-gradient(180deg,#101b20 0%,#1a2928 58%,#101719 100%)",
-      }}
-    />
-    {Array.from({ length: 18 }, (_, i) => (
-      <motion.i
-        key={i}
-        className="absolute h-1 w-1 rounded-full bg-white/60"
-        style={{ left: `${(i * 43) % 100}%`, top: `${(i * 29) % 95}%` }}
-        animate={{ y: [-4, 22], opacity: [0, 0.45, 0] }}
-        transition={{ duration: 5 + (i % 4), repeat: Infinity, delay: i * 0.31 }}
+// İnteraktif Hikayeli Giriş Sahnesi: Süslü Çam Ağacı, Kardan Adam, Buzda Kayıp Düşen Karakter & "Faruk Mutlu Yıllar Diler" Tabelası
+const IntroSplash = ({ onEnter }) => {
+  const [sceneKey, setSceneKey] = useState(0);
+  const [phase, setPhase] = useState("walk"); // walk -> notice -> pull -> slip -> banner -> ready
+
+  useEffect(() => {
+    setPhase("walk");
+    const timers = [
+      setTimeout(() => setPhase("notice"), 1650),
+      setTimeout(() => setPhase("pull"), 2250),
+      setTimeout(() => setPhase("slip"), 2900),
+      setTimeout(() => setPhase("banner"), 3350),
+      setTimeout(() => setPhase("ready"), 4300),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [sceneKey]);
+
+  const replayScene = () => {
+    setSceneKey((k) => k + 1);
+  };
+
+  // Karakter pozisyon & duruş hesaplamaları
+  const getCharacterPose = () => {
+    switch (phase) {
+      case "walk":
+        return { x: 255, y: 0, rotate: 0, scaleX: 1, scaleY: 1 };
+      case "notice":
+        return { x: 262, y: 0, rotate: 4, scaleX: 1, scaleY: 1 };
+      case "pull":
+        return { x: 280, y: 6, rotate: 10, scaleX: 1.03, scaleY: 0.96 };
+      case "slip":
+      case "banner":
+      case "ready":
+        return { x: 235, y: 34, rotate: -78, scaleX: 1.04, scaleY: 0.94 };
+      default:
+        return { x: 255, y: 0, rotate: 0, scaleX: 1, scaleY: 1 };
+    }
+  };
+
+  const charPose = getCharacterPose();
+  const ropePulled = phase === "pull" || phase === "slip" || phase === "banner" || phase === "ready";
+  const bannerVisible = phase === "banner" || phase === "ready";
+  const hasFallen = phase === "slip" || phase === "banner" || phase === "ready";
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#0a1419] px-3 py-4 text-white sm:justify-center sm:px-6 sm:py-6"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 1.02 }}
+      transition={{ duration: 0.75, ease: "easeInOut" }}
+    >
+      {/* Derin Kış Gecesi Arka Planı */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 65% 38%, rgba(34, 92, 68, 0.34), transparent 52%), radial-gradient(ellipse at 25% 25%, rgba(56, 189, 248, 0.14), transparent 45%), linear-gradient(180deg, #081016 0%, #102124 58%, #0b161b 100%)",
+        }}
       />
-    ))}
-    <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center sm:flex-row sm:justify-center sm:gap-12 sm:text-left">
-      <div className="relative">
-        <div className="absolute inset-10 rounded-full bg-emerald-900/25 blur-3xl" />
-        <TreeArtwork />
+
+      {/* Hafif & Kasmayan Kar Taneleri */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {Array.from({ length: 24 }, (_, i) => (
+          <motion.span
+            key={i}
+            className="absolute rounded-full bg-white/75"
+            style={{
+              width: i % 3 === 0 ? 4 : 2.5,
+              height: i % 3 === 0 ? 4 : 2.5,
+              left: `${(i * 37) % 100}%`,
+              top: "-4%",
+            }}
+            animate={{
+              y: ["0vh", "105vh"],
+              x: [0, i % 2 === 0 ? 18 : -18, 0],
+              opacity: [0, 0.8, 0.2],
+            }}
+            transition={{
+              duration: 5.5 + (i % 4) * 1.1,
+              repeat: Infinity,
+              ease: "linear",
+              delay: (i * 0.27) % 4,
+            }}
+          />
+        ))}
       </div>
-      <motion.div
-        className="max-w-md"
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 5.1, duration: 1.5, ease: "easeOut" }}
-      >
-        <p className="mb-4 text-[10px] font-medium tracking-[.34em] text-amber-100/70">
-          YENİ BİR YILIN EŞİĞİNDE · 2027
-        </p>
-        <h1 className="text-4xl font-medium tracking-tight text-[#f2eee4] sm:text-5xl">
-          Faruk Köçer
-        </h1>
-        <p className="mt-4 text-sm leading-7 text-stone-200/70 sm:text-base">
-          Biraz ışık, biraz umut… Yeni yılın güzel geçsin.
-        </p>
-        <motion.button
-          onClick={onEnter}
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          className="mt-8 inline-flex items-center gap-3 rounded-xl border border-amber-100/45 bg-[#d2b36b]/15 px-8 py-3.5 text-xs font-semibold tracking-[.2em] text-amber-50 transition hover:bg-[#d2b36b]/25 cursor-pointer"
+
+      {/* Üst Kontrol Şeridi (Mobil ve Masaüstü Dostu) */}
+      <div className="relative z-20 flex w-full max-w-4xl items-center justify-between pt-1 sm:mb-2">
+        <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-semibold tracking-[0.22em] text-amber-200/85">
+          FARUK OS • 2027
+        </span>
+
+        <div className="flex items-center gap-2">
+          {phase === "ready" && (
+            <button
+              onClick={replayScene}
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-medium text-white/90 transition hover:bg-white/20 cursor-pointer"
+            >
+              <RotateCcw className="h-3.5 w-3.5 text-amber-300" />
+              <span>Tekrar İzle</span>
+            </button>
+          )}
+          <button
+            onClick={onEnter}
+            className="rounded-full border border-white/20 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/85 transition hover:border-white/45 hover:text-white cursor-pointer"
+          >
+            Geç →
+          </button>
+        </div>
+      </div>
+
+      {/* Ana Hikaye Sahnesi (Tek SVG Canvas — Mobilde ve Masaüstünde Asla Kaymaz) */}
+      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-4xl items-center justify-center">
+        <svg
+          viewBox="0 0 820 435"
+          className="h-auto max-h-[63svh] w-full overflow-visible drop-shadow-[0_22px_50px_rgba(0,0,0,0.65)] sm:max-h-[68svh]"
+          role="img"
+          aria-label="Süslü çam ağacı, kardan adam, ipi çekip kayarak düşen komik karakter ve Faruk Mutlu Yıllar Diler tabelası"
         >
-          SİSTEME GİR <span className="text-base">→</span>
-        </motion.button>
-      </motion.div>
-    </div>
-  </motion.div>
-);
+          <defs>
+            <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fef3c7" stopOpacity="0.95" />
+              <stop offset="55%" stopColor="#fde68a" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#fde68a" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="snowHill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#e2f1f8" />
+              <stop offset="45%" stopColor="#bfd9e6" />
+              <stop offset="100%" stopColor="#8fb2c4" />
+            </linearGradient>
+            <linearGradient id="icePatch" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.25" />
+              <stop offset="50%" stopColor="#e0f2fe" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.3" />
+            </linearGradient>
+            <linearGradient id="bannerBoard" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#1b3b2e" />
+              <stop offset="50%" stopColor="#122920" />
+              <stop offset="100%" stopColor="#0c1d17" />
+            </linearGradient>
+            <filter id="warmGlow" x="-25%" y="-25%" width="150%" height="150%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Dolunay & Yıldızlar */}
+          <circle cx="115" cy="78" r="56" fill="url(#moonGlow)" />
+          <circle cx="115" cy="78" r="24" fill="#fef9c3" opacity="0.92" />
+          {[
+            [210, 48],
+            [340, 36],
+            [520, 44],
+            [745, 58],
+            [68, 155],
+            [775, 138],
+          ].map(([sx, sy], idx) => (
+            <motion.circle
+              key={idx}
+              cx={sx}
+              cy={sy}
+              r={idx % 2 === 0 ? 2.2 : 1.6}
+              fill="#fef08a"
+              animate={{ opacity: [0.25, 1, 0.25] }}
+              transition={{ duration: 2 + idx * 0.4, repeat: Infinity }}
+            />
+          ))}
+
+          {/* Uzak Karlı Tepe Silüeti */}
+          <path
+            d="M0 335 Q 200 285 420 322 T 820 305 L 820 435 L 0 435 Z"
+            fill="#142930"
+            opacity="0.75"
+          />
+
+          {/* Ön Kar Zemini */}
+          <path
+            d="M-10 352 Q 230 328 470 348 T 830 342 L 830 440 L -10 440 Z"
+            fill="url(#snowHill)"
+          />
+
+          {/* Kaygan Buz Tabakası (Karakterin kayacağı nokta) */}
+          <g transform="translate(275, 344)">
+            <ellipse cx="42" cy="8" rx="46" ry="7.5" fill="url(#icePatch)" stroke="#bae6fd" strokeWidth="1.2" />
+            <path d="M22 7 L36 5 M48 9 L64 7" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" opacity="0.85" />
+            {hasFallen && (
+              <motion.g
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: [0, 1, 0], scale: [0.6, 1.25, 1.4] }}
+                transition={{ duration: 0.7 }}
+              >
+                <text x="32" y="-4" fill="#e0f2fe" fontSize="14" fontWeight="bold">✨</text>
+              </motion.g>
+            )}
+          </g>
+
+          {/* ARKA PLAN DEKORU: Sevimli Atkılı Kardan Adam */}
+          <motion.g
+            transform="translate(475, 224)"
+            animate={
+              hasFallen
+                ? { rotate: [0, -6, 4, 0], y: [0, -5, 0] }
+                : { rotate: [-1.5, 1.5, -1.5] }
+            }
+            transition={{
+              duration: hasFallen ? 0.55 : 3.2,
+              repeat: hasFallen ? 0 : Infinity,
+              ease: "easeInOut",
+            }}
+            style={{ transformOrigin: "45px 115px" }}
+          >
+            {/* Gölge */}
+            <ellipse cx="45" cy="122" rx="38" ry="7" fill="#648b9e" opacity="0.45" />
+            {/* Alt Gövde */}
+            <circle cx="45" cy="92" r="31" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="2" />
+            {/* Orta Gövde */}
+            <circle cx="45" cy="52" r="23" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2" />
+            {/* Kafa */}
+            <circle cx="45" cy="19" r="16.5" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2" />
+
+            {/* Kömür Düğmeler */}
+            <circle cx="45" cy="46" r="2.6" fill="#1e293b" />
+            <circle cx="45" cy="57" r="2.6" fill="#1e293b" />
+            <circle cx="45" cy="82" r="2.8" fill="#1e293b" />
+
+            {/* Dal Kollar */}
+            <path d="M23 48 L-4 32 M4 37 L-3 25" stroke="#78350f" strokeWidth="3.2" strokeLinecap="round" />
+            <path d="M67 48 L93 30 M85 36 L94 24" stroke="#78350f" strokeWidth="3.2" strokeLinecap="round" />
+
+            {/* Kırmızı-Sarı Çizgili Atkı */}
+            <path d="M29 33 Q45 40 61 33" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
+            <path d="M29 33 Q45 40 61 33" stroke="#fbbf24" strokeWidth="2.5" strokeDasharray="5 5" strokeLinecap="round" />
+            <path d="M53 35 L58 61 L49 62 Z" fill="#dc2626" />
+
+            {/* Gözler (Düşünce şaşırıp sola bakar!) */}
+            <circle cx={hasFallen ? 37 : 39} cy="15" r={hasFallen ? 2.9 : 2.2} fill="#0f172a" />
+            <circle cx={hasFallen ? 48 : 50} cy="15" r={hasFallen ? 2.9 : 2.2} fill="#0f172a" />
+            {/* Havuç Burun */}
+            <polygon points="44,18 29,21 44,23" fill="#f97316" />
+            {/* Şaşkın veya Gülümseyen Ağız */}
+            {hasFallen ? (
+              <circle cx="44" cy="27" r="3" fill="#1e293b" />
+            ) : (
+              <path d="M38 25 Q44 30 50 25" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+            )}
+
+            {/* Kardan Adam Şapkası */}
+            <rect x="28" y="1" width="34" height="4.5" rx="2" fill="#1e293b" />
+            <rect x="33" y="-14" width="24" height="16" rx="3" fill="#1e293b" />
+            <rect x="33" y="-3" width="24" height="3.5" fill="#dc2626" />
+          </motion.g>
+
+          {/* SAĞ TARAF: Süslü ve Işıklı Büyük Çam Ağacı */}
+          <g transform="translate(555, 58)">
+            {/* Zemin Gölgesi */}
+            <ellipse cx="115" cy="296" rx="92" ry="12" fill="#5b8296" opacity="0.45" />
+            {/* Gövde */}
+            <rect x="100" y="256" width="30" height="40" rx="5" fill="#6b4423" />
+
+            {/* Katmanlı Çam Dalları */}
+            <path d="M115 115 L22 262 Q115 278 208 262 Z" fill="#134e35" stroke="#0d3b27" strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M115 72 L36 202 Q115 216 194 202 Z" fill="#186041" stroke="#114730" strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M115 32 L52 142 Q115 154 178 142 Z" fill="#1f7550" stroke="#15573b" strokeWidth="2.5" strokeLinejoin="round" />
+
+            {/* Dalların Üzerindeki Kar Örtüleri */}
+            <path d="M52 142 Q82 149 115 144 Q148 149 178 142" fill="none" stroke="#f1f5f9" strokeWidth="4.5" strokeLinecap="round" opacity="0.9" />
+            <path d="M36 202 Q75 210 115 204 Q155 210 194 202" fill="none" stroke="#f1f5f9" strokeWidth="5" strokeLinecap="round" opacity="0.9" />
+            <path d="M22 262 Q68 271 115 264 Q162 271 208 262" fill="none" stroke="#f1f5f9" strokeWidth="5.5" strokeLinecap="round" opacity="0.9" />
+
+            {/* Altın Simli Kurdele */}
+            <path
+              d="M84 96 Q122 114 152 104 M64 156 Q118 180 172 162 M44 218 Q115 246 192 224"
+              fill="none"
+              stroke="#fbbf24"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeDasharray="6 4"
+              opacity="0.9"
+            />
+
+            {/* Renkli Yılbaşı Topları */}
+            {[
+              { x: 96, y: 112, c: "#ef4444" },
+              { x: 136, y: 122, c: "#fbbf24" },
+              { x: 76, y: 168, c: "#38bdf8" },
+              { x: 118, y: 176, c: "#ef4444" },
+              { x: 154, y: 166, c: "#f59e0b" },
+              { x: 58, y: 230, c: "#fbbf24" },
+              { x: 98, y: 238, c: "#ec4899" },
+              { x: 138, y: 235, c: "#38bdf8" },
+              { x: 174, y: 226, c: "#ef4444" },
+            ].map((orb, i) => (
+              <g key={i}>
+                <circle cx={orb.x} cy={orb.y} r="7.5" fill={orb.c} stroke="#fef3c7" strokeWidth="1.2" />
+                <circle cx={orb.x - 2.3} cy={orb.y - 2.5} r="2" fill="#ffffff" opacity="0.75" />
+              </g>
+            ))}
+
+            {/* Yanıp Sönen Peri Işıkları */}
+            {[
+              [115, 76],
+              [92, 134],
+              [142, 138],
+              [70, 194],
+              [116, 198],
+              [162, 190],
+              [48, 250],
+              [92, 255],
+              [142, 252],
+              [184, 246],
+            ].map(([lx, ly], i) => (
+              <motion.circle
+                key={i}
+                cx={lx}
+                cy={ly}
+                r="3.8"
+                fill={i % 2 === 0 ? "#fef08a" : "#fde047"}
+                filter="url(#warmGlow)"
+                animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.25, 0.85] }}
+                transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.17 }}
+              />
+            ))}
+
+            {/* Tepe Yıldızı */}
+            <motion.polygon
+              points="115,4 121,19 137,20 125,30 129,45 115,36 101,45 105,30 93,20 109,19"
+              fill="#fde047"
+              stroke="#f59e0b"
+              strokeWidth="1.5"
+              filter="url(#warmGlow)"
+              animate={{ scale: [0.95, 1.08, 0.95], rotate: [-3, 3, -3] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: "115px 25px" }}
+            />
+          </g>
+
+          {/* AĞACIN YANINDAN SARKAN ÇEKME İPİ */}
+          <motion.g
+            animate={{ y: ropePulled ? 34 : 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 14 }}
+          >
+            {/* İp Gövdesi */}
+            <line
+              x1="342"
+              y1="-25"
+              x2="342"
+              y2="232"
+              stroke="#f59e0b"
+              strokeWidth="4"
+              strokeDasharray="6 3"
+            />
+            <line x1="342" y1="-25" x2="342" y2="232" stroke="#fef3c7" strokeWidth="1.5" opacity="0.7" />
+            {/* Kırmızı Püsküllü Tutamaç */}
+            <circle cx="342" cy="236" r="7" fill="#dc2626" stroke="#fbbf24" strokeWidth="2" />
+            <path d="M337 242 L334 256 M342 243 L342 258 M347 242 L350 256" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" />
+
+            {/* İp Çekilince Çıkan Hareket Çizgileri */}
+            {phase === "pull" && (
+              <motion.g
+                initial={{ opacity: 0, scale: 0.7 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <path d="M322 225 L312 218 M362 225 L372 218 M320 242 L310 244" stroke="#fde047" strokeWidth="2.5" strokeLinecap="round" />
+              </motion.g>
+            )}
+          </motion.g>
+
+          {/* KOMİK KARAKTER (Yürür -> İpi Fark Eder -> Çeker -> Buzda Kayıp Düşer!) */}
+          <motion.g
+            initial={{ x: -85, y: 0, rotate: 0 }}
+            animate={charPose}
+            transition={
+              phase === "walk"
+                ? { duration: 1.6, ease: "easeOut" }
+                : phase === "slip"
+                ? { type: "spring", stiffness: 240, damping: 15 }
+                : { duration: 0.45, ease: "easeOut" }
+            }
+            style={{ transformOrigin: "45px 95px" }}
+          >
+            {/* Yürüme Sırasında Hafif Sekme */}
+            <motion.g
+              animate={
+                phase === "walk"
+                  ? { y: [0, -7, 0, -7, 0, -6, 0] }
+                  : { y: 0 }
+              }
+              transition={{ duration: 1.6, ease: "easeInOut" }}
+            >
+              {/* Zemin Gölgesi */}
+              <ellipse cx="45" cy="112" rx="28" ry="6" fill="#5b8296" opacity="0.45" />
+
+              {/* Sol & Sağ Bacaklar + Botlar */}
+              <motion.g
+                animate={
+                  phase === "walk"
+                    ? { rotate: [-22, 22, -22, 22, 0] }
+                    : hasFallen
+                    ? { rotate: -25 }
+                    : { rotate: 0 }
+                }
+                transition={{ duration: phase === "walk" ? 1.6 : 0.3 }}
+                style={{ transformOrigin: "38px 82px" }}
+              >
+                <rect x="33" y="80" width="10" height="24" rx="5" fill="#1e293b" />
+                <rect x="30" y="100" width="17" height="9" rx="4.5" fill="#78350f" />
+              </motion.g>
+
+              <motion.g
+                animate={
+                  phase === "walk"
+                    ? { rotate: [22, -22, 22, -22, 0] }
+                    : hasFallen
+                    ? { rotate: 32 }
+                    : { rotate: 0 }
+                }
+                transition={{ duration: phase === "walk" ? 1.6 : 0.3 }}
+                style={{ transformOrigin: "52px 82px" }}
+              >
+                <rect x="47" y="80" width="10" height="24" rx="5" fill="#334155" />
+                <rect x="46" y="100" width="17" height="9" rx="4.5" fill="#92400e" />
+              </motion.g>
+
+              {/* Kışlık Mont (Sarı-Lacivert / Kırmızı Detaylı) */}
+              <rect x="27" y="45" width="36" height="40" rx="14" fill="#e11d48" stroke="#be123c" strokeWidth="2" />
+              {/* Mont Fermuarı */}
+              <line x1="47" y1="47" x2="47" y2="83" stroke="#fecdd3" strokeWidth="2" />
+
+              {/* Uçuşan Atkı */}
+              <motion.path
+                d="M28 48 Q12 52 6 62"
+                fill="none"
+                stroke="#fbbf24"
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={
+                  phase === "walk" || hasFallen
+                    ? { d: ["M28 48 Q12 52 6 62", "M28 48 Q10 42 4 48", "M28 48 Q12 52 6 62"] }
+                    : {}
+                }
+                transition={{ duration: 0.6, repeat: Infinity }}
+              />
+
+              {/* Kollar (İp çekerken yukarı uzanır, düşünce havaya kalkar!) */}
+              <motion.g
+                animate={
+                  phase === "pull"
+                    ? { rotate: -125, x: 8, y: -6 }
+                    : hasFallen
+                    ? { rotate: -145, y: -4 }
+                    : phase === "walk"
+                    ? { rotate: [18, -18, 18, -18, 0] }
+                    : { rotate: -25 }
+                }
+                transition={{ duration: 0.35 }}
+                style={{ transformOrigin: "54px 54px" }}
+              >
+                <rect x="50" y="50" width="10" height="24" rx="5" fill="#be123c" />
+                <circle cx="55" cy="75" r="5.5" fill="#fbbf24" />
+              </motion.g>
+
+              {/* Kafa */}
+              <circle cx="46" cy="28" r="17" fill="#fed7aa" stroke="#fdba74" strokeWidth="1.5" />
+              {/* Kırmızı Yanak */}
+              <circle cx="53" cy="32" r="3.2" fill="#fb7185" opacity="0.65" />
+
+              {/* Yüz İfadesi: Normal -> Şaşkın -> Düşmüş Komik Gözler */}
+              {hasFallen ? (
+                <g>
+                  {/* X_X veya Şaşkın Gözler */}
+                  <path d="M47 23 L52 28 M52 23 L47 28" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="57" cy="25" r="2.6" fill="#1e293b" />
+                  {/* Açık Şaşkın Ağız */}
+                  <ellipse cx="53" cy="35" rx="4" ry="3" fill="#9f1239" />
+                </g>
+              ) : (
+                <g>
+                  <circle cx="51" cy="25" r="2.3" fill="#0f172a" />
+                  <circle cx="58" cy="25" r="2.3" fill="#0f172a" />
+                  <path
+                    d={phase === "pull" ? "M50 34 Q54 31 58 34" : "M49 33 Q54 37 59 33"}
+                    fill="none"
+                    stroke="#0f172a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </g>
+              )}
+
+              {/* Ponponlu Kış Beresi */}
+              <path d="M29 22 Q46 6 63 22 Z" fill="#0284c7" />
+              <rect x="28" y="19" width="36" height="6" rx="3" fill="#fbbf24" />
+              <circle cx="46" cy="8" r="5.5" fill="#f8fafc" />
+            </motion.g>
+          </motion.g>
+
+          {/* KARAKTER TEPKİ BALONCUKLARI (?, !, Düşme Kar Bulutu & Baş Dönme Yıldızları) */}
+          {phase === "notice" && (
+            <motion.g
+              initial={{ opacity: 0, y: 8, scale: 0.6 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transform="translate(302, 185)"
+            >
+              <circle cx="16" cy="16" r="15" fill="#ffffff" stroke="#fbbf24" strokeWidth="2.5" />
+              <text x="11" y="22" fill="#0f172a" fontSize="18" fontWeight="900">?</text>
+            </motion.g>
+          )}
+
+          {hasFallen && (
+            <g>
+              {/* Düşme Kar Tozu Efekti */}
+              <motion.g
+                initial={{ opacity: 0.95, scale: 0.4 }}
+                animate={{ opacity: 0, scale: 1.5 }}
+                transition={{ duration: 0.85, ease: "easeOut" }}
+                transform="translate(265, 336)"
+              >
+                <circle cx="-18" cy="4" r="12" fill="#ffffff" />
+                <circle cx="12" cy="6" r="15" fill="#e0f2fe" />
+                <circle cx="42" cy="2" r="11" fill="#ffffff" />
+              </motion.g>
+
+              {/* Başının Üstünde Dönen Komik Yıldızlar */}
+              <motion.g
+                transform="translate(242, 268)"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <text x="-16" y="0" fill="#fde047" fontSize="14">★</text>
+                <text x="10" y="-6" fill="#38bdf8" fontSize="12">✦</text>
+                <text x="2" y="12" fill="#fbbf24" fontSize="13">★</text>
+              </motion.g>
+            </g>
+          )}
+
+          {/* ÜSTTEN İNEN YILBAŞI TABELASI: "Faruk Mutlu Yıllar Diler" */}
+          <motion.g
+            initial={{ y: -210, rotate: -4 }}
+            animate={
+              bannerVisible
+                ? { y: 18, rotate: [0, 2.2, -1.5, 0.7, 0] }
+                : { y: -210, rotate: -4 }
+            }
+            transition={{
+              y: { type: "spring", stiffness: 150, damping: 13 },
+              rotate: { duration: 1.4, ease: "easeOut" },
+            }}
+            style={{ transformOrigin: "245px 0px" }}
+          >
+            {/* Tabelayı Tutan İki Halat */}
+            <line x1="115" y1="-60" x2="115" y2="34" stroke="#d97706" strokeWidth="4" />
+            <line x1="375" y1="-60" x2="375" y2="34" stroke="#d97706" strokeWidth="4" />
+
+            {/* Ahşap / Zümrüt Çerçeveli Yılbaşı Tabelası */}
+            <rect
+              x="42"
+              y="28"
+              width="406"
+              height="118"
+              rx="22"
+              fill="url(#bannerBoard)"
+              stroke="#fbbf24"
+              strokeWidth="4"
+            />
+            <rect
+              x="51"
+              y="37"
+              width="388"
+              height="100"
+              rx="15"
+              fill="none"
+              stroke="#fde68a"
+              strokeWidth="1.2"
+              strokeDasharray="6 4"
+              opacity="0.65"
+            />
+
+            {/* Tabela Çerçevesindeki Mini Ampuller */}
+            {[64, 124, 184, 245, 306, 366, 426].map((bx, idx) => (
+              <motion.circle
+                key={`top-b-${idx}`}
+                cx={bx}
+                cy="33"
+                r="4"
+                fill={idx % 2 === 0 ? "#ef4444" : "#fde047"}
+                filter="url(#warmGlow)"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1, repeat: Infinity, delay: idx * 0.15 }}
+              />
+            ))}
+
+            {/* Üst Küçük Etiket */}
+            <text
+              x="245"
+              y="64"
+              textAnchor="middle"
+              fill="#fde68a"
+              fontSize="12"
+              fontWeight="700"
+              letterSpacing="4"
+            >
+              ✨ HOŞ GELDİN 2027 ✨
+            </text>
+
+            {/* Ana Tabela Yazısı */}
+            <text
+              x="245"
+              y="99"
+              textAnchor="middle"
+              fill="#ffffff"
+              fontSize="27"
+              fontWeight="900"
+              letterSpacing="0.5"
+            >
+              Faruk Mutlu Yıllar Diler
+            </text>
+
+            {/* Alt Süs Çizgisi */}
+            <text
+              x="245"
+              y="124"
+              textAnchor="middle"
+              fill="#86efac"
+              fontSize="12"
+              fontWeight="600"
+            >
+              🎄 Sağlık, huzur ve güzel başlangıçlarla dolu bir yıl olsun 🎄
+            </text>
+          </motion.g>
+        </svg>
+      </div>
+
+      {/* Alt Giriş Butonu Alanı (Animasyon Tamamlanınca Belirir) */}
+      <div className="relative z-20 flex min-h-[76px] flex-col items-center justify-center pb-2">
+        <AnimatePresence>
+          {phase === "ready" && (
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", stiffness: 220, damping: 18 }}
+              className="flex flex-col items-center gap-2"
+            >
+              <motion.button
+                onClick={onEnter}
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-3 rounded-2xl border border-amber-200/70 bg-gradient-to-r from-amber-400/25 via-emerald-500/25 to-amber-400/25 px-8 py-3.5 text-xs font-extrabold tracking-[0.22em] text-amber-50 shadow-[0_12px_35px_rgba(251,191,36,0.28)] transition hover:border-amber-200 hover:bg-amber-400/35 cursor-pointer sm:px-10 sm:py-4 sm:text-sm"
+              >
+                <span>SİSTEME GİR</span>
+                <span className="text-base">→</span>
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
 
 const NewYearFeature = ({ isDay, soundFx }) => {
   const [wishIndex, setWishIndex] = useState(0);
@@ -1114,10 +1754,18 @@ const NewYearFeature = ({ isDay, soundFx }) => {
     }
     setLastFortune(next);
     setFortuneIndex(next);
+
+    confetti({
+      particleCount: 65,
+      spread: 70,
+      origin: { y: 0.55 },
+      colors: ["#fbbf24", "#38bdf8", "#f43f5e", "#34d399"],
+    });
   };
 
   return (
     <div
+      id="tour-tree-card"
       className={`real-glass relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] px-4 py-3.5 sm:px-7 ${
         isDay ? "real-glass-day" : "real-glass-night"
       }`}
@@ -1248,6 +1896,11 @@ const WordGuessGame = () => {
     if (current === answer) {
       setFinished(true);
       setNotice(`Tebrikler! ${next.length} denemede buldun. 🎉`);
+      confetti({
+        particleCount: 110,
+        spread: 85,
+        origin: { y: 0.6 },
+      });
     } else if (next.length === 6) {
       setFinished(true);
       setNotice(`Bu turun kelimesi ${answer} idi. Bir tur daha?`);
@@ -1412,7 +2065,302 @@ const WordGuessGame = () => {
   );
 };
 
-// Masaüstü Arka Planında Hafif Kar Yağışı Efekti
+// Xterm.js Gerçek Terminal Bileşeni
+const FarukTerminal = ({ onOpenFolderById, onActivateGravity }) => {
+  const containerRef = useRef(null);
+  const termRef = useRef(null);
+  const onOpenRef = useRef(onOpenFolderById);
+  const onGravityRef = useRef(onActivateGravity);
+  const [matrixSkin, setMatrixSkin] = useState(false);
+
+  useEffect(() => {
+    onOpenRef.current = onOpenFolderById;
+    onGravityRef.current = onActivateGravity;
+  }, [onOpenFolderById, onActivateGravity]);
+
+  useEffect(() => {
+    if (termRef.current) {
+      termRef.current.options.theme = {
+        background: "#050a08",
+        foreground: matrixSkin ? "#4ade80" : "#e2e8f0",
+        cursor: matrixSkin ? "#4ade80" : "#38bdf8",
+        selectionBackground: "rgba(56, 189, 248, 0.3)",
+      };
+    }
+  }, [matrixSkin]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const term = new XTerm({
+      cursorBlink: true,
+      fontSize: 13,
+      fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      theme: {
+        background: "#050a08",
+        foreground: "#e2e8f0",
+        cursor: "#38bdf8",
+        selectionBackground: "rgba(56, 189, 248, 0.3)",
+      },
+    });
+    termRef.current = term;
+
+    const fitAddon = new FitAddon();
+    term.loadAddon(fitAddon);
+    term.open(containerRef.current);
+    fitAddon.fit();
+
+    const handleResize = () => {
+      try {
+        fitAddon.fit();
+      } catch {}
+    };
+    window.addEventListener("resize", handleResize);
+
+    const prompt = () => term.write("\r\n\x1b[1;36mfaruk@os\x1b[0m:\x1b[1;33m~\x1b[0m$ ");
+
+    term.writeln("\x1b[1;32mFaruk OS Terminal v3.1\x1b[0m — Gerçek Komut Satırı");
+    term.writeln("Kullanılabilir komutları görmek için \x1b[1;33mhelp\x1b[0m yazıp Enter'a bas.");
+    prompt();
+
+    let buffer = "";
+
+    const runCommand = (rawCmd) => {
+      const cmd = rawCmd.trim().toLowerCase();
+      if (!cmd) return;
+
+      if (cmd === "help") {
+        term.writeln("\r\n\x1b[1;36mKomutlar:\x1b[0m");
+        term.writeln("  \x1b[33mwhoami\x1b[0m     -> Faruk Köçer özet profili");
+        term.writeln("  \x1b[33mkariyer\x1b[0m    -> Kariyer penceresini açar");
+        term.writeln("  \x1b[33mfilmler\x1b[0m    -> Sinema akışını açar");
+        term.writeln("  \x1b[33mmuzik\x1b[0m      -> Müzik arşivini açar");
+        term.writeln("  \x1b[33mgravity\x1b[0m    -> Masaüstünde 2D yerçekimini başlatır!");
+        term.writeln("  \x1b[33mmatrix\x1b[0m     -> Matrix fosfor temasını açar/kapatır");
+        term.writeln("  \x1b[33mclear\x1b[0m      -> Ekranı temizler");
+      } else if (cmd === "whoami") {
+        term.writeln("\r\n\x1b[1;32mMuhammed Faruk Köçer\x1b[0m");
+        term.writeln("• Otomasyon Teknikeri @ Vegevital Tarım A.Ş. (İzmir)");
+        term.writeln("• İÜC Kontrol ve Otomasyon Teknolojisi Mezunu");
+        term.writeln("• Uzmanlık: PLC (TIA Portal), SCADA, VFD Sürücüler, Akıllı Sera");
+      } else if (cmd === "kariyer") {
+        term.writeln("\r\nKariyer penceresi açılıyor...");
+        setTimeout(() => onOpenRef.current?.("kariyer"), 350);
+      } else if (cmd === "filmler") {
+        term.writeln("\r\nSinema arşivi açılıyor...");
+        setTimeout(() => onOpenRef.current?.("filmler"), 350);
+      } else if (cmd === "muzik" || cmd === "muzikler") {
+        term.writeln("\r\nMüzik koleksiyonu açılıyor...");
+        setTimeout(() => onOpenRef.current?.("muzikler"), 350);
+      } else if (cmd === "gravity" || cmd === "yercekimi") {
+        term.writeln("\r\n\x1b[1;35m2D Yerçekimi motoru devreye alınıyor...\x1b[0m");
+        setTimeout(() => onGravityRef.current?.(), 400);
+      } else if (cmd === "matrix") {
+        setMatrixSkin((v) => !v);
+        term.writeln("\r\n\x1b[1;32mMatrix modu değiştirildi.\x1b[0m");
+      } else if (cmd === "clear") {
+        term.clear();
+      } else {
+        term.writeln(`\r\n\x1b[31mKomut bulunamadı:\x1b[0m ${cmd} (Yardım için 'help' yaz)`);
+      }
+    };
+
+    const disposable = term.onData((data) => {
+      for (let i = 0; i < data.length; i++) {
+        const ch = data[i];
+        const code = ch.charCodeAt(0);
+
+        if (ch === "\r") {
+          runCommand(buffer);
+          buffer = "";
+          prompt();
+        } else if (ch === "\u007F" || ch === "\b") {
+          if (buffer.length > 0) {
+            buffer = buffer.slice(0, -1);
+            term.write("\b \b");
+          }
+        } else if (ch === "\u0003") {
+          buffer = "";
+          term.write("^C");
+          prompt();
+        } else if (code >= 32 && code !== 127) {
+          buffer += ch;
+          term.write(ch);
+        }
+      }
+    });
+
+    setTimeout(() => {
+      try {
+        fitAddon.fit();
+        term.focus();
+      } catch {}
+    }, 50);
+
+    return () => {
+      disposable.dispose();
+      window.removeEventListener("resize", handleResize);
+      term.dispose();
+      termRef.current = null;
+    };
+  }, []);
+
+  return (
+    <div className="mx-auto flex h-full max-w-3xl flex-col gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-lime-200/90">
+        <span>İpucu: Buraya tıklayıp klavyeden komut yazabilirsin.</span>
+        <div className="flex gap-1.5">
+          {["help", "whoami", "gravity", "matrix"].map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => termRef.current?.focus()}
+              className="rounded-md border border-lime-400/35 bg-lime-400/10 px-2 py-0.5 font-mono text-[11px] cursor-pointer"
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div
+        ref={containerRef}
+        onClick={() => termRef.current?.focus()}
+        className="min-h-[340px] flex-1 overflow-hidden rounded-2xl border border-lime-400/35 bg-[#050a08] p-3 shadow-2xl"
+      />
+    </div>
+  );
+};
+
+// Matter.js 2D Yerçekimi / Fizik Motoru Katmanı (Mobil Dokunmatik & Fare Uyumlu)
+const PhysicsDesktopOverlay = ({ items, initialRects, onExit, onOpenFolder }) => {
+  const containerRef = useRef(null);
+  const cardRefs = useRef([]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || initialRects.length === 0) return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const engine = Matter.Engine.create();
+    engine.gravity.y = 0.78;
+
+    const wallThickness = 120;
+    const walls = [
+      Matter.Bodies.rectangle(width / 2, height + wallThickness / 2 - 12, width * 2, wallThickness, {
+        isStatic: true,
+        restitution: 0.62,
+      }),
+      Matter.Bodies.rectangle(width / 2, -wallThickness / 2 + 42, width * 2, wallThickness, {
+        isStatic: true,
+      }),
+      Matter.Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 2, {
+        isStatic: true,
+        restitution: 0.62,
+      }),
+      Matter.Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 2, {
+        isStatic: true,
+        restitution: 0.62,
+      }),
+    ];
+
+    const bodies = initialRects.map((rect) =>
+      Matter.Bodies.rectangle(
+        rect.left + rect.width / 2,
+        rect.top + rect.height / 2,
+        rect.width,
+        rect.height,
+        {
+          restitution: 0.68,
+          friction: 0.12,
+          frictionAir: 0.008,
+          chamfer: { radius: 22 },
+        }
+      )
+    );
+
+    const mouse = Matter.Mouse.create(container);
+    const mouseConstraint = Matter.MouseConstraint.create(engine, {
+      mouse,
+      constraint: {
+        stiffness: 0.22,
+        render: { visible: false },
+      },
+    });
+
+    Matter.Composite.add(engine.world, [...walls, ...bodies, mouseConstraint]);
+
+    let animId;
+    const update = () => {
+      Matter.Engine.update(engine, 1000 / 60);
+      bodies.forEach((body, idx) => {
+        const el = cardRefs.current[idx];
+        const rect = initialRects[idx];
+        if (el && rect) {
+          const x = body.position.x - rect.width / 2;
+          const y = body.position.y - rect.height / 2;
+          el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${body.angle}rad)`;
+        }
+      });
+      animId = requestAnimationFrame(update);
+    };
+
+    animId = requestAnimationFrame(update);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      Matter.Composite.clear(engine.world, false);
+      Matter.Engine.clear(engine);
+    };
+  }, [initialRects]);
+
+  return (
+    <div ref={containerRef} className="fixed inset-0 z-25 touch-none overflow-hidden select-none">
+      <div className="fixed top-14 left-1/2 z-30 flex w-[92vw] max-w-md -translate-x-1/2 items-center justify-between gap-2 rounded-full border border-amber-300/60 bg-black/80 px-4 py-2 text-xs text-white shadow-2xl">
+        <div className="flex items-center gap-2 min-w-0">
+          <Orbit className="h-4 w-4 shrink-0 animate-spin text-amber-300" />
+          <span className="truncate">2D Yerçekimi — Kartları tutup fırlat!</span>
+        </div>
+        <button
+          onClick={onExit}
+          className="shrink-0 rounded-full bg-amber-400 px-3.5 py-1 text-[11px] font-bold text-black transition hover:bg-amber-300 cursor-pointer"
+        >
+          Toparla
+        </button>
+      </div>
+
+      {items.map((item, idx) => {
+        const Icon = item.icon;
+        const rect = initialRects[idx] || { width: 120, height: 120 };
+        return (
+          <div
+            key={`phys-${item.id}`}
+            ref={(el) => (cardRefs.current[idx] = el)}
+            onDoubleClick={() => {
+              if (!item.isGravityAction) onOpenFolder(item);
+            }}
+            style={{
+              width: rect.width,
+              height: rect.height,
+              left: 0,
+              top: 0,
+            }}
+            className="real-folder real-folder-night glass-text absolute flex cursor-grab flex-col items-center justify-center rounded-3xl p-3 active:cursor-grabbing"
+          >
+            <div
+              className={`flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} border border-white/45`}
+            >
+              <Icon className={`h-6 w-6 ${item.iconColor}`} />
+            </div>
+            <span className="mt-2 text-center text-xs font-bold text-white">{item.title}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const SnowfallCanvas = ({ boostSnow }) => {
   const canvasRef = useRef(null);
 
@@ -1477,7 +2425,6 @@ const SnowfallCanvas = ({ boostSnow }) => {
   return <canvas ref={canvasRef} className="fixed inset-0 z-[5] pointer-events-none block" />;
 };
 
-// Sağa Kaydırılabilir Dizi Kartları Bileşeni
 const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
   const scrollRef = useRef(null);
 
@@ -1564,7 +2511,6 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
   );
 };
 
-// Instagram Tarzı Aşağı Kaydırmalı Dikey Film Akışı
 const InstagramMovieFeed = ({ items, soundFx }) => {
   const [likedMovies, setLikedMovies] = useState(() => {
     try {
@@ -1617,7 +2563,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
 
   return (
     <div className="mx-auto max-w-xl space-y-5 pb-6">
-      {/* Üst Filtre ve Letterboxd Barı */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1.5">
           {filterOptions.map((cat) => (
@@ -1654,7 +2599,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
         </a>
       </div>
 
-      {/* Instagram Tarzı Dikey Kart Akışı */}
       {filteredItems.length === 0 ? (
         <div className="real-card glass-text rounded-3xl p-8 text-center text-sm text-white">
           Henüz favorilediğin film yok. Kartlara çift tıklayarak veya kalbe basarak ekleyebilirsin.
@@ -1667,7 +2611,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
               key={item.title}
               className="real-card glass-text overflow-hidden rounded-3xl text-white transition-all duration-300"
             >
-              {/* IG Post Üst Başlık */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/20">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-indigo-300/55 bg-indigo-500/30 text-xs font-bold text-indigo-100">
@@ -1683,7 +2626,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 </span>
               </div>
 
-              {/* Çift Tıklanabilir Film Görseli */}
               <div
                 onDoubleClick={() => toggleLike(item.title, true)}
                 className={`relative aspect-[16/10] w-full cursor-pointer select-none overflow-hidden bg-gradient-to-br ${item.gradient}`}
@@ -1713,7 +2655,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 </AnimatePresence>
               </div>
 
-              {/* IG Aksiyon Çubuğu */}
               <div className="flex items-center justify-between px-4 pt-3 pb-1">
                 <div className="flex items-center gap-3">
                   <button
@@ -1749,7 +2690,6 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 <span className="text-[10px] text-white/80">Çift tıkla ❤️</span>
               </div>
 
-              {/* Replik ve Açıklama Alanı */}
               <div className="px-4 pb-4 pt-2 space-y-2.5">
                 <blockquote className="rounded-xl border-l-4 border-indigo-400 border border-white/20 bg-black/30 px-3 py-2 text-xs sm:text-sm italic text-white">
                   <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-75" />
@@ -1782,6 +2722,10 @@ export default function App() {
   const [boostSnow, setBoostSnow] = useState(false);
   const [zenMode, setZenMode] = useState(false);
 
+  const [gravityMode, setGravityMode] = useState(false);
+  const [initialPhysicsRects, setInitialPhysicsRects] = useState([]);
+  const folderCardRefs = useRef([]);
+
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [spotlightQuery, setSpotlightQuery] = useState("");
   const [randomPick, setRandomPick] = useState(null);
@@ -1794,7 +2738,67 @@ export default function App() {
   const [noteStatus, setNoteStatus] = useState("idle");
   const [noteErrorMsg, setNoteErrorMsg] = useState("");
 
-  const audioRef = useRef(null);
+  const howlRef = useRef(null);
+  const soundIdRef = useRef(null);
+  const fadeTimerRef = useRef(null);
+  const modalScrollRef = useRef(null);
+  const modalContentRef = useRef(null);
+
+  useEffect(() => {
+    const sound = new Howl({
+      src: ["/muzik.mp3"],
+      loop: true,
+      volume: 0.35,
+      html5: true,
+    });
+    howlRef.current = sound;
+    return () => {
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+      sound.unload();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (entered && !zenMode && !gravityMode) {
+      gsap.fromTo(
+        ".desktop-folder-card",
+        { y: 22, opacity: 0, scale: 0.94 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.04,
+          ease: "back.out(1.4)",
+          clearProps: "transform",
+        }
+      );
+    }
+  }, [entered, zenMode, gravityMode]);
+
+  useEffect(() => {
+    if (!activeFolder || activeFolder.id === "terminal") return;
+    if (!modalScrollRef.current || !modalContentRef.current) return;
+
+    const lenis = new Lenis({
+      wrapper: modalScrollRef.current,
+      content: modalContentRef.current,
+      duration: 1.05,
+      smoothWheel: true,
+    });
+
+    let rafId;
+    const raf = (time) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, [activeFolder, activeTab]);
 
   useEffect(() => {
     document.title = "Faruk OS — Kişisel Dijital Masaüstü";
@@ -1834,48 +2838,178 @@ export default function App() {
         if (spotlightOpen) setSpotlightOpen(false);
         else if (islandOpen) setIslandOpen(false);
         else if (activeFolder) closeFolder();
+        else if (gravityMode) setGravityMode(false);
         return;
       }
 
       const tag = document.activeElement?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (tag === "INPUT" || tag === "TEXTAREA" || activeFolder?.id === "terminal") return;
 
-      if (!activeFolder && !spotlightOpen && entered && /^[1-8]$/.test(event.key)) {
+      if (!activeFolder && !spotlightOpen && entered && /^[1-9]$/.test(event.key)) {
         const idx = Number(event.key) - 1;
         if (FOLDERS[idx]) openFolder(FOLDERS[idx]);
       }
     };
     window.addEventListener("keydown", onGlobalKey);
     return () => window.removeEventListener("keydown", onGlobalKey);
-  }, [activeFolder, islandOpen, spotlightOpen, entered, soundFx]);
+  }, [activeFolder, islandOpen, spotlightOpen, entered, soundFx, gravityMode]);
+
+  const startMusicSmoothly = () => {
+    const sound = howlRef.current;
+    if (!sound) return;
+    if (fadeTimerRef.current) {
+      clearTimeout(fadeTimerRef.current);
+      fadeTimerRef.current = null;
+    }
+
+    if (soundIdRef.current !== null && sound.playing(soundIdRef.current)) {
+      const cur = sound.volume(soundIdRef.current);
+      sound.fade(cur, 0.35, 450, soundIdRef.current);
+      setMusicPlaying(true);
+      return;
+    }
+
+    const id = sound.play();
+    soundIdRef.current = id;
+    sound.volume(0.12, id);
+    if (sound.playing(id)) {
+      sound.fade(0.12, 0.35, 850, id);
+    } else {
+      sound.once(
+        "play",
+        () => {
+          sound.fade(0.12, 0.35, 850, id);
+        },
+        id
+      );
+    }
+    setMusicPlaying(true);
+  };
+
+  const stopMusicSmoothly = () => {
+    const sound = howlRef.current;
+    if (!sound) return;
+    if (fadeTimerRef.current) {
+      clearTimeout(fadeTimerRef.current);
+      fadeTimerRef.current = null;
+    }
+
+    const id = soundIdRef.current;
+    if (id !== null && sound.playing(id)) {
+      const cur = sound.volume(id);
+      sound.fade(cur, 0, 320, id);
+      fadeTimerRef.current = setTimeout(() => {
+        sound.pause(id);
+      }, 340);
+    } else {
+      sound.pause();
+    }
+    setMusicPlaying(false);
+  };
 
   const handleEnterSystem = () => {
     playClickSound(true);
     setEntered(true);
-    if (audioRef.current) {
-      audioRef.current.volume = 0.35;
-      audioRef.current
-        .play()
-        .then(() => setMusicPlaying(true))
-        .catch(() => setMusicPlaying(false));
-    }
+    startMusicSmoothly();
   };
 
   const toggleMusic = () => {
     playClickSound(soundFx);
-    if (!audioRef.current) return;
     if (musicPlaying) {
-      audioRef.current.pause();
-      setMusicPlaying(false);
+      stopMusicSmoothly();
     } else {
-      audioRef.current
-        .play()
-        .then(() => setMusicPlaying(true))
-        .catch(() => {});
+      startMusicSmoothly();
     }
   };
 
+  const activateGravity = () => {
+    playClickSound(soundFx);
+    setIslandOpen(false);
+    setSpotlightOpen(false);
+    setActiveFolder(null);
+    setZenMode(false);
+
+    requestAnimationFrame(() => {
+      const rects = DESKTOP_ITEMS.map((_, i) => {
+        const el = folderCardRefs.current[i];
+        if (el) {
+          const r = el.getBoundingClientRect();
+          return { left: r.left, top: r.top, width: r.width || 125, height: r.height || 125 };
+        }
+        return {
+          left: 60 + (i % 5) * 140,
+          top: 250 + Math.floor(i / 5) * 140,
+          width: 125,
+          height: 125,
+        };
+      });
+      setInitialPhysicsRects(rects);
+      setGravityMode(true);
+    });
+  };
+
+  const startSystemTour = () => {
+    playClickSound(soundFx);
+    setIslandOpen(false);
+    setZenMode(false);
+    setGravityMode(false);
+
+    setTimeout(() => {
+      const tour = driver({
+        showProgress: true,
+        nextBtnText: "İleri →",
+        prevBtnText: "← Geri",
+        doneBtnText: "Keşfet ✨",
+        steps: [
+          {
+            element: "#tour-island",
+            popover: {
+              title: "Dinamik Kontrol Merkezi",
+              description:
+                "Buradan tipi modunu, 2D yerçekimi fiziğini, rastgele film/müzik önerisini ve arka plan müziğini yönetebilirsin.",
+            },
+          },
+          {
+            element: "#tour-spotlight",
+            popover: {
+              title: "Spotlight Hızlı Arama (Ctrl + K)",
+              description:
+                "Klavyeden Ctrl+K yaparak tüm filmler, sanatçılar ve klasörler arasında anında arama yapabilirsin.",
+            },
+          },
+          {
+            element: "#tour-tree-card",
+            popover: {
+              title: "2027 Dilek Ağacı & Şans Kurabiyesi",
+              description:
+                "Ağaca tıklayarak yeni yıl dileği seçebilir veya şans kurabiyeni kırıp konfeti eşliğinde mesajını okuyabilirsin.",
+            },
+          },
+          {
+            element: "#tour-folders",
+            popover: {
+              title: "Uygulamalar, Terminal & 2D Yerçekimi",
+              description:
+                "Kariyerim, sinema akışım, müzik arşivim, kelime oyunu, Terminal ve masaüstündeki Yerçekimi (2D Fizik) butonu burada!",
+            },
+          },
+        ],
+      });
+      tour.drive();
+    }, 150);
+  };
+
+  const handleDesktopItemClick = (item) => {
+    if (!item) return;
+    if (item.isGravityAction) {
+      activateGravity();
+      return;
+    }
+    openFolder(item);
+  };
+
   const openFolder = (folder) => {
+    if (!folder || folder.isGravityAction) return;
     playClickSound(soundFx);
     window.location.hash = folder.id;
     setActiveFolder(folder);
@@ -1966,15 +3100,25 @@ export default function App() {
   const getSpotlightResults = () => {
     const q = spotlightQuery.trim().toLocaleLowerCase("tr-TR");
     if (!q) {
-      return FOLDERS.map((f) => ({
-        label: f.title,
-        sub: f.subtitle,
-        badge: "Klasör",
-        onSelect: () => openFolder(f),
+      return DESKTOP_ITEMS.map((item) => ({
+        label: item.title,
+        sub: item.subtitle,
+        badge: item.isGravityAction ? "2D Fizik" : "Klasör",
+        onSelect: () => handleDesktopItemClick(item),
       }));
     }
 
     const results = [];
+
+    if ("yercekimi".includes(q) || "gravity".includes(q) || "fizik".includes(q) || "2d".includes(q)) {
+      results.push({
+        label: "Yerçekimi Modunu Başlat (2D)",
+        sub: "Matter.js 2D fizik motoru ile masaüstü kartlarını düşür",
+        badge: "2D Fizik",
+        onSelect: activateGravity,
+      });
+    }
+
     FOLDERS.forEach((f) => {
       if (
         f.title.toLocaleLowerCase("tr-TR").includes(q) ||
@@ -2040,7 +3184,15 @@ export default function App() {
   const renderFolderContent = () => {
     if (!activeFolder) return null;
 
-    // 1. KARİYER
+    if (activeFolder.id === "terminal") {
+      return (
+        <FarukTerminal
+          onOpenFolderById={(id) => openFolder(FOLDERS.find((f) => f.id === id))}
+          onActivateGravity={activateGravity}
+        />
+      );
+    }
+
     if (activeFolder.id === "kariyer") {
       if (activeTab === 0) {
         return (
@@ -2173,7 +3325,6 @@ export default function App() {
       );
     }
 
-    // 2. PROJELERİM
     if (activeFolder.id === "projelerim") {
       return (
         <div className="space-y-6">
@@ -2264,10 +3415,8 @@ export default function App() {
       );
     }
 
-    // KELİME OYUNU
     if (activeFolder.id === "kelime") return <WordGuessGame />;
 
-    // 3. MÜZİKLERİM
     if (activeFolder.id === "muzikler") {
       const filteredMusic = MUSIC_DATA.filter((item) => {
         const matchesCat = musicFilter === "Tümü" || item.category === musicFilter;
@@ -2399,17 +3548,14 @@ export default function App() {
       );
     }
 
-    // 4. DİZİLERİM
     if (activeFolder.id === "diziler") {
       return <HorizontalMediaCarousel items={SERIES_DATA} accentColor="emerald" />;
     }
 
-    // 5. FİLMLERİM (Instagram Tarzı Dikey Kaydırmalı Akış)
     if (activeFolder.id === "filmler") {
       return <InstagramMovieFeed items={MOVIES_DATA} soundFx={soundFx} />;
     }
 
-    // 6. HAKKIMDA
     if (activeFolder.id === "hakkimda") {
       return (
         <div className="space-y-6">
@@ -2463,7 +3609,6 @@ export default function App() {
       );
     }
 
-    // 7. BANA MESAJ BIRAK
     return (
       <div className="mx-auto max-w-xl">
         <div className="real-card glass-text rounded-2xl p-6 text-white">
@@ -2532,12 +3677,10 @@ export default function App() {
           will-change: transform;
         }
 
-        /* Kar üzerinde beyaz yazıların net okunması için keskin derinlik gölgesi */
         .glass-text {
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.45);
         }
 
-        /* MASAÜSTÜ GERÇEK PENCERE CAMI: Sıfır blur, arkadaki manzara %100 keskin */
         .real-glass {
           -webkit-backdrop-filter: none !important;
           backdrop-filter: none !important;
@@ -2585,7 +3728,6 @@ export default function App() {
           border-color: rgba(255,255,255,0.78);
         }
 
-        /* KLASÖR İÇİ KARTLAR */
         .real-card {
           background: linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.025) 100%);
           border: 1px solid rgba(255,255,255,0.16);
@@ -2614,20 +3756,36 @@ export default function App() {
           border: 1px solid rgba(255,255,255,0.28);
         }
 
+        .driver-popover {
+          background: #0d1520 !important;
+          color: #f8fafc !important;
+          border: 1px solid rgba(56, 189, 248, 0.45) !important;
+          border-radius: 18px !important;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.75) !important;
+        }
+        .driver-popover-title {
+          color: #38bdf8 !important;
+          font-weight: 700 !important;
+        }
+        .driver-popover-description {
+          color: #e2e8f0 !important;
+        }
+        .driver-popover-footer button {
+          background: #1e293b !important;
+          color: #fff !important;
+          border: 1px solid rgba(255,255,255,0.2) !important;
+          text-shadow: none !important;
+          border-radius: 8px !important;
+        }
+
         button { -webkit-tap-highlight-color: transparent; }
         @media (max-width: 640px) {
           .faruk-wallpaper { background-position: 58% center; transform: none; }
         }
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-        }
       `}</style>
-      <audio ref={audioRef} src="/muzik.mp3" loop preload="none" />
 
-      {/* Yavaşça çizilen yılbaşı ağacı girişi */}
       <AnimatePresence>{!entered && <IntroSplash onEnter={handleEnterSystem} />}</AnimatePresence>
 
-      {/* Duvar kağıdı: public/bg.jpg */}
       <div className="faruk-wallpaper" aria-hidden="true" />
       <div
         className={`fixed inset-0 z-[-2] pointer-events-none transition-all duration-1000 ${
@@ -2638,10 +3796,22 @@ export default function App() {
         aria-hidden="true"
       />
 
-      {/* Masaüstü Kar Yağışı Efekti */}
       {entered && <SnowfallCanvas boostSnow={boostSnow} />}
 
-      {/* Üst Gerçek Cam Durum Çubuğu & Dinamik Ada */}
+      {/* Matter.js 2D Yerçekimi Modu Aktifse */}
+      {gravityMode && (
+        <PhysicsDesktopOverlay
+          items={DESKTOP_ITEMS}
+          initialRects={initialPhysicsRects}
+          onExit={() => setGravityMode(false)}
+          onOpenFolder={(f) => {
+            setGravityMode(false);
+            openFolder(f);
+          }}
+        />
+      )}
+
+      {/* Üst Cam Durum Çubuğu & Dinamik Ada */}
       <header className="real-glass real-glass-night glass-text relative z-20 flex items-center justify-between gap-2 border-x-0 border-t-0 border-b border-white/30 px-3 py-2 text-xs font-medium text-white sm:px-6">
         <div className="flex items-center gap-2">
           <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-300/60 bg-sky-400/20 text-[11px] font-black text-sky-200">
@@ -2651,7 +3821,7 @@ export default function App() {
         </div>
 
         {/* Merkez Dinamik Cam Ada */}
-        <div className="relative">
+        <div id="tour-island" className="relative">
           <button
             onClick={() => {
               playClickSound(soundFx);
@@ -2735,6 +3905,28 @@ export default function App() {
                       <div className="text-[10px] text-white/80">{zenMode ? "Sade" : "Tam"}</div>
                     </div>
                   </button>
+
+                  <button
+                    onClick={activateGravity}
+                    className="flex items-center gap-2 rounded-2xl border border-amber-300/40 bg-amber-400/15 p-2.5 text-left text-xs text-white transition hover:bg-amber-400/25 cursor-pointer"
+                  >
+                    <Orbit className="h-4 w-4 shrink-0 text-amber-300" />
+                    <div>
+                      <div className="font-semibold">Yerçekimi</div>
+                      <div className="text-[10px] text-amber-200">2D Fizik</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={startSystemTour}
+                    className="flex items-center gap-2 rounded-2xl border border-violet-300/40 bg-violet-400/15 p-2.5 text-left text-xs text-white transition hover:bg-violet-400/25 cursor-pointer"
+                  >
+                    <HelpCircle className="h-4 w-4 shrink-0 text-violet-300" />
+                    <div>
+                      <div className="font-semibold">Sistem Turu</div>
+                      <div className="text-[10px] text-violet-200">Rehberi Aç</div>
+                    </div>
+                  </button>
                 </div>
 
                 <button
@@ -2780,6 +3972,7 @@ export default function App() {
 
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           <button
+            id="tour-spotlight"
             onClick={() => {
               playClickSound(soundFx);
               setSpotlightOpen(true);
@@ -2846,7 +4039,7 @@ export default function App() {
                   type="text"
                   value={spotlightQuery}
                   onChange={(e) => setSpotlightQuery(e.target.value)}
-                  placeholder="Film, dizi, sanatçı veya klasör ara..."
+                  placeholder="Film, dizi, sanatçı, terminal veya 'yercekimi' ara..."
                   className="w-full bg-transparent text-sm text-white placeholder-white/70 focus:outline-none"
                 />
                 <button
@@ -2878,39 +4071,47 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Ana Masaüstü Alanı (Klasör açıldığında gizlenir ki arkasıyla iç içe girmesin) */}
+      {/* Ana Masaüstü Alanı */}
       <main
         className={`relative z-10 mx-auto flex min-h-[calc(100svh-48px)] max-w-7xl flex-col justify-between px-3 py-4 transition-opacity duration-200 sm:min-h-[calc(100dvh-76px)] sm:px-6 sm:py-6 lg:px-10 ${
           activeFolder ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       >
-        {/* 2027 Yılbaşı Ağacı ve Şans Kurabiyesi */}
         {!zenMode && <NewYearFeature isDay={isDay} soundFx={soundFx} />}
 
-        {/* Gerçek Saydam Cam Klasör Izgarası */}
+        {/* Gerçek Saydam Cam Klasör & 2D Yerçekimi Izgarası (Mobilde 2x5, Masaüstünde 5x2 Dengeli Düzen) */}
         {!zenMode && (
-          <div className="my-auto py-6">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 2xl:grid-cols-8">
-              {FOLDERS.map((folder) => {
-                const Icon = folder.icon;
+          <div id="tour-folders" className="my-auto py-5 sm:py-6">
+            <div
+              className={`grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5 transition-opacity ${
+                gravityMode ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+            >
+              {DESKTOP_ITEMS.map((item, idx) => {
+                const Icon = item.icon;
                 return (
                   <button
-                    key={folder.id}
-                    onClick={() => openFolder(folder)}
-                    className={`real-folder glass-text group flex min-w-0 touch-manipulation flex-col items-center rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 active:scale-[.97] cursor-pointer sm:rounded-3xl sm:p-4 ${
+                    key={item.id}
+                    ref={(el) => (folderCardRefs.current[idx] = el)}
+                    onClick={() => handleDesktopItemClick(item)}
+                    className={`desktop-folder-card real-folder glass-text group flex min-w-0 touch-manipulation flex-col items-center rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 active:scale-[.97] cursor-pointer sm:rounded-3xl sm:p-4 ${
                       isDay ? "real-folder-day" : "real-folder-night"
-                    }`}
+                    } ${item.isGravityAction ? "ring-1 ring-amber-300/35" : ""}`}
                   >
                     <div
-                      className={`flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/45 shadow-inner`}
+                      className={`flex h-13 w-13 sm:h-15 sm:w-15 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} border border-white/45 shadow-inner`}
                     >
-                      <Icon className={`h-7 w-7 sm:h-8 sm:w-8 ${folder.iconColor} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`} />
+                      <Icon
+                        className={`h-6 w-6 sm:h-7 sm:w-7 ${item.iconColor} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${
+                          item.isGravityAction ? "group-hover:animate-spin" : ""
+                        }`}
+                      />
                     </div>
                     <span className="mt-2.5 text-center text-xs font-bold tracking-wide text-white sm:text-sm">
-                      {folder.title}
+                      {item.title}
                     </span>
                     <span className="mt-0.5 text-center text-[10px] leading-tight text-white/95 sm:text-[11px]">
-                      {folder.subtitle}
+                      {item.subtitle}
                     </span>
                   </button>
                 );
@@ -2921,23 +4122,23 @@ export default function App() {
 
         {/* Alt Saydam Cam Floating Dock */}
         <div className="real-dock mx-auto mt-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-3xl px-3 py-2 sm:gap-2.5">
-          {FOLDERS.map((folder) => {
-            const Icon = folder.icon;
+          {DESKTOP_ITEMS.map((item) => {
+            const Icon = item.icon;
             return (
               <button
-                key={`dock-${folder.id}`}
-                onClick={() => openFolder(folder)}
-                title={folder.title}
-                className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/45 transition-transform hover:-translate-y-1.5 hover:scale-110 active:scale-90 cursor-pointer`}
+                key={`dock-${item.id}`}
+                onClick={() => handleDesktopItemClick(item)}
+                title={item.title}
+                className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} border border-white/45 transition-transform hover:-translate-y-1.5 hover:scale-110 active:scale-90 cursor-pointer`}
               >
-                <Icon className={`h-5 w-5 ${folder.iconColor} drop-shadow-[0_2px_3px_rgba(0,0,0,0.75)]`} />
+                <Icon className={`h-5 w-5 ${item.iconColor} drop-shadow-[0_2px_3px_rgba(0,0,0,0.75)]`} />
               </button>
             );
           })}
         </div>
       </main>
 
-      {/* Her Gruba Özel Arka Plan Temalı & Sembollü Klasör Penceresi */}
+      {/* Klasör Penceresi */}
       <AnimatePresence>
         {activeFolder && activeTheme && (
           <motion.div
@@ -2961,10 +4162,8 @@ export default function App() {
               }}
               className="real-window relative flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden border text-white sm:h-[min(92dvh,900px)] sm:rounded-3xl"
             >
-              {/* Gruba Özel Tematik Sembol & Işık Katmanı */}
               <FolderThemeBackdrop folderId={activeFolder.id} />
 
-              {/* Üst Pencere Çubuğu */}
               <div
                 style={{ backgroundColor: activeTheme.headerBg }}
                 className="glass-text relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-white/20 px-3 py-3 sm:px-5 sm:py-3.5"
@@ -2995,7 +4194,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Alt Sekmeler */}
               {activeFolder.tabs.length > 1 && (
                 <div className="glass-text relative z-10 flex gap-2 overflow-x-auto border-b border-white/15 bg-black/25 px-5 py-2.5">
                   {activeFolder.tabs.map((tab, idx) => (
@@ -3017,12 +4215,15 @@ export default function App() {
                 </div>
               )}
 
-              {/* Dinamik İçerik Alanı */}
-              <div className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 md:p-8">
-                {renderFolderContent()}
+              <div
+                ref={modalScrollRef}
+                className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 md:p-8"
+              >
+                <div ref={modalContentRef} className="h-full">
+                  {renderFolderContent()}
+                </div>
               </div>
 
-              {/* Mobil Alt Çubuk */}
               <div
                 style={{ backgroundColor: activeTheme.headerBg }}
                 className="relative z-10 sm:hidden flex justify-center border-t border-white/15 py-3"
