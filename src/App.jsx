@@ -1071,670 +1071,210 @@ const TreeArtwork = ({ compact = false }) => {
 };
 
 // İnteraktif Hikayeli Giriş Sahnesi: Süslü Çam Ağacı, Kardan Adam, Buzda Kayıp Düşen Karakter & "Faruk Mutlu Yıllar Diler" Tabelası
+// Sinematik 2027 Giris Sahnesi: Geri Sayim, Havai Fisekler ve Cam Kar Kuresi
 const IntroSplash = ({ onEnter }) => {
   const [sceneKey, setSceneKey] = useState(0);
-  const [phase, setPhase] = useState("walk"); // walk -> notice -> pull -> slip -> banner -> ready
+  const [phase, setPhase] = useState("three");
 
   useEffect(() => {
-    setPhase("walk");
+    setPhase("three");
     const timers = [
-      setTimeout(() => setPhase("notice"), 1650),
-      setTimeout(() => setPhase("pull"), 2250),
-      setTimeout(() => setPhase("slip"), 2900),
-      setTimeout(() => setPhase("banner"), 3350),
-      setTimeout(() => setPhase("ready"), 4300),
+      setTimeout(() => setPhase("two"), 950),
+      setTimeout(() => setPhase("one"), 1900),
+      setTimeout(() => {
+        setPhase("midnight");
+        try {
+          confetti({
+            particleCount: 150,
+            spread: 105,
+            startVelocity: 42,
+            gravity: 0.78,
+            ticks: 230,
+            scalar: 1.05,
+            origin: { x: 0.5, y: 0.48 },
+            colors: ["#f7d889", "#ffffff", "#9ed8e8", "#d8b4fe", "#86efac"],
+          });
+          setTimeout(() => confetti({
+            particleCount: 75,
+            angle: 60,
+            spread: 65,
+            startVelocity: 38,
+            origin: { x: 0.08, y: 0.62 },
+            colors: ["#f7d889", "#ffffff", "#9ed8e8"],
+          }), 260);
+          setTimeout(() => confetti({
+            particleCount: 75,
+            angle: 120,
+            spread: 65,
+            startVelocity: 38,
+            origin: { x: 0.92, y: 0.62 },
+            colors: ["#f7d889", "#ffffff", "#86efac"],
+          }), 420);
+        } catch (e) {}
+      }, 2850),
+      setTimeout(() => setPhase("globe"), 4700),
+      setTimeout(() => setPhase("greeting"), 6100),
+      setTimeout(() => setPhase("ready"), 7900),
     ];
     return () => timers.forEach(clearTimeout);
   }, [sceneKey]);
 
-  const replayScene = () => {
-    setSceneKey((k) => k + 1);
-  };
+  const replay = () => setSceneKey((value) => value + 1);
+  const countdown = phase === "three" || phase === "two" || phase === "one";
+  const revealYear = phase === "midnight";
+  const showGlobe = phase === "globe" || phase === "greeting" || phase === "ready";
+  const showGreeting = phase === "greeting" || phase === "ready";
+  const numeral = phase === "three" ? "3" : phase === "two" ? "2" : "1";
 
-  // Karakter pozisyon & duruş hesaplamaları
-  const getCharacterPose = () => {
-    switch (phase) {
-      case "walk":
-        return { x: 255, y: 0, rotate: 0, scaleX: 1, scaleY: 1 };
-      case "notice":
-        return { x: 262, y: 0, rotate: 4, scaleX: 1, scaleY: 1 };
-      case "pull":
-        return { x: 280, y: 6, rotate: 10, scaleX: 1.03, scaleY: 0.96 };
-      case "slip":
-      case "banner":
-      case "ready":
-        return { x: 235, y: 34, rotate: -78, scaleX: 1.04, scaleY: 0.94 };
-      default:
-        return { x: 255, y: 0, rotate: 0, scaleX: 1, scaleY: 1 };
-    }
-  };
-
-  const charPose = getCharacterPose();
-  const ropePulled = phase === "pull" || phase === "slip" || phase === "banner" || phase === "ready";
-  const bannerVisible = phase === "banner" || phase === "ready";
-  const hasFallen = phase === "slip" || phase === "banner" || phase === "ready";
+  const stars = Array.from({ length: 34 }, (_, i) => ({
+    left: `${(i * 37 + 5) % 97}%`,
+    top: `${(i * 23 + 4) % 72}%`,
+    delay: (i * 0.17) % 2.8,
+    size: i % 6 === 0 ? 3 : 2,
+  }));
+  const snow = Array.from({ length: 42 }, (_, i) => ({
+    left: `${(i * 29 + 3) % 100}%`,
+    delay: (i * 0.31) % 6,
+    duration: 6 + (i % 5) * 1.25,
+    size: i % 5 === 0 ? 4 : 2.5,
+  }));
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#0a1419] px-3 py-4 text-white sm:justify-center sm:px-6 sm:py-6"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#050b12] px-4 py-4 text-white sm:px-6 sm:py-6"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.02 }}
-      transition={{ duration: 0.75, ease: "easeInOut" }}
+      exit={{ opacity: 0, scale: 1.025, filter: "blur(5px)" }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
     >
-      {/* Derin Kış Gecesi Arka Planı */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 65% 38%, rgba(34, 92, 68, 0.34), transparent 52%), radial-gradient(ellipse at 25% 25%, rgba(56, 189, 248, 0.14), transparent 45%), linear-gradient(180deg, #081016 0%, #102124 58%, #0b161b 100%)",
-        }}
+      {/* Derin gece, ufuk parlamasi ve kuzey isiklari */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 22%, rgba(32,91,105,.38), transparent 52%), radial-gradient(ellipse at 12% 82%, rgba(30,64,85,.32), transparent 48%), linear-gradient(180deg,#03070d 0%,#081722 58%,#10232b 100%)" }} />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-36 left-1/2 h-80 w-[135vw] -translate-x-1/2 rounded-[50%] opacity-40 blur-3xl"
+        style={{ background: "linear-gradient(90deg,rgba(16,185,129,.22),rgba(56,189,248,.32),rgba(167,139,250,.2),rgba(52,211,153,.24))" }}
+        animate={{ x: ["-51%", "-47%", "-51%"], scaleY: [1, 1.2, 1], opacity: [0.24, 0.48, 0.24] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Hafif & Kasmayan Kar Taneleri */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {Array.from({ length: 24 }, (_, i) => (
-          <motion.span
-            key={i}
-            className="absolute rounded-full bg-white/75"
-            style={{
-              width: i % 3 === 0 ? 4 : 2.5,
-              height: i % 3 === 0 ? 4 : 2.5,
-              left: `${(i * 37) % 100}%`,
-              top: "-4%",
-            }}
-            animate={{
-              y: ["0vh", "105vh"],
-              x: [0, i % 2 === 0 ? 18 : -18, 0],
-              opacity: [0, 0.8, 0.2],
-            }}
-            transition={{
-              duration: 5.5 + (i % 4) * 1.1,
-              repeat: Infinity,
-              ease: "linear",
-              delay: (i * 0.27) % 4,
-            }}
-          />
+        {stars.map((star, i) => (
+          <motion.span key={`star-${i}`} className="absolute rounded-full bg-sky-100" style={{ left: star.left, top: star.top, width: star.size, height: star.size }} animate={{ opacity: [0.18, 0.95, 0.18], scale: [0.8, 1.3, 0.8] }} transition={{ duration: 2.4 + (i % 4) * 0.5, repeat: Infinity, delay: star.delay }} />
+        ))}
+        {snow.map((flake, i) => (
+          <motion.span key={`snow-${i}`} className="absolute rounded-full bg-white/80" style={{ left: flake.left, top: "-5%", width: flake.size, height: flake.size, boxShadow: "0 0 8px rgba(255,255,255,.4)" }} animate={{ y: ["0vh", "112vh"], x: [0, i % 2 ? 20 : -18, 0], opacity: [0, 0.82, 0.15] }} transition={{ duration: flake.duration, repeat: Infinity, ease: "linear", delay: flake.delay }} />
         ))}
       </div>
 
-      {/* Üst Kontrol Şeridi (Mobil ve Masaüstü Dostu) */}
-      <div className="relative z-20 flex w-full max-w-4xl items-center justify-between pt-1 sm:mb-2">
-        <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-semibold tracking-[0.22em] text-amber-200/85">
-          FARUK OS • 2027
-        </span>
+      {/* Uzak dag silueti */}
+      <svg viewBox="0 0 1200 210" preserveAspectRatio="none" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-28 w-full sm:h-40">
+        <defs>
+          <linearGradient id="farukMountain" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#284653" /><stop offset="100%" stopColor="#07121b" /></linearGradient>
+          <linearGradient id="farukSnow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#dcebf0" stopOpacity=".42" /><stop offset="100%" stopColor="#10212a" stopOpacity=".94" /></linearGradient>
+        </defs>
+        <path d="M0 130 130 58 240 119 390 35 540 124 690 48 840 120 1000 44 1120 112 1200 70V210H0Z" fill="url(#farukMountain)" />
+        <path d="M0 160Q260 122 480 157T920 151T1200 145V210H0Z" fill="url(#farukSnow)" />
+      </svg>
 
+      {/* Ust kontrol satiri */}
+      <div className="relative z-20 flex w-full max-w-5xl items-center justify-between gap-3">
+        <span className="rounded-full border border-white/20 bg-white/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-[.24em] text-amber-100/90">FARUK OS <span className="text-white/45">/</span> 2027</span>
         <div className="flex items-center gap-2">
           {phase === "ready" && (
-            <button
-              onClick={replayScene}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-medium text-white/90 transition hover:bg-white/20 cursor-pointer"
-            >
-              <RotateCcw className="h-3.5 w-3.5 text-amber-300" />
-              <span>Tekrar İzle</span>
-            </button>
+            <button onClick={replay} className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] text-white/90 transition hover:bg-white/20 cursor-pointer">↻ Tekrar izle</button>
           )}
-          <button
-            onClick={onEnter}
-            className="rounded-full border border-white/20 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/85 transition hover:border-white/45 hover:text-white cursor-pointer"
-          >
-            Geç →
-          </button>
+          <button onClick={onEnter} className="rounded-full border border-white/25 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 cursor-pointer">Atla →</button>
         </div>
       </div>
 
-      {/* Ana Hikaye Sahnesi (Tek SVG Canvas — Mobilde ve Masaüstünde Asla Kaymaz) */}
-      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-4xl items-center justify-center">
-        <svg
-          viewBox="0 0 820 435"
-          className="h-auto max-h-[63svh] w-full overflow-visible drop-shadow-[0_22px_50px_rgba(0,0,0,0.65)] sm:max-h-[68svh]"
-          role="img"
-          aria-label="Süslü çam ağacı, kardan adam, ipi çekip kayarak düşen komik karakter ve Faruk Mutlu Yıllar Diler tabelası"
-        >
-          <defs>
-            <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#fef3c7" stopOpacity="0.95" />
-              <stop offset="55%" stopColor="#fde68a" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#fde68a" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id="snowHill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#e2f1f8" />
-              <stop offset="45%" stopColor="#bfd9e6" />
-              <stop offset="100%" stopColor="#8fb2c4" />
-            </linearGradient>
-            <linearGradient id="icePatch" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.25" />
-              <stop offset="50%" stopColor="#e0f2fe" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.3" />
-            </linearGradient>
-            <linearGradient id="bannerBoard" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#1b3b2e" />
-              <stop offset="50%" stopColor="#122920" />
-              <stop offset="100%" stopColor="#0c1d17" />
-            </linearGradient>
-            <filter id="warmGlow" x="-25%" y="-25%" width="150%" height="150%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+      {/* Ana sinematik sahne */}
+      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-5xl flex-col items-center justify-center py-3">
+        <AnimatePresence mode="wait">
+          {countdown && (
+            <motion.div key="countdown" initial={{ opacity: 0, scale: 0.82, filter: "blur(12px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, scale: 1.28, filter: "blur(10px)" }} transition={{ duration: 0.48 }} className="flex flex-col items-center text-center">
+              <div className="relative flex h-56 w-56 items-center justify-center rounded-full border border-white/15 bg-white/[.035] shadow-[0_0_90px_rgba(56,189,248,.13)] sm:h-64 sm:w-64">
+                <motion.div className="absolute inset-3 rounded-full border border-sky-200/20" animate={{ rotate: 360 }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }} />
+                <motion.div className="absolute inset-6 rounded-full border border-dashed border-amber-200/25" animate={{ rotate: -360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} />
+                <motion.span key={numeral} initial={{ opacity: 0, y: 18, scale: 0.55, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, y: -16, scale: 1.35 }} transition={{ type: "spring", stiffness: 210, damping: 16 }} className="font-mono text-8xl font-black text-white drop-shadow-[0_0_30px_rgba(125,211,252,.75)] sm:text-9xl">{numeral}</motion.span>
+                <motion.div className="absolute inset-0 rounded-full border-2 border-sky-200/50" initial={{ scale: 0.85, opacity: 0.7 }} animate={{ scale: 1.32, opacity: 0 }} transition={{ duration: 1.1, repeat: Infinity, ease: "easeOut" }} />
+              </div>
+              <p className="mt-7 text-[10px] font-bold tracking-[.38em] text-sky-100/75">YENİ BİR BAŞLANGICA</p>
+              <p className="mt-2 text-sm text-white/65">Son saniyeler...</p>
+            </motion.div>
+          )}
 
-          {/* Dolunay & Yıldızlar */}
-          <circle cx="115" cy="78" r="56" fill="url(#moonGlow)" />
-          <circle cx="115" cy="78" r="24" fill="#fef9c3" opacity="0.92" />
-          {[
-            [210, 48],
-            [340, 36],
-            [520, 44],
-            [745, 58],
-            [68, 155],
-            [775, 138],
-          ].map(([sx, sy], idx) => (
-            <motion.circle
-              key={idx}
-              cx={sx}
-              cy={sy}
-              r={idx % 2 === 0 ? 2.2 : 1.6}
-              fill="#fef08a"
-              animate={{ opacity: [0.25, 1, 0.25] }}
-              transition={{ duration: 2 + idx * 0.4, repeat: Infinity }}
-            />
-          ))}
+          {revealYear && (
+            <motion.div key="year" initial={{ opacity: 0, scale: 0.55, filter: "blur(18px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20 }} transition={{ type: "spring", stiffness: 135, damping: 15 }} className="relative flex flex-col items-center text-center">
+              <motion.div className="absolute -inset-16 rounded-full border border-amber-200/35" initial={{ scale: 0.4, opacity: 0.9 }} animate={{ scale: 2.3, opacity: 0 }} transition={{ duration: 1.7, ease: "easeOut" }} />
+              <span className="rounded-full border border-amber-200/45 bg-amber-300/10 px-4 py-1.5 text-[10px] font-bold tracking-[.35em] text-amber-100">00:00 · YENİ YIL</span>
+              <h1 className="mt-4 bg-gradient-to-b from-white via-amber-100 to-amber-400 bg-clip-text text-8xl font-black tracking-[-.07em] text-transparent drop-shadow-[0_12px_35px_rgba(251,191,36,.28)] sm:text-[10rem]">2027</h1>
+              <p className="mt-1 text-xs font-semibold tracking-[.32em] text-emerald-100/85 sm:text-sm">YENİ BİR YIL · YENİ İHTİMALLER</p>
+            </motion.div>
+          )}
 
-          {/* Uzak Karlı Tepe Silüeti */}
-          <path
-            d="M0 335 Q 200 285 420 322 T 820 305 L 820 435 L 0 435 Z"
-            fill="#142930"
-            opacity="0.75"
-          />
+          {showGlobe && (
+            <motion.div key="finale" initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:gap-12">
+              {/* Cam kar kuresi */}
+              <motion.div initial={{ scale: 0.72, rotate: -7, opacity: 0 }} animate={{ scale: 1, rotate: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 115, damping: 15 }} className="relative shrink-0">
+                <motion.div className="absolute -inset-8 rounded-full bg-sky-300/10 blur-3xl" animate={{ opacity: [0.25, 0.65, 0.25], scale: [0.9, 1.08, 0.9] }} transition={{ duration: 4, repeat: Infinity }} />
+                <svg viewBox="0 0 340 380" role="img" aria-label="2027 yazili, icinde isikli cam agac bulunan kar kuresi" className="relative h-64 w-56 drop-shadow-[0_28px_35px_rgba(0,0,0,.65)] sm:h-[21rem] sm:w-[19rem]">
+                  <defs>
+                    <radialGradient id="snowGlass" cx="34%" cy="25%" r="75%"><stop offset="0%" stopColor="#b9e8f5" stopOpacity=".38"/><stop offset="48%" stopColor="#1d5267" stopOpacity=".35"/><stop offset="100%" stopColor="#06131f" stopOpacity=".92"/></radialGradient>
+                    <linearGradient id="snowBase" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#392a20"/><stop offset="25%" stopColor="#b58a4a"/><stop offset="52%" stopColor="#f1d28b"/><stop offset="78%" stopColor="#9a713b"/><stop offset="100%" stopColor="#33251c"/></linearGradient>
+                    <clipPath id="snowGlobeClip"><circle cx="170" cy="157" r="125"/></clipPath>
+                    <filter id="globeGlow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  </defs>
+                  <ellipse cx="170" cy="354" rx="112" ry="13" fill="#000" opacity=".42"/>
+                  <circle cx="170" cy="157" r="128" fill="url(#snowGlass)" stroke="#d9f5ff" strokeOpacity=".75" strokeWidth="3"/>
+                  <g clipPath="url(#snowGlobeClip)">
+                    <path d="M40 246Q170 212 300 246V290H40Z" fill="#e8f4f7" opacity=".92"/>
+                    <path d="M40 255Q120 232 190 251T300 248V290H40Z" fill="#b7dce8" opacity=".65"/>
+                    <path d="M170 95L105 221Q170 239 235 221Z" fill="#123f30" stroke="#7bb78e" strokeOpacity=".55" strokeWidth="2"/>
+                    <path d="M170 66L119 174Q170 191 221 174Z" fill="#176044"/>
+                    <path d="M170 43L132 129Q170 145 208 129Z" fill="#207a50"/>
+                    <path d="M165 215H175V247H165Z" fill="#76513a"/>
+                    <path d="M170 42L170 221" stroke="#d2b36b" strokeOpacity=".45" strokeWidth="2"/>
+                    <path d="M132 135Q170 153 208 135M116 181Q170 204 224 181M103 220Q170 242 237 220" fill="none" stroke="#f3d98e" strokeWidth="3" strokeDasharray="5 5"/>
+                    {[[170,72],[145,113],[195,119],[128,161],[170,167],[211,165],[119,204],[151,211],[190,211],[225,201]].map(([x,y],i)=>(
+                      <motion.circle key={`light-${i}`} cx={x} cy={y} r="4.5" fill={["#ffe59a","#fca5a5","#9edcf2","#fef3c7"][i%4]} filter="url(#globeGlow)" animate={{ opacity:[.35,1,.4],scale:[.8,1.3,.8] }} transition={{ duration:1.5,repeat:Infinity,delay:i*.13 }}/>
+                    ))}
+                    <polygon points="170,22 176,37 192,38 180,48 184,64 170,55 156,64 160,48 148,38 164,37" fill="#ffe7a1" stroke="#f5bd56" strokeWidth="2"/>
+                    {Array.from({length:18},(_,i)=>(
+                      <motion.circle key={`globe-snow-${i}`} cx={65+(i*47)%210} cy={48+(i*31)%190} r={i%4===0?2.8:1.8} fill="#fff" animate={{ y:[0,24,0],opacity:[.25,.95,.25] }} transition={{ duration:2.8+(i%4)*.5,repeat:Infinity,delay:i*.12 }}/>
+                    ))}
+                  </g>
+                  <path d="M82 112A100 100 0 0 1 145 47" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" opacity=".48"/>
+                  <path d="M73 146A111 111 0 0 1 91 91" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".3"/>
+                  <rect x="89" y="282" width="162" height="18" rx="8" fill="#d6b46c" stroke="#f8e4ad" strokeWidth="1.5"/>
+                  <path d="M70 298H270L257 343Q170 363 83 343Z" fill="url(#snowBase)" stroke="#e9ca87" strokeWidth="2"/>
+                  <rect x="123" y="310" width="94" height="25" rx="7" fill="#171b1d" stroke="#e4c47e" strokeWidth="1.5"/>
+                  <text x="170" y="328" textAnchor="middle" fill="#ffe6a0" fontSize="15" fontWeight="900" letterSpacing="3">2027</text>
+                </svg>
+              </motion.div>
 
-          {/* Ön Kar Zemini */}
-          <path
-            d="M-10 352 Q 230 328 470 348 T 830 342 L 830 440 L -10 440 Z"
-            fill="url(#snowHill)"
-          />
-
-          {/* Kaygan Buz Tabakası (Karakterin kayacağı nokta) */}
-          <g transform="translate(275, 344)">
-            <ellipse cx="42" cy="8" rx="46" ry="7.5" fill="url(#icePatch)" stroke="#bae6fd" strokeWidth="1.2" />
-            <path d="M22 7 L36 5 M48 9 L64 7" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" opacity="0.85" />
-            {hasFallen && (
-              <motion.g
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: [0, 1, 0], scale: [0.6, 1.25, 1.4] }}
-                transition={{ duration: 0.7 }}
-              >
-                <text x="32" y="-4" fill="#e0f2fe" fontSize="14" fontWeight="bold">✨</text>
-              </motion.g>
-            )}
-          </g>
-
-          {/* ARKA PLAN DEKORU: Sevimli Atkılı Kardan Adam */}
-          <motion.g
-            transform="translate(475, 224)"
-            animate={
-              hasFallen
-                ? { rotate: [0, -6, 4, 0], y: [0, -5, 0] }
-                : { rotate: [-1.5, 1.5, -1.5] }
-            }
-            transition={{
-              duration: hasFallen ? 0.55 : 3.2,
-              repeat: hasFallen ? 0 : Infinity,
-              ease: "easeInOut",
-            }}
-            style={{ transformOrigin: "45px 115px" }}
-          >
-            {/* Gölge */}
-            <ellipse cx="45" cy="122" rx="38" ry="7" fill="#648b9e" opacity="0.45" />
-            {/* Alt Gövde */}
-            <circle cx="45" cy="92" r="31" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="2" />
-            {/* Orta Gövde */}
-            <circle cx="45" cy="52" r="23" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2" />
-            {/* Kafa */}
-            <circle cx="45" cy="19" r="16.5" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2" />
-
-            {/* Kömür Düğmeler */}
-            <circle cx="45" cy="46" r="2.6" fill="#1e293b" />
-            <circle cx="45" cy="57" r="2.6" fill="#1e293b" />
-            <circle cx="45" cy="82" r="2.8" fill="#1e293b" />
-
-            {/* Dal Kollar */}
-            <path d="M23 48 L-4 32 M4 37 L-3 25" stroke="#78350f" strokeWidth="3.2" strokeLinecap="round" />
-            <path d="M67 48 L93 30 M85 36 L94 24" stroke="#78350f" strokeWidth="3.2" strokeLinecap="round" />
-
-            {/* Kırmızı-Sarı Çizgili Atkı */}
-            <path d="M29 33 Q45 40 61 33" stroke="#dc2626" strokeWidth="7" strokeLinecap="round" />
-            <path d="M29 33 Q45 40 61 33" stroke="#fbbf24" strokeWidth="2.5" strokeDasharray="5 5" strokeLinecap="round" />
-            <path d="M53 35 L58 61 L49 62 Z" fill="#dc2626" />
-
-            {/* Gözler (Düşünce şaşırıp sola bakar!) */}
-            <circle cx={hasFallen ? 37 : 39} cy="15" r={hasFallen ? 2.9 : 2.2} fill="#0f172a" />
-            <circle cx={hasFallen ? 48 : 50} cy="15" r={hasFallen ? 2.9 : 2.2} fill="#0f172a" />
-            {/* Havuç Burun */}
-            <polygon points="44,18 29,21 44,23" fill="#f97316" />
-            {/* Şaşkın veya Gülümseyen Ağız */}
-            {hasFallen ? (
-              <circle cx="44" cy="27" r="3" fill="#1e293b" />
-            ) : (
-              <path d="M38 25 Q44 30 50 25" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
-            )}
-
-            {/* Kardan Adam Şapkası */}
-            <rect x="28" y="1" width="34" height="4.5" rx="2" fill="#1e293b" />
-            <rect x="33" y="-14" width="24" height="16" rx="3" fill="#1e293b" />
-            <rect x="33" y="-3" width="24" height="3.5" fill="#dc2626" />
-          </motion.g>
-
-          {/* SAĞ TARAF: Süslü ve Işıklı Büyük Çam Ağacı */}
-          <g transform="translate(555, 58)">
-            {/* Zemin Gölgesi */}
-            <ellipse cx="115" cy="296" rx="92" ry="12" fill="#5b8296" opacity="0.45" />
-            {/* Gövde */}
-            <rect x="100" y="256" width="30" height="40" rx="5" fill="#6b4423" />
-
-            {/* Katmanlı Çam Dalları */}
-            <path d="M115 115 L22 262 Q115 278 208 262 Z" fill="#134e35" stroke="#0d3b27" strokeWidth="2.5" strokeLinejoin="round" />
-            <path d="M115 72 L36 202 Q115 216 194 202 Z" fill="#186041" stroke="#114730" strokeWidth="2.5" strokeLinejoin="round" />
-            <path d="M115 32 L52 142 Q115 154 178 142 Z" fill="#1f7550" stroke="#15573b" strokeWidth="2.5" strokeLinejoin="round" />
-
-            {/* Dalların Üzerindeki Kar Örtüleri */}
-            <path d="M52 142 Q82 149 115 144 Q148 149 178 142" fill="none" stroke="#f1f5f9" strokeWidth="4.5" strokeLinecap="round" opacity="0.9" />
-            <path d="M36 202 Q75 210 115 204 Q155 210 194 202" fill="none" stroke="#f1f5f9" strokeWidth="5" strokeLinecap="round" opacity="0.9" />
-            <path d="M22 262 Q68 271 115 264 Q162 271 208 262" fill="none" stroke="#f1f5f9" strokeWidth="5.5" strokeLinecap="round" opacity="0.9" />
-
-            {/* Altın Simli Kurdele */}
-            <path
-              d="M84 96 Q122 114 152 104 M64 156 Q118 180 172 162 M44 218 Q115 246 192 224"
-              fill="none"
-              stroke="#fbbf24"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-              strokeDasharray="6 4"
-              opacity="0.9"
-            />
-
-            {/* Renkli Yılbaşı Topları */}
-            {[
-              { x: 96, y: 112, c: "#ef4444" },
-              { x: 136, y: 122, c: "#fbbf24" },
-              { x: 76, y: 168, c: "#38bdf8" },
-              { x: 118, y: 176, c: "#ef4444" },
-              { x: 154, y: 166, c: "#f59e0b" },
-              { x: 58, y: 230, c: "#fbbf24" },
-              { x: 98, y: 238, c: "#ec4899" },
-              { x: 138, y: 235, c: "#38bdf8" },
-              { x: 174, y: 226, c: "#ef4444" },
-            ].map((orb, i) => (
-              <g key={i}>
-                <circle cx={orb.x} cy={orb.y} r="7.5" fill={orb.c} stroke="#fef3c7" strokeWidth="1.2" />
-                <circle cx={orb.x - 2.3} cy={orb.y - 2.5} r="2" fill="#ffffff" opacity="0.75" />
-              </g>
-            ))}
-
-            {/* Yanıp Sönen Peri Işıkları */}
-            {[
-              [115, 76],
-              [92, 134],
-              [142, 138],
-              [70, 194],
-              [116, 198],
-              [162, 190],
-              [48, 250],
-              [92, 255],
-              [142, 252],
-              [184, 246],
-            ].map(([lx, ly], i) => (
-              <motion.circle
-                key={i}
-                cx={lx}
-                cy={ly}
-                r="3.8"
-                fill={i % 2 === 0 ? "#fef08a" : "#fde047"}
-                filter="url(#warmGlow)"
-                animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.25, 0.85] }}
-                transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.17 }}
-              />
-            ))}
-
-            {/* Tepe Yıldızı */}
-            <motion.polygon
-              points="115,4 121,19 137,20 125,30 129,45 115,36 101,45 105,30 93,20 109,19"
-              fill="#fde047"
-              stroke="#f59e0b"
-              strokeWidth="1.5"
-              filter="url(#warmGlow)"
-              animate={{ scale: [0.95, 1.08, 0.95], rotate: [-3, 3, -3] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              style={{ transformOrigin: "115px 25px" }}
-            />
-          </g>
-
-          {/* AĞACIN YANINDAN SARKAN ÇEKME İPİ */}
-          <motion.g
-            animate={{ y: ropePulled ? 34 : 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 14 }}
-          >
-            {/* İp Gövdesi */}
-            <line
-              x1="342"
-              y1="-25"
-              x2="342"
-              y2="232"
-              stroke="#f59e0b"
-              strokeWidth="4"
-              strokeDasharray="6 3"
-            />
-            <line x1="342" y1="-25" x2="342" y2="232" stroke="#fef3c7" strokeWidth="1.5" opacity="0.7" />
-            {/* Kırmızı Püsküllü Tutamaç */}
-            <circle cx="342" cy="236" r="7" fill="#dc2626" stroke="#fbbf24" strokeWidth="2" />
-            <path d="M337 242 L334 256 M342 243 L342 258 M347 242 L350 256" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" />
-
-            {/* İp Çekilince Çıkan Hareket Çizgileri */}
-            {phase === "pull" && (
-              <motion.g
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <path d="M322 225 L312 218 M362 225 L372 218 M320 242 L310 244" stroke="#fde047" strokeWidth="2.5" strokeLinecap="round" />
-              </motion.g>
-            )}
-          </motion.g>
-
-          {/* KOMİK KARAKTER (Yürür -> İpi Fark Eder -> Çeker -> Buzda Kayıp Düşer!) */}
-          <motion.g
-            initial={{ x: -85, y: 0, rotate: 0 }}
-            animate={charPose}
-            transition={
-              phase === "walk"
-                ? { duration: 1.6, ease: "easeOut" }
-                : phase === "slip"
-                ? { type: "spring", stiffness: 240, damping: 15 }
-                : { duration: 0.45, ease: "easeOut" }
-            }
-            style={{ transformOrigin: "45px 95px" }}
-          >
-            {/* Yürüme Sırasında Hafif Sekme */}
-            <motion.g
-              animate={
-                phase === "walk"
-                  ? { y: [0, -7, 0, -7, 0, -6, 0] }
-                  : { y: 0 }
-              }
-              transition={{ duration: 1.6, ease: "easeInOut" }}
-            >
-              {/* Zemin Gölgesi */}
-              <ellipse cx="45" cy="112" rx="28" ry="6" fill="#5b8296" opacity="0.45" />
-
-              {/* Sol & Sağ Bacaklar + Botlar */}
-              <motion.g
-                animate={
-                  phase === "walk"
-                    ? { rotate: [-22, 22, -22, 22, 0] }
-                    : hasFallen
-                    ? { rotate: -25 }
-                    : { rotate: 0 }
-                }
-                transition={{ duration: phase === "walk" ? 1.6 : 0.3 }}
-                style={{ transformOrigin: "38px 82px" }}
-              >
-                <rect x="33" y="80" width="10" height="24" rx="5" fill="#1e293b" />
-                <rect x="30" y="100" width="17" height="9" rx="4.5" fill="#78350f" />
-              </motion.g>
-
-              <motion.g
-                animate={
-                  phase === "walk"
-                    ? { rotate: [22, -22, 22, -22, 0] }
-                    : hasFallen
-                    ? { rotate: 32 }
-                    : { rotate: 0 }
-                }
-                transition={{ duration: phase === "walk" ? 1.6 : 0.3 }}
-                style={{ transformOrigin: "52px 82px" }}
-              >
-                <rect x="47" y="80" width="10" height="24" rx="5" fill="#334155" />
-                <rect x="46" y="100" width="17" height="9" rx="4.5" fill="#92400e" />
-              </motion.g>
-
-              {/* Kışlık Mont (Sarı-Lacivert / Kırmızı Detaylı) */}
-              <rect x="27" y="45" width="36" height="40" rx="14" fill="#e11d48" stroke="#be123c" strokeWidth="2" />
-              {/* Mont Fermuarı */}
-              <line x1="47" y1="47" x2="47" y2="83" stroke="#fecdd3" strokeWidth="2" />
-
-              {/* Uçuşan Atkı */}
-              <motion.path
-                d="M28 48 Q12 52 6 62"
-                fill="none"
-                stroke="#fbbf24"
-                strokeWidth="6"
-                strokeLinecap="round"
-                animate={
-                  phase === "walk" || hasFallen
-                    ? { d: ["M28 48 Q12 52 6 62", "M28 48 Q10 42 4 48", "M28 48 Q12 52 6 62"] }
-                    : {}
-                }
-                transition={{ duration: 0.6, repeat: Infinity }}
-              />
-
-              {/* Kollar (İp çekerken yukarı uzanır, düşünce havaya kalkar!) */}
-              <motion.g
-                animate={
-                  phase === "pull"
-                    ? { rotate: -125, x: 8, y: -6 }
-                    : hasFallen
-                    ? { rotate: -145, y: -4 }
-                    : phase === "walk"
-                    ? { rotate: [18, -18, 18, -18, 0] }
-                    : { rotate: -25 }
-                }
-                transition={{ duration: 0.35 }}
-                style={{ transformOrigin: "54px 54px" }}
-              >
-                <rect x="50" y="50" width="10" height="24" rx="5" fill="#be123c" />
-                <circle cx="55" cy="75" r="5.5" fill="#fbbf24" />
-              </motion.g>
-
-              {/* Kafa */}
-              <circle cx="46" cy="28" r="17" fill="#fed7aa" stroke="#fdba74" strokeWidth="1.5" />
-              {/* Kırmızı Yanak */}
-              <circle cx="53" cy="32" r="3.2" fill="#fb7185" opacity="0.65" />
-
-              {/* Yüz İfadesi: Normal -> Şaşkın -> Düşmüş Komik Gözler */}
-              {hasFallen ? (
-                <g>
-                  {/* X_X veya Şaşkın Gözler */}
-                  <path d="M47 23 L52 28 M52 23 L47 28" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
-                  <circle cx="57" cy="25" r="2.6" fill="#1e293b" />
-                  {/* Açık Şaşkın Ağız */}
-                  <ellipse cx="53" cy="35" rx="4" ry="3" fill="#9f1239" />
-                </g>
-              ) : (
-                <g>
-                  <circle cx="51" cy="25" r="2.3" fill="#0f172a" />
-                  <circle cx="58" cy="25" r="2.3" fill="#0f172a" />
-                  <path
-                    d={phase === "pull" ? "M50 34 Q54 31 58 34" : "M49 33 Q54 37 59 33"}
-                    fill="none"
-                    stroke="#0f172a"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </g>
+              {showGreeting && (
+                <motion.div initial={{ opacity: 0, x: 28, scale: .96 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ duration: .75, delay: .12 }} className="flex max-w-md flex-col items-center rounded-[2rem] border border-amber-100/25 bg-white/[.065] px-6 py-6 text-center shadow-[0_25px_80px_rgba(0,0,0,.42)] backdrop-blur-xl md:items-start md:text-left sm:px-9 sm:py-8">
+                  <span className="rounded-full border border-amber-200/40 bg-amber-200/10 px-3.5 py-1.5 text-[10px] font-bold tracking-[.26em] text-amber-100">✦ HOŞ GELDİN 2027 ✦</span>
+                  <h1 className="mt-4 bg-gradient-to-r from-white via-amber-100 to-amber-300 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">Faruk Mutlu Yıllar Diler</h1>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-sky-50/80">Sağlık, huzur, güzel başlangıçlar ve emeklerinin karşılığını aldığın harika bir yıl olsun.</p>
+                  {phase === "ready" && (
+                    <motion.button onClick={onEnter} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} whileHover={{ scale: 1.035, y: -2 }} whileTap={{ scale: .97 }} transition={{ type: "spring", stiffness: 220, damping: 17 }} className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-amber-100/65 bg-gradient-to-r from-amber-300/20 via-emerald-300/15 to-sky-300/20 px-7 py-3.5 text-xs font-extrabold tracking-[.22em] text-amber-50 shadow-[0_12px_38px_rgba(251,191,36,.18)] transition hover:border-amber-100 hover:bg-amber-300/30 cursor-pointer md:w-auto sm:text-sm">
+                      SİSTEME GİR <span className="text-lg">→</span>
+                    </motion.button>
+                  )}
+                </motion.div>
               )}
-
-              {/* Ponponlu Kış Beresi */}
-              <path d="M29 22 Q46 6 63 22 Z" fill="#0284c7" />
-              <rect x="28" y="19" width="36" height="6" rx="3" fill="#fbbf24" />
-              <circle cx="46" cy="8" r="5.5" fill="#f8fafc" />
-            </motion.g>
-          </motion.g>
-
-          {/* KARAKTER TEPKİ BALONCUKLARI (?, !, Düşme Kar Bulutu & Baş Dönme Yıldızları) */}
-          {phase === "notice" && (
-            <motion.g
-              initial={{ opacity: 0, y: 8, scale: 0.6 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transform="translate(302, 185)"
-            >
-              <circle cx="16" cy="16" r="15" fill="#ffffff" stroke="#fbbf24" strokeWidth="2.5" />
-              <text x="11" y="22" fill="#0f172a" fontSize="18" fontWeight="900">?</text>
-            </motion.g>
-          )}
-
-          {hasFallen && (
-            <g>
-              {/* Düşme Kar Tozu Efekti */}
-              <motion.g
-                initial={{ opacity: 0.95, scale: 0.4 }}
-                animate={{ opacity: 0, scale: 1.5 }}
-                transition={{ duration: 0.85, ease: "easeOut" }}
-                transform="translate(265, 336)"
-              >
-                <circle cx="-18" cy="4" r="12" fill="#ffffff" />
-                <circle cx="12" cy="6" r="15" fill="#e0f2fe" />
-                <circle cx="42" cy="2" r="11" fill="#ffffff" />
-              </motion.g>
-
-              {/* Başının Üstünde Dönen Komik Yıldızlar */}
-              <motion.g
-                transform="translate(242, 268)"
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              >
-                <text x="-16" y="0" fill="#fde047" fontSize="14">★</text>
-                <text x="10" y="-6" fill="#38bdf8" fontSize="12">✦</text>
-                <text x="2" y="12" fill="#fbbf24" fontSize="13">★</text>
-              </motion.g>
-            </g>
-          )}
-
-          {/* ÜSTTEN İNEN YILBAŞI TABELASI: "Faruk Mutlu Yıllar Diler" */}
-          <motion.g
-            initial={{ y: -210, rotate: -4 }}
-            animate={
-              bannerVisible
-                ? { y: 18, rotate: [0, 2.2, -1.5, 0.7, 0] }
-                : { y: -210, rotate: -4 }
-            }
-            transition={{
-              y: { type: "spring", stiffness: 150, damping: 13 },
-              rotate: { duration: 1.4, ease: "easeOut" },
-            }}
-            style={{ transformOrigin: "245px 0px" }}
-          >
-            {/* Tabelayı Tutan İki Halat */}
-            <line x1="115" y1="-60" x2="115" y2="34" stroke="#d97706" strokeWidth="4" />
-            <line x1="375" y1="-60" x2="375" y2="34" stroke="#d97706" strokeWidth="4" />
-
-            {/* Ahşap / Zümrüt Çerçeveli Yılbaşı Tabelası */}
-            <rect
-              x="42"
-              y="28"
-              width="406"
-              height="118"
-              rx="22"
-              fill="url(#bannerBoard)"
-              stroke="#fbbf24"
-              strokeWidth="4"
-            />
-            <rect
-              x="51"
-              y="37"
-              width="388"
-              height="100"
-              rx="15"
-              fill="none"
-              stroke="#fde68a"
-              strokeWidth="1.2"
-              strokeDasharray="6 4"
-              opacity="0.65"
-            />
-
-            {/* Tabela Çerçevesindeki Mini Ampuller */}
-            {[64, 124, 184, 245, 306, 366, 426].map((bx, idx) => (
-              <motion.circle
-                key={`top-b-${idx}`}
-                cx={bx}
-                cy="33"
-                r="4"
-                fill={idx % 2 === 0 ? "#ef4444" : "#fde047"}
-                filter="url(#warmGlow)"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1, repeat: Infinity, delay: idx * 0.15 }}
-              />
-            ))}
-
-            {/* Üst Küçük Etiket */}
-            <text
-              x="245"
-              y="64"
-              textAnchor="middle"
-              fill="#fde68a"
-              fontSize="12"
-              fontWeight="700"
-              letterSpacing="4"
-            >
-              ✨ HOŞ GELDİN 2027 ✨
-            </text>
-
-            {/* Ana Tabela Yazısı */}
-            <text
-              x="245"
-              y="99"
-              textAnchor="middle"
-              fill="#ffffff"
-              fontSize="27"
-              fontWeight="900"
-              letterSpacing="0.5"
-            >
-              Faruk Mutlu Yıllar Diler
-            </text>
-
-            {/* Alt Süs Çizgisi */}
-            <text
-              x="245"
-              y="124"
-              textAnchor="middle"
-              fill="#86efac"
-              fontSize="12"
-              fontWeight="600"
-            >
-              🎄 Sağlık, huzur ve güzel başlangıçlarla dolu bir yıl olsun 🎄
-            </text>
-          </motion.g>
-        </svg>
-      </div>
-
-      {/* Alt Giriş Butonu Alanı (Animasyon Tamamlanınca Belirir) */}
-      <div className="relative z-20 flex min-h-[76px] flex-col items-center justify-center pb-2">
-        <AnimatePresence>
-          {phase === "ready" && (
-            <motion.div
-              initial={{ opacity: 0, y: 16, scale: 0.92 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ type: "spring", stiffness: 220, damping: 18 }}
-              className="flex flex-col items-center gap-2"
-            >
-              <motion.button
-                onClick={onEnter}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-3 rounded-2xl border border-amber-200/70 bg-gradient-to-r from-amber-400/25 via-emerald-500/25 to-amber-400/25 px-8 py-3.5 text-xs font-extrabold tracking-[0.22em] text-amber-50 shadow-[0_12px_35px_rgba(251,191,36,0.28)] transition hover:border-amber-200 hover:bg-amber-400/35 cursor-pointer sm:px-10 sm:py-4 sm:text-sm"
-              >
-                <span>SİSTEME GİR</span>
-                <span className="text-base">→</span>
-              </motion.button>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      <div className="relative z-20 flex min-h-8 items-center justify-center pb-1">
+        {phase !== "ready" && <motion.div initial={{ opacity: 0 }} animate={{ opacity: .72 }} className="flex items-center gap-2 text-[10px] tracking-[.28em] text-white/65"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-200"/>2027 HAZIRLANIYOR</motion.div>}
+      </div>
     </motion.div>
   );
 };
+
 
 const NewYearFeature = ({ isDay, soundFx }) => {
   const [wishIndex, setWishIndex] = useState(0);
