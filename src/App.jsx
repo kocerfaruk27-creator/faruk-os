@@ -141,6 +141,201 @@ const FOLDERS = [
   },
 ];
 
+// Her gruba özel pencere renk teması
+const FOLDER_THEMES = {
+  kariyer: {
+    bg: "linear-gradient(145deg, #0b1118 0%, #19150d 52%, #0c131c 100%)",
+    border: "rgba(251, 191, 36, 0.38)",
+    glow: "radial-gradient(circle at 84% 16%, rgba(245, 158, 11, 0.17), transparent 48%), radial-gradient(circle at 16% 84%, rgba(56, 189, 248, 0.11), transparent 45%)",
+    headerBg: "rgba(10, 14, 20, 0.78)",
+  },
+  projelerim: {
+    bg: "linear-gradient(145deg, #07131a 0%, #0b202b 52%, #08151e 100%)",
+    border: "rgba(34, 211, 238, 0.38)",
+    glow: "radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.17), transparent 48%), radial-gradient(circle at 18% 82%, rgba(59, 130, 246, 0.12), transparent 45%)",
+    headerBg: "rgba(7, 17, 24, 0.78)",
+  },
+  muzikler: {
+    bg: "linear-gradient(145deg, #170910 0%, #260e1a 52%, #130912 100%)",
+    border: "rgba(251, 113, 133, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(244, 63, 94, 0.18), transparent 48%), radial-gradient(circle at 15% 85%, rgba(251, 191, 36, 0.10), transparent 45%)",
+    headerBg: "rgba(20, 8, 15, 0.78)",
+  },
+  diziler: {
+    bg: "linear-gradient(145deg, #071512 0%, #0d241d 52%, #081613 100%)",
+    border: "rgba(52, 211, 153, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.17), transparent 48%), radial-gradient(circle at 15% 85%, rgba(20, 184, 166, 0.11), transparent 45%)",
+    headerBg: "rgba(7, 19, 16, 0.78)",
+  },
+  filmler: {
+    bg: "linear-gradient(145deg, #090c1b 0%, #141833 52%, #0a0d1c 100%)",
+    border: "rgba(129, 140, 248, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(99, 102, 241, 0.18), transparent 48%), radial-gradient(circle at 15% 85%, rgba(232, 121, 249, 0.10), transparent 45%)",
+    headerBg: "rgba(9, 12, 26, 0.78)",
+  },
+  hakkimda: {
+    bg: "linear-gradient(145deg, #190b0d 0%, #23170b 52%, #140c10 100%)",
+    border: "rgba(251, 191, 36, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(239, 68, 68, 0.17), transparent 48%), radial-gradient(circle at 15% 85%, rgba(245, 158, 11, 0.14), transparent 45%)",
+    headerBg: "rgba(22, 10, 12, 0.78)",
+  },
+  mesaj: {
+    bg: "linear-gradient(145deg, #08121d 0%, #0f2033 52%, #09131f 100%)",
+    border: "rgba(56, 189, 248, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.17), transparent 48%), radial-gradient(circle at 15% 85%, rgba(99, 102, 241, 0.11), transparent 45%)",
+    headerBg: "rgba(8, 17, 28, 0.78)",
+  },
+  kelime: {
+    bg: "linear-gradient(145deg, #120a1f 0%, #201236 52%, #11091c 100%)",
+    border: "rgba(192, 132, 252, 0.38)",
+    glow: "radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.18), transparent 48%), radial-gradient(circle at 15% 85%, rgba(236, 72, 153, 0.11), transparent 45%)",
+    headerBg: "rgba(17, 9, 29, 0.78)",
+  },
+};
+
+// Her gruba özel sembol ve desen arka planı
+const FolderThemeBackdrop = ({ folderId }) => {
+  const theme = FOLDER_THEMES[folderId] || FOLDER_THEMES.kariyer;
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden select-none" aria-hidden="true">
+      <div className="absolute inset-0" style={{ background: theme.glow }} />
+
+      {/* 1. KARİYER: Devre yolları, dişli çark ve SCADA sinyal dalgası */}
+      {folderId === "kariyer" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#fbbf24" strokeWidth="2">
+            <circle cx="840" cy="140" r="58" strokeDasharray="10 8" />
+            <circle cx="840" cy="140" r="32" />
+            <circle cx="840" cy="140" r="10" />
+            <path d="M840 65v17M840 198v17M765 140h17M898 140h17M787 87l12 12M881 181l12 12M893 87l-12 12M799 181l-12 12" />
+            <path d="M60 120h140l40 40h110" />
+            <circle cx="350" cy="160" r="6" fill="#fbbf24" />
+            <path d="M80 560h180l35-35h130l30 30h140" />
+            <circle cx="605" cy="555" r="6" fill="#fbbf24" />
+            <path d="M680 520q25-45 50 0t50 0t50 0t50 0" stroke="#38bdf8" strokeWidth="2.5" />
+          </g>
+        </svg>
+      )}
+
+      {/* 2. PROJELERİM: Blueprint ızgara, mikroçip ve bağlantı düğümleri */}
+      {folderId === "projelerim" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <defs>
+            <pattern id="bp-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path d="M 48 0 L 0 0 0 48" stroke="#22d3ee" strokeWidth="0.8" />
+            </pattern>
+          </defs>
+          <rect width="1000" height="700" fill="url(#bp-grid)" opacity="0.55" />
+          <g stroke="#22d3ee" strokeWidth="2">
+            <rect x="760" y="95" width="110" height="110" rx="16" />
+            <rect x="785" y="120" width="60" height="60" rx="8" />
+            <path d="M785 75v20M815 75v20M845 75v20M785 205v20M815 205v20M845 205v20M740 125h20M740 150h20M740 175h20M870 125h20M870 150h20M870 175h20" />
+            <circle cx="150" cy="540" r="14" />
+            <circle cx="260" cy="490" r="10" />
+            <circle cx="240" cy="600" r="10" />
+            <path d="M163 534l88-39M162 548l69 46" />
+          </g>
+        </svg>
+      )}
+
+      {/* 3. MÜZİKLERİM: Plak olukları, notalar ve ekolayzır */}
+      {folderId === "muzikler" && (
+        <svg className="h-full w-full opacity-[0.12]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#fb7185" strokeWidth="2">
+            <circle cx="850" cy="150" r="115" />
+            <circle cx="850" cy="150" r="92" strokeDasharray="18 10" />
+            <circle cx="850" cy="150" r="68" />
+            <circle cx="850" cy="150" r="44" strokeDasharray="12 8" />
+            <circle cx="850" cy="150" r="18" fill="#fb7185" fillOpacity="0.35" />
+            <path d="M130 570v-85l55-15v85" strokeWidth="3" />
+            <circle cx="116" cy="572" r="14" fill="#fb7185" />
+            <circle cx="171" cy="557" r="14" fill="#fb7185" />
+            <path d="M260 590v-50M280 590v-90M300 590v-65M320 590v-110M340 590v-45M360 590v-75" strokeWidth="4" strokeLinecap="round" />
+          </g>
+        </svg>
+      )}
+
+      {/* 4. DİZİLERİM: Retro TV, yayın dalgaları ve klaket */}
+      {folderId === "diziler" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#34d399" strokeWidth="2.2">
+            <rect x="750" y="105" width="150" height="105" rx="18" />
+            <rect x="766" y="121" width="96" height="73" rx="10" />
+            <circle cx="881" cy="140" r="7" />
+            <circle cx="881" cy="166" r="7" />
+            <path d="M795 75l30 30M855 75l-30 30" />
+            <path d="M110 540c35-35 85-35 120 0M130 562c24-24 56-24 80 0M152 584c12-12 24-12 36 0" strokeLinecap="round" />
+            <circle cx="170" cy="602" r="5" fill="#34d399" />
+          </g>
+        </svg>
+      )}
+
+      {/* 5. FİLMLERİM: 35mm film şeridi ve sinema makarası */}
+      {folderId === "filmler" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#818cf8" strokeWidth="2">
+            <rect x="36" y="0" width="54" height="700" />
+            {Array.from({ length: 14 }, (_, i) => (
+              <rect key={i} x="48" y={18 + i * 50} width="30" height="22" rx="4" />
+            ))}
+            <circle cx="845" cy="145" r="88" />
+            <circle cx="845" cy="145" r="16" />
+            <circle cx="845" cy="100" r="15" />
+            <circle cx="845" cy="190" r="15" />
+            <circle cx="800" cy="145" r="15" />
+            <circle cx="890" cy="145" r="15" />
+          </g>
+        </svg>
+      )}
+
+      {/* 6. HAKKIMDA: Ağrı Dağı silüeti, Ege dalgaları ve yıldızlar */}
+      {folderId === "hakkimda" && (
+        <svg className="h-full w-full opacity-[0.12]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#fbbf24" strokeWidth="2.2">
+            <path d="M60 620L230 430l95 105 110-145 185 230" strokeLinejoin="round" />
+            <path d="M202 462l28 16 26-14M404 432l31 18 32-16" stroke="#f87171" />
+            <path d="M650 560q35-20 70 0t70 0t70 0t70 0" />
+            <path d="M650 590q35-20 70 0t70 0t70 0t70 0" />
+            <polygon points="840,85 849,108 874,108 854,122 862,145 840,131 818,145 826,122 806,108 831,108" />
+          </g>
+        </svg>
+      )}
+
+      {/* 7. MESAJ BIRAK: Kağıt uçaklar ve not çizgileri */}
+      {folderId === "mesaj" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#38bdf8" strokeWidth="2">
+            <path d="M890 95L750 155l52 22 88-82-62 94 42 20 20-114z" strokeLinejoin="round" />
+            <path d="M620 230c45-20 85-15 125-38" strokeDasharray="7 7" />
+            <rect x="90" y="490" width="160" height="110" rx="14" />
+            <path d="M90 505l80 55 80-55" />
+          </g>
+        </svg>
+      )}
+
+      {/* 8. KELİME OYUNU: Harf karoları ve bulmaca ızgarası */}
+      {folderId === "kelime" && (
+        <svg className="h-full w-full opacity-[0.11]" viewBox="0 0 1000 700" fill="none">
+          <g stroke="#c084fc" strokeWidth="2">
+            <rect x="770" y="90" width="54" height="54" rx="10" />
+            <rect x="834" y="90" width="54" height="54" rx="10" />
+            <rect x="770" y="154" width="54" height="54" rx="10" />
+            <rect x="834" y="154" width="54" height="54" rx="10" fill="#c084fc" fillOpacity="0.2" />
+            <text x="789" y="125" fill="#c084fc" fontSize="24" fontWeight="bold">F</text>
+            <text x="851" y="125" fill="#c084fc" fontSize="24" fontWeight="bold">K</text>
+            <text x="788" y="189" fill="#c084fc" fontSize="24" fontWeight="bold">O</text>
+            <text x="852" y="189" fill="#c084fc" fontSize="24" fontWeight="bold">S</text>
+            <rect x="100" y="510" width="48" height="48" rx="8" />
+            <rect x="156" y="510" width="48" height="48" rx="8" />
+            <rect x="100" y="566" width="48" height="48" rx="8" />
+          </g>
+        </svg>
+      )}
+    </div>
+  );
+};
+
 const MUSIC_DATA = [
   {
     artist: "Adamlar",
@@ -383,7 +578,7 @@ const SERIES_DATA = [
     tag: "Jack Shephard",
     quote: "Geri dönmek zorundayız, Kate!",
     note: "Gizem kurgusu, karakter derinliği ve kader-özgür irade çatışmasıyla televizyon tarihinin zirvelerinden.",
-    gradient: "from-emerald-950/40 to-slate-900/40",
+    gradient: "from-emerald-950/60 to-slate-900/60",
   },
   {
     title: "Game of Thrones",
@@ -391,7 +586,7 @@ const SERIES_DATA = [
     tag: "Jon Snow • Gece Nöbeti",
     quote: "İçindeki çocuğu öldür, Jon Snow. Kış neredeyse geldi. Çocuğu öldür ki adam doğsun.",
     note: "Güç dengeleri, sert politik gerçekçilik ve epik atmosferiyle benzersiz bir evren.",
-    gradient: "from-slate-900/40 to-zinc-900/40",
+    gradient: "from-slate-900/60 to-zinc-900/60",
   },
   {
     title: "Gibi",
@@ -399,7 +594,7 @@ const SERIES_DATA = [
     tag: "Yılmaz • İlkkan • Ersoy",
     quote: "Senin hiçbir şeyden haberin yok, bu kadar bilgisiz olup bu kadar fikrin olması inanılmaz.",
     note: "Gündelik hayatın absürtlüğünü sıfır zorlama ile mizaha dönüştüren modern klasik.",
-    gradient: "from-amber-950/40 to-stone-900/40",
+    gradient: "from-amber-950/60 to-stone-900/60",
   },
   {
     title: "Shōgun",
@@ -407,7 +602,7 @@ const SERIES_DATA = [
     tag: "Lord Toranaga",
     quote: "Rüzgarı kontrol edemezsin ama yelkenini ona göre ayarlayabilirsin.",
     note: "Sabır, diplomasi ve feodal Japonya atmosferini kusursuz sinematografiyle birleştiren başyapıt.",
-    gradient: "from-red-950/40 to-neutral-900/40",
+    gradient: "from-red-950/60 to-neutral-900/60",
   },
   {
     title: "Banshee",
@@ -415,7 +610,7 @@ const SERIES_DATA = [
     tag: "Lucas Hood",
     quote: "Geçmişin peşini bırakmaz, sadece ne kadar uzağa koşabileceğini test eder.",
     note: "Yüksek tansiyonlu aksiyon koreografileri ve tavizsiz karakterleriyle saf adrenalin.",
-    gradient: "from-sky-950/40 to-slate-900/40",
+    gradient: "from-sky-950/60 to-slate-900/60",
   },
   {
     title: "The Penguin",
@@ -423,7 +618,7 @@ const SERIES_DATA = [
     tag: "Oz Cobb",
     quote: "Kimse sana hak ettiğini vermez, gidip kendin söküp alırsın.",
     note: "Gotham'ın yeraltı dünyasında geçen karanlık, sert ve oyunculuk dersi niteliğinde bir yükseliş hikayesi.",
-    gradient: "from-purple-950/40 to-neutral-950/40",
+    gradient: "from-purple-950/60 to-neutral-950/60",
   },
   {
     title: "True Detective",
@@ -431,7 +626,7 @@ const SERIES_DATA = [
     tag: "Rust Cohle",
     quote: "Zaman düz bir çemberdir. Yaptığımız ve yapacağımız her şeyi tekrar tekrar yapacağız.",
     note: "Kasvetli güney gotiği atmosferi ve varoluşsal diyaloglarıyla polisiye türünün zirvesi.",
-    gradient: "from-teal-950/40 to-stone-950/40",
+    gradient: "from-teal-950/60 to-stone-950/60",
   },
   {
     title: "Moon Knight",
@@ -439,7 +634,7 @@ const SERIES_DATA = [
     tag: "Marc Spector / Steven Grant",
     quote: "Karanlıkla savaşmak için bazen kendi içindeki kaosu kabul etmen gerekir.",
     note: "Psikolojik gerilim ile mitolojik gizemi birleştiren karanlık anlatım.",
-    gradient: "from-indigo-950/40 to-slate-950/40",
+    gradient: "from-indigo-950/60 to-slate-950/60",
   },
 ];
 
@@ -450,7 +645,7 @@ const MOVIES_DATA = [
     tag: "Robert Eggers • Psikolojik Korku",
     quote: "Neden ağzından baklayı çıkardın, Tommy?",
     note: "35mm siyah-beyaz formatı, klostrofobik deniz feneri atmosferi ve mitolojik delilik sarmalıyla hipnotik bir sinema deneyimi.",
-    gradient: "from-zinc-900/40 to-slate-950/40",
+    gradient: "from-zinc-900/60 to-slate-950/60",
   },
   {
     title: "Drive (2011)",
@@ -458,7 +653,7 @@ const MOVIES_DATA = [
     tag: "Nicolas Winding Refn • Neo-Noir",
     quote: "Bu şehirde yüz bin tane sokak var. Güzergâhı bilmene gerek yok.",
     note: "Synthwave müzikleri, neon gece ışıkları ve sessizliğin içindeki ani şiddet patlamalarıyla modern bir neo-noir ikonu.",
-    gradient: "from-fuchsia-950/40 to-slate-950/40",
+    gradient: "from-fuchsia-950/60 to-slate-950/60",
   },
   {
     title: "The Fall (2006)",
@@ -466,7 +661,7 @@ const MOVIES_DATA = [
     tag: "Tarsem Singh • Görsel Şölen",
     quote: "Ruhumu kurtarmaya mı çalışıyorsun?",
     note: "Hiç CGI kullanılmadan dünyanın 20'den fazla ülkesinde çekilen, her karesi yağlı boya tablosu gibi duran görsel başyapıt.",
-    gradient: "from-amber-950/40 to-red-950/40",
+    gradient: "from-amber-950/60 to-red-950/60",
   },
   {
     title: "Bullet Train (2022)",
@@ -474,7 +669,7 @@ const MOVIES_DATA = [
     tag: "David Leitch • Aksiyon / Kara Mizah",
     quote: "Hayatta tesadüf diye bir şey yoktur, her şey birbirine bağlıdır.",
     note: "Hızlı kurgusu, stilize dövüş sahneleri ve keskin diyaloglarıyla baştan sona temposu düşmeyen yüksek enerjili anlatım.",
-    gradient: "from-rose-950/40 to-purple-950/40",
+    gradient: "from-rose-950/60 to-purple-950/60",
   },
   {
     title: "Project Hail Mary (2026)",
@@ -482,7 +677,7 @@ const MOVIES_DATA = [
     tag: "Phil Lord & Christopher Miller • Bilim Kurgu",
     quote: "Dış hücre zarını nanometre ölçeğinde bir sondayla deldim!",
     note: "Güneş'in sönmesini engellemek için ışık yılları ötesine gönderilen bir astronotun bilim ve zekayla örülü uzay destanı.",
-    gradient: "from-sky-950/40 to-indigo-950/40",
+    gradient: "from-sky-950/60 to-indigo-950/60",
   },
   {
     title: "Hamnet (2025)",
@@ -490,7 +685,7 @@ const MOVIES_DATA = [
     tag: "Chloé Zhao • Tarihi Dram",
     quote: "Gerisi sessizlik.",
     note: "William Shakespeare'in oğlunun kaybı ve bu derin yasın ölümsüz Hamlet tragedyasına dönüşümünü şiirsel bir dille işleyen yapım.",
-    gradient: "from-emerald-950/40 to-stone-950/40",
+    gradient: "from-emerald-950/60 to-stone-950/60",
   },
   {
     title: "Gladiator (2000)",
@@ -498,7 +693,7 @@ const MOVIES_DATA = [
     tag: "Ridley Scott • Epik Tarih",
     quote: "Hayatta yaptıklarımız, sonsuzlukta yankılanır.",
     note: "Hans Zimmer'in unutulmaz müzikleri, Roma arenalarının ihtişamı ve onur mücadelesiyle sinema tarihinin en görkemli epiklerinden.",
-    gradient: "from-amber-950/40 to-neutral-950/40",
+    gradient: "from-amber-950/60 to-neutral-950/60",
   },
   {
     title: "I Swear (2025)",
@@ -506,7 +701,7 @@ const MOVIES_DATA = [
     tag: "Kirk Jones • Biyografik Dram",
     quote: "Kelimeler her zaman izin istemez.",
     note: "Tourette sendromu aktivisti John Davidson'ın gerçek yaşam öyküsünü mizah ve sarsıcı bir gerçekçilikle beyaz perdeye taşıyan yapım.",
-    gradient: "from-teal-950/40 to-slate-950/40",
+    gradient: "from-teal-950/60 to-slate-950/60",
   },
   {
     title: "Baby Driver (2017)",
@@ -514,7 +709,7 @@ const MOVIES_DATA = [
     tag: "Edgar Wright • Suç / Müzikal Ritim",
     quote: "Yavaş mıydı?",
     note: "Silah seslerinden araba viteslerine kadar her hareketin kulaklıktaki şarkıların ritmine milimetrik senkronlandığı kurgu harikası.",
-    gradient: "from-red-950/40 to-zinc-950/40",
+    gradient: "from-red-950/60 to-zinc-950/60",
   },
   {
     title: "Jason Bourne (2002–2016)",
@@ -522,7 +717,7 @@ const MOVIES_DATA = [
     tag: "Paul Greengrass • Casusluk / Gerilim",
     quote: "Şuna bak. Sana neler feda ettirdiklerine bir bak.",
     note: "El kamerası tekniği, gerçekçi yakın dövüş koreografileri ve soğuk istihbarat oyunlarıyla modern aksiyon sinemasını değiştiren seri.",
-    gradient: "from-slate-900/40 to-zinc-950/40",
+    gradient: "from-slate-900/60 to-zinc-950/60",
   },
   {
     title: "Memento (2000)",
@@ -530,7 +725,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Neo-Noir / Gizem",
     quote: "Kim olduğumuzu kendimize hatırlatmak için hepimizin aynalara ihtiyacı var.",
     note: "Sondan başa doğru akan ters kronolojik kurgusuyla izleyiciyi de kısa süreli hafıza kaybının içine hapseden dahi işi bulmaca.",
-    gradient: "from-cyan-950/40 to-slate-950/40",
+    gradient: "from-cyan-950/60 to-slate-950/60",
   },
   {
     title: "The Prestige (2006)",
@@ -538,7 +733,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Gizem / Gerilim",
     quote: "Dikkatli bakıyor musun?",
     note: "Takıntı, fedakarlık ve illüzyon sanatının karanlık bedeli üzerine kurulu; her izleyişte yeni ipuçları yakalatan kusursuz senaryo.",
-    gradient: "from-indigo-950/40 to-zinc-950/40",
+    gradient: "from-indigo-950/60 to-zinc-950/60",
   },
   {
     title: "The Truman Show (1998)",
@@ -546,7 +741,7 @@ const MOVIES_DATA = [
     tag: "Peter Weir • Satirik Bilim Kurgu",
     quote: "Olur ya görüşemezsek; iyi günler, iyi akşamlar ve iyi geceler!",
     note: "Sahte bir mükemmelliğin içinden uyanıp gerçeğin kapısına yürümeyi anlatan, zamanının çok ötesinde bir medya ve özgürlük eleştirisi.",
-    gradient: "from-sky-900/40 to-slate-950/40",
+    gradient: "from-sky-900/60 to-slate-950/60",
   },
   {
     title: "Pride & Prejudice (2005)",
@@ -554,7 +749,7 @@ const MOVIES_DATA = [
     tag: "Joe Wright • Dönem Dramı",
     quote: "Beni bedenim ve ruhumla büyüledin.",
     note: "Dario Marianelli'nin piyano tınıları, sisli İngiliz kırları ve tek plan balo sahneleriyle zarafetin sinemadaki karşılığı.",
-    gradient: "from-stone-900/40 to-emerald-950/40",
+    gradient: "from-stone-900/60 to-emerald-950/60",
   },
   {
     title: "The Odyssey (2026)",
@@ -562,7 +757,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Mitolojik Epik",
     quote: "Anlat bana Musa, o binbir türlü çare bilen adamı...",
     note: "Homeros'un ölümsüz destanını IMAX kameralar ve pratik efektlerle devasa bir sinema ölçeğine taşıyan mitolojik yolculuk.",
-    gradient: "from-blue-950/40 to-slate-950/40",
+    gradient: "from-blue-950/60 to-slate-950/60",
   },
   {
     title: "Stalker (1979)",
@@ -570,7 +765,7 @@ const MOVIES_DATA = [
     tag: "Andrei Tarkovsky • Sanat Sineması",
     quote: "İnsan doğduğunda zayıf ve esnektir; öldüğünde ise katı ve hissizdir.",
     note: "Yasak 'Bölge'ye yapılan metafizik yolculuk üzerinden inanç, arzu ve insan ruhunun derinliklerini sorgulayan şiirsel başyapıt.",
-    gradient: "from-stone-950/40 to-amber-950/40",
+    gradient: "from-stone-950/60 to-amber-950/60",
   },
   {
     title: "Oldboy (2003)",
@@ -578,7 +773,7 @@ const MOVIES_DATA = [
     tag: "Park Chan-wook • Kore Sineması",
     quote: "Gül, dünya da seninle gülsün. Ağla, tek başına ağlarsın.",
     note: "Tek plan çekiçli koridor sahnesi, operatik intikam trajedisi ve sarsıcı finaliyle dünya sinemasının en çarpıcı örneklerinden.",
-    gradient: "from-red-950/40 to-neutral-950/40",
+    gradient: "from-red-950/60 to-neutral-950/60",
   },
   {
     title: "Mulholland Drive (2001)",
@@ -586,7 +781,7 @@ const MOVIES_DATA = [
     tag: "David Lynch • Sürreal Gizem",
     quote: "Sessizlik.",
     note: "Hollywood rüyası ile kabus arasındaki sınırı eriten, bilinçaltının mantığıyla işleyen hipnotik ve gizemli başyapıt.",
-    gradient: "from-purple-950/40 to-black/40",
+    gradient: "from-purple-950/60 to-black/60",
   },
   {
     title: "No Country for Old Men (2007)",
@@ -594,7 +789,7 @@ const MOVIES_DATA = [
     tag: "Coen Kardeşler • Neo-Western",
     quote: "Yazı tura atışında şimdiye kadar kaybettiğin en büyük şey neydi?",
     note: "Neredeyse hiç film müziği kullanmadan saf gerilim yaratan, kader ve kaçınılmazlık üzerine soğukkanlı bir başyapıt.",
-    gradient: "from-amber-950/40 to-zinc-950/40",
+    gradient: "from-amber-950/60 to-zinc-950/60",
   },
   {
     title: "Whiplash (2014)",
@@ -602,7 +797,7 @@ const MOVIES_DATA = [
     tag: "Damien Chazelle • Müzik / Psikolojik Dram",
     quote: "İngilizcede 'aferin' kadar zararlı iki kelime daha yoktur.",
     note: "Mükemmeliyetçilik takıntısı ve sınırları zorlayan disiplin üzerine kurulu, son 10 dakikası nefes kestiren ritim şöleni.",
-    gradient: "from-yellow-950/40 to-black/40",
+    gradient: "from-yellow-950/60 to-black/60",
   },
   {
     title: "In Bruges (2008)",
@@ -610,7 +805,7 @@ const MOVIES_DATA = [
     tag: "Martin McDonagh • Kara Komedi",
     quote: "Belki de cehennem budur; sonsuza dek Bruges'de kalmak.",
     note: "Orta Çağ masal şehri Bruges fonunda suç, vicdan ve keskin İrlanda mizahını ustalıkla harmanlayan kült yapım.",
-    gradient: "from-indigo-950/40 to-amber-950/40",
+    gradient: "from-indigo-950/60 to-amber-950/60",
   },
   {
     title: "Good Will Hunting (1997)",
@@ -618,7 +813,7 @@ const MOVIES_DATA = [
     tag: "Gus Van Sant • Dram",
     quote: "Senin suçun değil evlat. Senin suçun değil.",
     note: "Deha, duygusal duvarlar ve insanın kendi potansiyeliyle yüzleşmesi üzerine yazılmış en samimi senaryolardan biri.",
-    gradient: "from-amber-950/40 to-stone-900/40",
+    gradient: "from-amber-950/60 to-stone-900/60",
   },
   {
     title: "The Banshees of Inisherin (2022)",
@@ -626,7 +821,7 @@ const MOVIES_DATA = [
     tag: "Martin McDonagh • Kara Mizah / Dram",
     quote: "İyi biri olmak, geriye kalan her şeyden daha önemlidir.",
     note: "Küçük bir İrlanda adasında aniden biten bir dostluk üzerinden yalnızlık, kalıcılık ve inatçılığı işleyen sarsıcı hikaye.",
-    gradient: "from-emerald-950/40 to-slate-900/40",
+    gradient: "from-emerald-950/60 to-slate-900/60",
   },
   {
     title: "Dune: Part Two (2024)",
@@ -634,7 +829,7 @@ const MOVIES_DATA = [
     tag: "Denis Villeneuve • Epik Bilim Kurgu",
     quote: "Korku akıl katilidir. Korkunun üzerimden ve içimden geçmesine izin vereceğim.",
     note: "Anıtsal ses tasarımı, çöl sinematografisi ve mesih mitinin karanlık yüzünü işleyen modern bilim kurgu klasiği.",
-    gradient: "from-orange-950/40 to-stone-950/40",
+    gradient: "from-orange-950/60 to-stone-950/60",
   },
   {
     title: "The Matrix (1999)",
@@ -642,7 +837,7 @@ const MOVIES_DATA = [
     tag: "Wachowski Kardeşler • Bilim Kurgu",
     quote: "Yolu bilmekle o yolda yürümek arasında fark vardır.",
     note: "Felsefi alt metni, cyberpunk estetiği ve görsel efekt devrimiyle sinema tarihini ikiye bölen başyapıt.",
-    gradient: "from-green-950/40 to-black/40",
+    gradient: "from-green-950/60 to-black/60",
   },
 ];
 
@@ -1118,7 +1313,7 @@ const WordGuessGame = () => {
           <h3 className="mt-1 text-2xl font-bold">5 Harf</h3>
           <p className="mt-1 text-xs text-white/90">Kelimeyi bulmak için 6 hakkın var.</p>
         </div>
-        <div className="rounded-2xl border border-white/35 bg-black/25 px-3 py-2 text-center">
+        <div className="rounded-2xl border border-white/35 bg-black/35 px-3 py-2 text-center">
           <div className="text-xl font-bold tabular-nums">{Math.max(0, 6 - guesses.length)}</div>
           <div className="text-[9px] uppercase tracking-wider text-white/80">Kalan hak</div>
         </div>
@@ -1139,13 +1334,13 @@ const WordGuessGame = () => {
                   key={i}
                   className={`flex aspect-square items-center justify-center rounded-lg border text-xl font-black sm:rounded-xl sm:text-2xl ${
                     status === "correct"
-                      ? "border-emerald-300/80 bg-emerald-500/80"
+                      ? "border-emerald-300/80 bg-emerald-500/85"
                       : status === "present"
-                      ? "border-amber-300/80 bg-amber-500/80"
+                      ? "border-amber-300/80 bg-amber-500/85"
                       : status === "absent"
-                      ? "border-white/30 bg-black/45 text-white/75"
-                      : "border-white/35 bg-black/15"
-                  } ${filled && !locked ? "border-violet-300/90 bg-violet-500/25" : ""}`}
+                      ? "border-white/30 bg-black/50 text-white/75"
+                      : "border-white/35 bg-white/5"
+                  } ${filled && !locked ? "border-violet-300/90 bg-violet-500/30" : ""}`}
                 >
                   {word[i] || ""}
                 </div>
@@ -1157,7 +1352,7 @@ const WordGuessGame = () => {
 
       <p
         aria-live="polite"
-        className="my-4 min-h-10 rounded-xl border border-white/30 bg-black/25 px-3 py-2 text-center text-xs leading-6 text-white"
+        className="my-4 min-h-10 rounded-xl border border-white/30 bg-black/35 px-3 py-2 text-center text-xs leading-6 text-white"
       >
         {notice}
       </p>
@@ -1175,8 +1370,8 @@ const WordGuessGame = () => {
                     : keyStatus[ch] === "present"
                     ? "bg-amber-500/85 text-white"
                     : keyStatus[ch] === "absent"
-                    ? "bg-black/45 text-white/50"
-                    : "bg-black/25 text-white hover:bg-white/20"
+                    ? "bg-black/50 text-white/50"
+                    : "bg-white/10 text-white hover:bg-white/20"
                 }`}
               >
                 {ch}
@@ -1186,13 +1381,13 @@ const WordGuessGame = () => {
               <>
                 <button
                   onClick={removeLetter}
-                  className="rounded-md border border-white/30 bg-black/30 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-white/30 bg-white/10 px-2 text-[10px] font-bold cursor-pointer"
                 >
                   ⌫
                 </button>
                 <button
                   onClick={submit}
-                  className="rounded-md border border-violet-300/60 bg-violet-500/80 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-violet-300/60 bg-violet-500/85 px-2 text-[10px] font-bold cursor-pointer"
                 >
                   GİR
                 </button>
@@ -1205,7 +1400,7 @@ const WordGuessGame = () => {
       {finished && (
         <button
           onClick={reset}
-          className="mt-5 w-full rounded-xl border border-violet-300/60 bg-violet-500/80 px-4 py-3 text-sm font-bold text-white transition hover:bg-violet-500 cursor-pointer"
+          className="mt-5 w-full rounded-xl border border-violet-300/60 bg-violet-500/85 px-4 py-3 text-sm font-bold text-white transition hover:bg-violet-500 cursor-pointer"
         >
           Yeni Kelime Oyna ↻
         </button>
@@ -1301,14 +1496,14 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
         <div className="flex gap-2">
           <button
             onClick={() => scroll("left")}
-            className="rounded-xl border border-white/40 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
+            className="rounded-xl border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/20 cursor-pointer"
             title="Sola Kaydır"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={() => scroll("right")}
-            className="rounded-xl border border-white/40 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
+            className="rounded-xl border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/20 cursor-pointer"
             title="Sağa Kaydır"
           >
             <ChevronRight className="h-4 w-4" />
@@ -1335,9 +1530,9 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
                   onError={(e) => (e.currentTarget.style.display = "none")}
                   className="h-full w-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
                 <span
-                  className={`absolute top-3 left-3 rounded-full border border-white/35 bg-black/45 px-3 py-1 text-xs font-semibold ${
+                  className={`absolute top-3 left-3 rounded-full border border-white/35 bg-black/55 px-3 py-1 text-xs font-semibold ${
                     accentColor === "emerald" ? "text-emerald-300" : "text-indigo-300"
                   }`}
                 >
@@ -1351,7 +1546,7 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
                 <blockquote
                   className={`mt-3 rounded-xl border-l-4 ${
                     accentColor === "emerald" ? "border-emerald-400" : "border-indigo-400"
-                  } border border-white/25 bg-black/25 p-3 text-xs sm:text-sm italic text-white`}
+                  } border border-white/25 bg-black/30 p-3 text-xs sm:text-sm italic text-white`}
                 >
                   <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-75" />
                   "{item.quote}"
@@ -1434,8 +1629,8 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
               }}
               className={`glass-text rounded-full px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${
                 activeFilter === cat
-                  ? "border border-white/60 bg-black/40 text-white shadow"
-                  : "border border-white/30 bg-black/20 text-white/90 hover:bg-black/35"
+                  ? "border border-indigo-300/70 bg-indigo-500/35 text-white shadow"
+                  : "border border-white/25 bg-white/10 text-white/90 hover:bg-white/20"
               }`}
             >
               {cat}
@@ -1473,7 +1668,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
               className="real-card glass-text overflow-hidden rounded-3xl text-white transition-all duration-300"
             >
               {/* IG Post Üst Başlık */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/25">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-white/20">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-indigo-300/55 bg-indigo-500/30 text-xs font-bold text-indigo-100">
                     {idx + 1}
@@ -1483,7 +1678,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                     <p className="truncate text-[11px] text-white/85">{item.tag}</p>
                   </div>
                 </div>
-                <span className="shrink-0 rounded-full border border-white/30 bg-black/25 px-2.5 py-0.5 text-[10px] font-medium text-white/90">
+                <span className="shrink-0 rounded-full border border-white/25 bg-white/10 px-2.5 py-0.5 text-[10px] font-medium text-white/90">
                   Arşiv #{idx + 1}
                 </span>
               </div>
@@ -1501,7 +1696,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                   onError={(e) => (e.currentTarget.style.display = "none")}
                   className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-[1.02]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                 <AnimatePresence>
                   {heartBurst === item.title && (
@@ -1523,7 +1718,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => toggleLike(item.title)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-black/25 px-3 py-1.5 text-xs font-semibold transition hover:bg-black/40 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold transition hover:bg-white/20 cursor-pointer"
                   >
                     <Heart
                       className={`h-4 w-4 transition ${
@@ -1535,7 +1730,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
 
                   <button
                     onClick={() => handleCopyQuote(item.title, item.quote)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-black/25 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-black/40 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20 cursor-pointer"
                   >
                     {copiedQuote === item.title ? (
                       <>
@@ -1556,7 +1751,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
 
               {/* Replik ve Açıklama Alanı */}
               <div className="px-4 pb-4 pt-2 space-y-2.5">
-                <blockquote className="rounded-xl border-l-4 border-indigo-400 border border-white/25 bg-black/25 px-3 py-2 text-xs sm:text-sm italic text-white">
+                <blockquote className="rounded-xl border-l-4 border-indigo-400 border border-white/20 bg-black/30 px-3 py-2 text-xs sm:text-sm italic text-white">
                   <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-75" />
                   "{item.quote}"
                 </blockquote>
@@ -2051,7 +2246,7 @@ export default function App() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={handleCopyMail}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-white/35 bg-black/25 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-black/45 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/35 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-white/20 cursor-pointer"
               >
                 {copiedMail ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
                 <span>{copiedMail ? "Kopyalandı" : "Adresi Kopyala"}</span>
@@ -2089,7 +2284,7 @@ export default function App() {
         <div>
           <div className="real-card glass-text mb-5 flex flex-col gap-4 rounded-2xl p-4 text-white sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 items-center gap-4">
-              <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/25 shadow-inner">
+              <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/40 shadow-inner">
                 <div className="absolute bottom-2 h-2 w-20 rounded-full bg-black/40" />
                 <div
                   className="relative h-[70px] w-[70px] rounded-full border-[5px] border-[#17151b] bg-[repeating-radial-gradient(circle,#39333d_0px,#39333d_2px,#17151b_3px,#17151b_4px)] shadow-xl"
@@ -2134,8 +2329,8 @@ export default function App() {
                   }}
                   className={`glass-text rounded-xl px-3.5 py-2 text-xs font-semibold transition cursor-pointer ${
                     musicFilter === cat
-                      ? "border border-white/60 bg-black/40 text-white shadow-sm"
-                      : "border border-white/30 bg-black/20 text-white/90 hover:bg-black/35"
+                      ? "border border-rose-300/65 bg-rose-500/35 text-white shadow-sm"
+                      : "border border-white/25 bg-white/10 text-white/90 hover:bg-white/20"
                   }`}
                 >
                   {cat}
@@ -2150,7 +2345,7 @@ export default function App() {
                 value={musicSearch}
                 onChange={(e) => setMusicSearch(e.target.value)}
                 placeholder="Sanatçı veya şarkı ara..."
-                className="w-full rounded-xl border border-white/35 bg-black/25 py-2 pl-9 pr-3 text-xs text-white placeholder-white/70 focus:border-white/65 focus:outline-none"
+                className="w-full rounded-xl border border-white/30 bg-black/35 py-2 pl-9 pr-3 text-xs text-white placeholder-white/70 focus:border-rose-300/65 focus:outline-none"
               />
             </div>
           </div>
@@ -2162,7 +2357,7 @@ export default function App() {
                 className="real-card glass-text group flex flex-col justify-between overflow-hidden rounded-3xl text-white transition-all duration-300 hover:-translate-y-1"
               >
                 <div>
-                  <div className="relative h-40 w-full overflow-hidden bg-black/20">
+                  <div className="relative h-40 w-full overflow-hidden bg-black/35">
                     <img
                       src={item.image}
                       alt={item.artist}
@@ -2170,13 +2365,13 @@ export default function App() {
                       onError={(e) => (e.currentTarget.style.display = "none")}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <span className="absolute top-3 right-3 rounded-full border border-white/40 bg-black/40 px-2.5 py-0.5 text-[10px] font-semibold text-white">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span className="absolute top-3 right-3 rounded-full border border-white/35 bg-black/55 px-2.5 py-0.5 text-[10px] font-semibold text-white">
                       {item.category}
                     </span>
                   </div>
                   <div className="p-5 pt-3.5">
-                    <span className="text-[11px] uppercase tracking-wider text-white/85">
+                    <span className="text-[11px] uppercase tracking-wider text-rose-200/90">
                       {item.genre}
                     </span>
                     <h4 className="mt-1 text-xl font-bold text-white">{item.artist}</h4>
@@ -2190,7 +2385,7 @@ export default function App() {
                     {item.songs.map((song) => (
                       <span
                         key={song}
-                        className="rounded-lg border border-white/30 bg-black/25 px-2.5 py-1 text-xs text-white"
+                        className="rounded-lg border border-white/25 bg-white/10 px-2.5 py-1 text-xs text-white"
                       >
                         {song}
                       </span>
@@ -2220,11 +2415,11 @@ export default function App() {
         <div className="space-y-6">
           <div className="real-card glass-text rounded-2xl p-6 text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-              <span className="inline-flex items-center gap-1 rounded-full border border-white/35 bg-black/25 px-3 py-1 text-white">
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-white">
                 <MapPin className="h-3.5 w-3.5 text-amber-300" />
                 Aslen Ağrılı • İzmir'de Yaşıyor
               </span>
-              <span className="rounded-full border border-white/35 bg-black/25 px-3 py-1 text-white">
+              <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-white">
                 21 Yaşında
               </span>
               <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/45 bg-red-500/30 px-3 py-1 text-amber-200">
@@ -2286,7 +2481,7 @@ export default function App() {
               </p>
               <button
                 onClick={() => setNoteStatus("idle")}
-                className="mt-4 rounded-xl border border-white/35 bg-black/25 px-4 py-2 text-xs font-semibold text-white hover:bg-black/45 cursor-pointer"
+                className="mt-4 rounded-xl border border-white/35 bg-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-white/20 cursor-pointer"
               >
                 Yeni Mesaj Yaz
               </button>
@@ -2299,7 +2494,7 @@ export default function App() {
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 placeholder="Buraya istediğin her şeyi yazabilirsin (tamamen anonim)..."
-                className="w-full rounded-xl border border-white/35 bg-black/25 p-4 text-sm text-white placeholder-white/70 focus:border-white/65 focus:outline-none"
+                className="w-full rounded-xl border border-white/30 bg-black/35 p-4 text-sm text-white placeholder-white/70 focus:border-sky-300/65 focus:outline-none"
               />
 
               {noteStatus === "error" && <p className="text-xs text-rose-300">{noteErrorMsg}</p>}
@@ -2318,6 +2513,8 @@ export default function App() {
       </div>
     );
   };
+
+  const activeTheme = activeFolder ? FOLDER_THEMES[activeFolder.id] || FOLDER_THEMES.kariyer : null;
 
   return (
     <div className="faruk-os relative min-h-[100svh] w-full overflow-x-hidden select-none font-sans text-white">
@@ -2340,7 +2537,7 @@ export default function App() {
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.45);
         }
 
-        /* GERÇEK PENCERE CAMI: Sıfır blur, arkadaki manzara %100 keskin, sadece ışık kırılması */
+        /* MASAÜSTÜ GERÇEK PENCERE CAMI: Sıfır blur, arkadaki manzara %100 keskin */
         .real-glass {
           -webkit-backdrop-filter: none !important;
           backdrop-filter: none !important;
@@ -2388,18 +2585,16 @@ export default function App() {
           border-color: rgba(255,255,255,0.78);
         }
 
+        /* KLASÖR İÇİ KARTLAR */
         .real-card {
-          -webkit-backdrop-filter: none !important;
-          backdrop-filter: none !important;
-          background: linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.02) 28%, rgba(8,14,22,0.18) 70%, rgba(255,255,255,0.04) 100%);
-          border: 1px solid rgba(255,255,255,0.28);
-          border-top-color: rgba(255,255,255,0.62);
-          border-left-color: rgba(255,255,255,0.44);
-          box-shadow: 0 14px 34px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.42);
+          background: linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.025) 100%);
+          border: 1px solid rgba(255,255,255,0.16);
+          border-top-color: rgba(255,255,255,0.30);
+          box-shadow: 0 14px 34px rgba(0,0,0,0.34);
         }
         .real-card:hover {
-          border-color: rgba(255,255,255,0.52);
-          background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 28%, rgba(8,14,22,0.15) 70%, rgba(255,255,255,0.06) 100%);
+          border-color: rgba(255,255,255,0.32);
+          background: linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
         }
 
         .real-dock {
@@ -2412,18 +2607,11 @@ export default function App() {
         }
 
         .real-window {
-          -webkit-backdrop-filter: none !important;
-          backdrop-filter: none !important;
-          border: 1px solid rgba(255,255,255,0.36);
-          border-top-color: rgba(255,255,255,0.75);
-          border-left-color: rgba(255,255,255,0.55);
-          box-shadow: 0 30px 80px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.56), inset 1px 0 0 rgba(255,255,255,0.28);
+          box-shadow: 0 32px 90px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,255,255,0.28);
         }
         .real-window-night {
-          background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 22%, rgba(8,14,22,0.24) 65%, rgba(8,14,22,0.30) 100%);
-        }
-        .real-window-day {
-          background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 22%, rgba(12,20,32,0.14) 65%, rgba(12,20,32,0.20) 100%);
+          background: linear-gradient(145deg, #0c121b 0%, #111926 100%);
+          border: 1px solid rgba(255,255,255,0.28);
         }
 
         button { -webkit-tap-highlight-color: transparent; }
@@ -2642,7 +2830,7 @@ export default function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSpotlightOpen(false)}
-            className="fixed inset-0 z-40 flex items-start justify-center bg-black/20 px-4 pt-20"
+            className="fixed inset-0 z-40 flex items-start justify-center bg-black/45 px-4 pt-20"
           >
             <motion.div
               initial={{ opacity: 0, y: -12, scale: 0.96 }}
@@ -2663,7 +2851,7 @@ export default function App() {
                 />
                 <button
                   onClick={() => setSpotlightOpen(false)}
-                  className="rounded-lg border border-white/35 bg-black/25 px-2 py-0.5 text-[10px] text-white cursor-pointer"
+                  className="rounded-lg border border-white/35 bg-white/10 px-2 py-0.5 text-[10px] text-white cursor-pointer"
                 >
                   ESC
                 </button>
@@ -2673,13 +2861,13 @@ export default function App() {
                   <button
                     key={`${res.badge}-${res.label}-${i}`}
                     onClick={res.onSelect}
-                    className="flex w-full items-center justify-between rounded-2xl px-3.5 py-2.5 text-left transition hover:bg-black/30 cursor-pointer"
+                    className="flex w-full items-center justify-between rounded-2xl px-3.5 py-2.5 text-left transition hover:bg-white/10 cursor-pointer"
                   >
                     <div className="min-w-0 pr-2">
                       <div className="truncate text-sm font-semibold text-white">{res.label}</div>
                       <div className="truncate text-xs text-white/85">{res.sub}</div>
                     </div>
-                    <span className="shrink-0 rounded-full border border-white/35 bg-black/30 px-2.5 py-0.5 text-[10px] font-semibold text-sky-200">
+                    <span className="shrink-0 rounded-full border border-white/25 bg-white/10 px-2.5 py-0.5 text-[10px] font-semibold text-sky-200">
                       {res.badge}
                     </span>
                   </button>
@@ -2690,8 +2878,12 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Ana Masaüstü Alanı */}
-      <main className="relative z-10 mx-auto flex min-h-[calc(100svh-48px)] max-w-7xl flex-col justify-between px-3 py-4 sm:min-h-[calc(100dvh-76px)] sm:px-6 sm:py-6 lg:px-10">
+      {/* Ana Masaüstü Alanı (Klasör açıldığında gizlenir ki arkasıyla iç içe girmesin) */}
+      <main
+        className={`relative z-10 mx-auto flex min-h-[calc(100svh-48px)] max-w-7xl flex-col justify-between px-3 py-4 transition-opacity duration-200 sm:min-h-[calc(100dvh-76px)] sm:px-6 sm:py-6 lg:px-10 ${
+          activeFolder ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+      >
         {/* 2027 Yılbaşı Ağacı ve Şans Kurabiyesi */}
         {!zenMode && <NewYearFeature isDay={isDay} soundFx={soundFx} />}
 
@@ -2745,9 +2937,9 @@ export default function App() {
         </div>
       </main>
 
-      {/* Tam Ekran Gerçek Pencere Camı Klasör Penceresi (Arkadaki manzara tamamen net) */}
+      {/* Her Gruba Özel Arka Plan Temalı & Sembollü Klasör Penceresi */}
       <AnimatePresence>
-        {activeFolder && (
+        {activeFolder && activeTheme && (
           <motion.div
             key="overlay"
             initial={{ opacity: 0 }}
@@ -2755,7 +2947,7 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.16 }}
             onClick={closeFolder}
-            className="fixed inset-0 z-30 flex items-center justify-center bg-transparent p-0 sm:p-4 md:p-6"
+            className="fixed inset-0 z-30 flex items-center justify-center bg-black/55 p-0 sm:p-4 md:p-6"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.97, y: 10 }}
@@ -2763,15 +2955,23 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.97, y: 10 }}
               transition={{ duration: 0.18 }}
               onClick={(e) => e.stopPropagation()}
-              className={`real-window flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden text-white sm:h-[min(92dvh,900px)] sm:rounded-3xl ${
-                isDay ? "real-window-day" : "real-window-night"
-              }`}
+              style={{
+                background: activeTheme.bg,
+                borderColor: activeTheme.border,
+              }}
+              className="real-window relative flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden border text-white sm:h-[min(92dvh,900px)] sm:rounded-3xl"
             >
+              {/* Gruba Özel Tematik Sembol & Işık Katmanı */}
+              <FolderThemeBackdrop folderId={activeFolder.id} />
+
               {/* Üst Pencere Çubuğu */}
-              <div className="glass-text flex shrink-0 items-center justify-between gap-2 border-b border-white/25 bg-black/15 px-3 py-3 sm:px-5 sm:py-3.5">
+              <div
+                style={{ backgroundColor: activeTheme.headerBg }}
+                className="glass-text relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-white/20 px-3 py-3 sm:px-5 sm:py-3.5"
+              >
                 <button
                   onClick={closeFolder}
-                  className="flex items-center gap-2 rounded-xl border border-white/40 bg-black/25 px-3.5 py-2 text-sm font-medium text-white transition hover:bg-black/45 cursor-pointer"
+                  className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3.5 py-2 text-sm font-medium text-white transition hover:bg-white/20 cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   <span>Masaüstü</span>
@@ -2797,7 +2997,7 @@ export default function App() {
 
               {/* Alt Sekmeler */}
               {activeFolder.tabs.length > 1 && (
-                <div className="glass-text flex gap-2 overflow-x-auto border-b border-white/25 bg-black/10 px-5 py-2.5">
+                <div className="glass-text relative z-10 flex gap-2 overflow-x-auto border-b border-white/15 bg-black/25 px-5 py-2.5">
                   {activeFolder.tabs.map((tab, idx) => (
                     <button
                       key={tab}
@@ -2807,8 +3007,8 @@ export default function App() {
                       }}
                       className={`rounded-xl px-4 py-1.5 text-sm font-medium whitespace-nowrap transition cursor-pointer ${
                         activeTab === idx
-                          ? "border border-white/55 bg-black/35 text-white"
-                          : "text-white/90 hover:text-white"
+                          ? "border border-white/40 bg-white/15 text-white"
+                          : "text-white/80 hover:text-white"
                       }`}
                     >
                       {tab}
@@ -2818,12 +3018,15 @@ export default function App() {
               )}
 
               {/* Dinamik İçerik Alanı */}
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 md:p-8">
+              <div className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 md:p-8">
                 {renderFolderContent()}
               </div>
 
               {/* Mobil Alt Çubuk */}
-              <div className="sm:hidden flex justify-center border-t border-white/25 bg-black/15 py-3">
+              <div
+                style={{ backgroundColor: activeTheme.headerBg }}
+                className="relative z-10 sm:hidden flex justify-center border-t border-white/15 py-3"
+              >
                 <button
                   onClick={closeFolder}
                   className="h-1.5 w-32 rounded-full bg-white/60 active:bg-white"
