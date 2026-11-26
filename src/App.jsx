@@ -29,6 +29,7 @@ import {
   Cookie,
   Gamepad2,
   Sun,
+  Moon,
   Mail,
   Copy,
   Check,
@@ -38,7 +39,6 @@ import {
   Terminal,
   Heart,
   Shuffle,
-  Eye,
   Command,
 } from "lucide-react";
 
@@ -72,7 +72,7 @@ const FOLDERS = [
     title: "Kariyer",
     subtitle: "Otomasyon & SCADA",
     icon: Briefcase,
-    accent: "from-amber-400/20 to-orange-500/10",
+    accent: "from-amber-400/20 to-orange-500/5",
     iconColor: "text-amber-300",
     tabs: ["Genel Bakış", "Deneyim & Eğitim", "Teknik Yetkinlikler"],
   },
@@ -81,7 +81,7 @@ const FOLDERS = [
     title: "Projelerim",
     subtitle: "Yakında Gelecekler",
     icon: Hourglass,
-    accent: "from-cyan-400/20 to-blue-500/10",
+    accent: "from-cyan-400/20 to-blue-500/5",
     iconColor: "text-cyan-300",
     tabs: ["Gelişim Aşamasında"],
   },
@@ -90,7 +90,7 @@ const FOLDERS = [
     title: "Müziklerim",
     subtitle: "Favori Sanatçılar",
     icon: Music,
-    accent: "from-rose-400/20 to-red-500/10",
+    accent: "from-rose-400/20 to-red-500/5",
     iconColor: "text-rose-300",
     tabs: ["Favori Gruplar & Sanatçılar"],
   },
@@ -99,7 +99,7 @@ const FOLDERS = [
     title: "Dizilerim",
     subtitle: "İz Bırakanlar",
     icon: Tv,
-    accent: "from-emerald-400/20 to-teal-500/10",
+    accent: "from-emerald-400/20 to-teal-500/5",
     iconColor: "text-emerald-300",
     tabs: ["Kült Diziler"],
   },
@@ -108,7 +108,7 @@ const FOLDERS = [
     title: "Filmlerim",
     subtitle: "Sinema Akışı",
     icon: Film,
-    accent: "from-indigo-400/20 to-blue-500/10",
+    accent: "from-indigo-400/20 to-blue-500/5",
     iconColor: "text-indigo-300",
     tabs: ["Film Akışı"],
   },
@@ -117,7 +117,7 @@ const FOLDERS = [
     title: "Hakkımda",
     subtitle: "Ağrı, İzmir & GS",
     icon: User,
-    accent: "from-red-500/20 to-amber-400/10",
+    accent: "from-red-500/20 to-amber-400/5",
     iconColor: "text-amber-300",
     tabs: ["Ben Kimim?"],
   },
@@ -126,7 +126,7 @@ const FOLDERS = [
     title: "Mesaj Bırak",
     subtitle: "Anonim Not Defteri",
     icon: MessageSquare,
-    accent: "from-sky-400/20 to-cyan-500/10",
+    accent: "from-sky-400/20 to-cyan-500/5",
     iconColor: "text-sky-300",
     tabs: ["Bana Yaz"],
   },
@@ -135,7 +135,7 @@ const FOLDERS = [
     title: "Kelime Oyunu",
     subtitle: "6 Hak • 5 Harf",
     icon: Gamepad2,
-    accent: "from-violet-400/20 to-fuchsia-500/10",
+    accent: "from-violet-400/20 to-fuchsia-500/5",
     iconColor: "text-violet-300",
     tabs: ["Günün Kelimesi"],
   },
@@ -383,7 +383,7 @@ const SERIES_DATA = [
     tag: "Jack Shephard",
     quote: "Geri dönmek zorundayız, Kate!",
     note: "Gizem kurgusu, karakter derinliği ve kader-özgür irade çatışmasıyla televizyon tarihinin zirvelerinden.",
-    gradient: "from-emerald-950/50 to-slate-900/50",
+    gradient: "from-emerald-950/40 to-slate-900/40",
   },
   {
     title: "Game of Thrones",
@@ -391,7 +391,7 @@ const SERIES_DATA = [
     tag: "Jon Snow • Gece Nöbeti",
     quote: "İçindeki çocuğu öldür, Jon Snow. Kış neredeyse geldi. Çocuğu öldür ki adam doğsun.",
     note: "Güç dengeleri, sert politik gerçekçilik ve epik atmosferiyle benzersiz bir evren.",
-    gradient: "from-slate-900/50 to-zinc-900/50",
+    gradient: "from-slate-900/40 to-zinc-900/40",
   },
   {
     title: "Gibi",
@@ -399,7 +399,7 @@ const SERIES_DATA = [
     tag: "Yılmaz • İlkkan • Ersoy",
     quote: "Senin hiçbir şeyden haberin yok, bu kadar bilgisiz olup bu kadar fikrin olması inanılmaz.",
     note: "Gündelik hayatın absürtlüğünü sıfır zorlama ile mizaha dönüştüren modern klasik.",
-    gradient: "from-amber-950/50 to-stone-900/50",
+    gradient: "from-amber-950/40 to-stone-900/40",
   },
   {
     title: "Shōgun",
@@ -407,7 +407,7 @@ const SERIES_DATA = [
     tag: "Lord Toranaga",
     quote: "Rüzgarı kontrol edemezsin ama yelkenini ona göre ayarlayabilirsin.",
     note: "Sabır, diplomasi ve feodal Japonya atmosferini kusursuz sinematografiyle birleştiren başyapıt.",
-    gradient: "from-red-950/50 to-neutral-900/50",
+    gradient: "from-red-950/40 to-neutral-900/40",
   },
   {
     title: "Banshee",
@@ -415,7 +415,7 @@ const SERIES_DATA = [
     tag: "Lucas Hood",
     quote: "Geçmişin peşini bırakmaz, sadece ne kadar uzağa koşabileceğini test eder.",
     note: "Yüksek tansiyonlu aksiyon koreografileri ve tavizsiz karakterleriyle saf adrenalin.",
-    gradient: "from-sky-950/50 to-slate-900/50",
+    gradient: "from-sky-950/40 to-slate-900/40",
   },
   {
     title: "The Penguin",
@@ -423,7 +423,7 @@ const SERIES_DATA = [
     tag: "Oz Cobb",
     quote: "Kimse sana hak ettiğini vermez, gidip kendin söküp alırsın.",
     note: "Gotham'ın yeraltı dünyasında geçen karanlık, sert ve oyunculuk dersi niteliğinde bir yükseliş hikayesi.",
-    gradient: "from-purple-950/50 to-neutral-950/50",
+    gradient: "from-purple-950/40 to-neutral-950/40",
   },
   {
     title: "True Detective",
@@ -431,7 +431,7 @@ const SERIES_DATA = [
     tag: "Rust Cohle",
     quote: "Zaman düz bir çemberdir. Yaptığımız ve yapacağımız her şeyi tekrar tekrar yapacağız.",
     note: "Kasvetli güney gotiği atmosferi ve varoluşsal diyaloglarıyla polisiye türünün zirvesi.",
-    gradient: "from-teal-950/50 to-stone-950/50",
+    gradient: "from-teal-950/40 to-stone-950/40",
   },
   {
     title: "Moon Knight",
@@ -439,7 +439,7 @@ const SERIES_DATA = [
     tag: "Marc Spector / Steven Grant",
     quote: "Karanlıkla savaşmak için bazen kendi içindeki kaosu kabul etmen gerekir.",
     note: "Psikolojik gerilim ile mitolojik gizemi birleştiren karanlık anlatım.",
-    gradient: "from-indigo-950/50 to-slate-950/50",
+    gradient: "from-indigo-950/40 to-slate-950/40",
   },
 ];
 
@@ -450,7 +450,7 @@ const MOVIES_DATA = [
     tag: "Robert Eggers • Psikolojik Korku",
     quote: "Neden ağzından baklayı çıkardın, Tommy?",
     note: "35mm siyah-beyaz formatı, klostrofobik deniz feneri atmosferi ve mitolojik delilik sarmalıyla hipnotik bir sinema deneyimi.",
-    gradient: "from-zinc-900/50 to-slate-950/50",
+    gradient: "from-zinc-900/40 to-slate-950/40",
   },
   {
     title: "Drive (2011)",
@@ -458,7 +458,7 @@ const MOVIES_DATA = [
     tag: "Nicolas Winding Refn • Neo-Noir",
     quote: "Bu şehirde yüz bin tane sokak var. Güzergâhı bilmene gerek yok.",
     note: "Synthwave müzikleri, neon gece ışıkları ve sessizliğin içindeki ani şiddet patlamalarıyla modern bir neo-noir ikonu.",
-    gradient: "from-fuchsia-950/50 to-slate-950/50",
+    gradient: "from-fuchsia-950/40 to-slate-950/40",
   },
   {
     title: "The Fall (2006)",
@@ -466,7 +466,7 @@ const MOVIES_DATA = [
     tag: "Tarsem Singh • Görsel Şölen",
     quote: "Ruhumu kurtarmaya mı çalışıyorsun?",
     note: "Hiç CGI kullanılmadan dünyanın 20'den fazla ülkesinde çekilen, her karesi yağlı boya tablosu gibi duran görsel başyapıt.",
-    gradient: "from-amber-950/50 to-red-950/50",
+    gradient: "from-amber-950/40 to-red-950/40",
   },
   {
     title: "Bullet Train (2022)",
@@ -474,7 +474,7 @@ const MOVIES_DATA = [
     tag: "David Leitch • Aksiyon / Kara Mizah",
     quote: "Hayatta tesadüf diye bir şey yoktur, her şey birbirine bağlıdır.",
     note: "Hızlı kurgusu, stilize dövüş sahneleri ve keskin diyaloglarıyla baştan sona temposu düşmeyen yüksek enerjili anlatım.",
-    gradient: "from-rose-950/50 to-purple-950/50",
+    gradient: "from-rose-950/40 to-purple-950/40",
   },
   {
     title: "Project Hail Mary (2026)",
@@ -482,7 +482,7 @@ const MOVIES_DATA = [
     tag: "Phil Lord & Christopher Miller • Bilim Kurgu",
     quote: "Dış hücre zarını nanometre ölçeğinde bir sondayla deldim!",
     note: "Güneş'in sönmesini engellemek için ışık yılları ötesine gönderilen bir astronotun bilim ve zekayla örülü uzay destanı.",
-    gradient: "from-sky-950/50 to-indigo-950/50",
+    gradient: "from-sky-950/40 to-indigo-950/40",
   },
   {
     title: "Hamnet (2025)",
@@ -490,7 +490,7 @@ const MOVIES_DATA = [
     tag: "Chloé Zhao • Tarihi Dram",
     quote: "Gerisi sessizlik.",
     note: "William Shakespeare'in oğlunun kaybı ve bu derin yasın ölümsüz Hamlet tragedyasına dönüşümünü şiirsel bir dille işleyen yapım.",
-    gradient: "from-emerald-950/50 to-stone-950/50",
+    gradient: "from-emerald-950/40 to-stone-950/40",
   },
   {
     title: "Gladiator (2000)",
@@ -498,7 +498,7 @@ const MOVIES_DATA = [
     tag: "Ridley Scott • Epik Tarih",
     quote: "Hayatta yaptıklarımız, sonsuzlukta yankılanır.",
     note: "Hans Zimmer'in unutulmaz müzikleri, Roma arenalarının ihtişamı ve onur mücadelesiyle sinema tarihinin en görkemli epiklerinden.",
-    gradient: "from-amber-950/50 to-neutral-950/50",
+    gradient: "from-amber-950/40 to-neutral-950/40",
   },
   {
     title: "I Swear (2025)",
@@ -506,7 +506,7 @@ const MOVIES_DATA = [
     tag: "Kirk Jones • Biyografik Dram",
     quote: "Kelimeler her zaman izin istemez.",
     note: "Tourette sendromu aktivisti John Davidson'ın gerçek yaşam öyküsünü mizah ve sarsıcı bir gerçekçilikle beyaz perdeye taşıyan yapım.",
-    gradient: "from-teal-950/50 to-slate-950/50",
+    gradient: "from-teal-950/40 to-slate-950/40",
   },
   {
     title: "Baby Driver (2017)",
@@ -514,7 +514,7 @@ const MOVIES_DATA = [
     tag: "Edgar Wright • Suç / Müzikal Ritim",
     quote: "Yavaş mıydı?",
     note: "Silah seslerinden araba viteslerine kadar her hareketin kulaklıktaki şarkıların ritmine milimetrik senkronlandığı kurgu harikası.",
-    gradient: "from-red-950/50 to-zinc-950/50",
+    gradient: "from-red-950/40 to-zinc-950/40",
   },
   {
     title: "Jason Bourne (2002–2016)",
@@ -522,7 +522,7 @@ const MOVIES_DATA = [
     tag: "Paul Greengrass • Casusluk / Gerilim",
     quote: "Şuna bak. Sana neler feda ettirdiklerine bir bak.",
     note: "El kamerası tekniği, gerçekçi yakın dövüş koreografileri ve soğuk istihbarat oyunlarıyla modern aksiyon sinemasını değiştiren seri.",
-    gradient: "from-slate-900/50 to-zinc-950/50",
+    gradient: "from-slate-900/40 to-zinc-950/40",
   },
   {
     title: "Memento (2000)",
@@ -530,7 +530,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Neo-Noir / Gizem",
     quote: "Kim olduğumuzu kendimize hatırlatmak için hepimizin aynalara ihtiyacı var.",
     note: "Sondan başa doğru akan ters kronolojik kurgusuyla izleyiciyi de kısa süreli hafıza kaybının içine hapseden dahi işi bulmaca.",
-    gradient: "from-cyan-950/50 to-slate-950/50",
+    gradient: "from-cyan-950/40 to-slate-950/40",
   },
   {
     title: "The Prestige (2006)",
@@ -538,7 +538,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Gizem / Gerilim",
     quote: "Dikkatli bakıyor musun?",
     note: "Takıntı, fedakarlık ve illüzyon sanatının karanlık bedeli üzerine kurulu; her izleyişte yeni ipuçları yakalatan kusursuz senaryo.",
-    gradient: "from-indigo-950/50 to-zinc-950/50",
+    gradient: "from-indigo-950/40 to-zinc-950/40",
   },
   {
     title: "The Truman Show (1998)",
@@ -546,7 +546,7 @@ const MOVIES_DATA = [
     tag: "Peter Weir • Satirik Bilim Kurgu",
     quote: "Olur ya görüşemezsek; iyi günler, iyi akşamlar ve iyi geceler!",
     note: "Sahte bir mükemmelliğin içinden uyanıp gerçeğin kapısına yürümeyi anlatan, zamanının çok ötesinde bir medya ve özgürlük eleştirisi.",
-    gradient: "from-sky-900/50 to-slate-950/50",
+    gradient: "from-sky-900/40 to-slate-950/40",
   },
   {
     title: "Pride & Prejudice (2005)",
@@ -554,7 +554,7 @@ const MOVIES_DATA = [
     tag: "Joe Wright • Dönem Dramı",
     quote: "Beni bedenim ve ruhumla büyüledin.",
     note: "Dario Marianelli'nin piyano tınıları, sisli İngiliz kırları ve tek plan balo sahneleriyle zarafetin sinemadaki karşılığı.",
-    gradient: "from-stone-900/50 to-emerald-950/50",
+    gradient: "from-stone-900/40 to-emerald-950/40",
   },
   {
     title: "The Odyssey (2026)",
@@ -562,7 +562,7 @@ const MOVIES_DATA = [
     tag: "Christopher Nolan • Mitolojik Epik",
     quote: "Anlat bana Musa, o binbir türlü çare bilen adamı...",
     note: "Homeros'un ölümsüz destanını IMAX kameralar ve pratik efektlerle devasa bir sinema ölçeğine taşıyan mitolojik yolculuk.",
-    gradient: "from-blue-950/50 to-slate-950/50",
+    gradient: "from-blue-950/40 to-slate-950/40",
   },
   {
     title: "Stalker (1979)",
@@ -570,7 +570,7 @@ const MOVIES_DATA = [
     tag: "Andrei Tarkovsky • Sanat Sineması",
     quote: "İnsan doğduğunda zayıf ve esnektir; öldüğünde ise katı ve hissizdir.",
     note: "Yasak 'Bölge'ye yapılan metafizik yolculuk üzerinden inanç, arzu ve insan ruhunun derinliklerini sorgulayan şiirsel başyapıt.",
-    gradient: "from-stone-950/50 to-amber-950/50",
+    gradient: "from-stone-950/40 to-amber-950/40",
   },
   {
     title: "Oldboy (2003)",
@@ -578,7 +578,7 @@ const MOVIES_DATA = [
     tag: "Park Chan-wook • Kore Sineması",
     quote: "Gül, dünya da seninle gülsün. Ağla, tek başına ağlarsın.",
     note: "Tek plan çekiçli koridor sahnesi, operatik intikam trajedisi ve sarsıcı finaliyle dünya sinemasının en çarpıcı örneklerinden.",
-    gradient: "from-red-950/50 to-neutral-950/50",
+    gradient: "from-red-950/40 to-neutral-950/40",
   },
   {
     title: "Mulholland Drive (2001)",
@@ -586,7 +586,7 @@ const MOVIES_DATA = [
     tag: "David Lynch • Sürreal Gizem",
     quote: "Sessizlik.",
     note: "Hollywood rüyası ile kabus arasındaki sınırı eriten, bilinçaltının mantığıyla işleyen hipnotik ve gizemli başyapıt.",
-    gradient: "from-purple-950/50 to-black/50",
+    gradient: "from-purple-950/40 to-black/40",
   },
   {
     title: "No Country for Old Men (2007)",
@@ -594,7 +594,7 @@ const MOVIES_DATA = [
     tag: "Coen Kardeşler • Neo-Western",
     quote: "Yazı tura atışında şimdiye kadar kaybettiğin en büyük şey neydi?",
     note: "Neredeyse hiç film müziği kullanmadan saf gerilim yaratan, kader ve kaçınılmazlık üzerine soğukkanlı bir başyapıt.",
-    gradient: "from-amber-950/50 to-zinc-950/50",
+    gradient: "from-amber-950/40 to-zinc-950/40",
   },
   {
     title: "Whiplash (2014)",
@@ -602,7 +602,7 @@ const MOVIES_DATA = [
     tag: "Damien Chazelle • Müzik / Psikolojik Dram",
     quote: "İngilizcede 'aferin' kadar zararlı iki kelime daha yoktur.",
     note: "Mükemmeliyetçilik takıntısı ve sınırları zorlayan disiplin üzerine kurulu, son 10 dakikası nefes kestiren ritim şöleni.",
-    gradient: "from-yellow-950/50 to-black/50",
+    gradient: "from-yellow-950/40 to-black/40",
   },
   {
     title: "In Bruges (2008)",
@@ -610,7 +610,7 @@ const MOVIES_DATA = [
     tag: "Martin McDonagh • Kara Komedi",
     quote: "Belki de cehennem budur; sonsuza dek Bruges'de kalmak.",
     note: "Orta Çağ masal şehri Bruges fonunda suç, vicdan ve keskin İrlanda mizahını ustalıkla harmanlayan kült yapım.",
-    gradient: "from-indigo-950/50 to-amber-950/50",
+    gradient: "from-indigo-950/40 to-amber-950/40",
   },
   {
     title: "Good Will Hunting (1997)",
@@ -618,7 +618,7 @@ const MOVIES_DATA = [
     tag: "Gus Van Sant • Dram",
     quote: "Senin suçun değil evlat. Senin suçun değil.",
     note: "Deha, duygusal duvarlar ve insanın kendi potansiyeliyle yüzleşmesi üzerine yazılmış en samimi senaryolardan biri.",
-    gradient: "from-amber-950/50 to-stone-900/50",
+    gradient: "from-amber-950/40 to-stone-900/40",
   },
   {
     title: "The Banshees of Inisherin (2022)",
@@ -626,7 +626,7 @@ const MOVIES_DATA = [
     tag: "Martin McDonagh • Kara Mizah / Dram",
     quote: "İyi biri olmak, geriye kalan her şeyden daha önemlidir.",
     note: "Küçük bir İrlanda adasında aniden biten bir dostluk üzerinden yalnızlık, kalıcılık ve inatçılığı işleyen sarsıcı hikaye.",
-    gradient: "from-emerald-950/50 to-slate-900/50",
+    gradient: "from-emerald-950/40 to-slate-900/40",
   },
   {
     title: "Dune: Part Two (2024)",
@@ -634,7 +634,7 @@ const MOVIES_DATA = [
     tag: "Denis Villeneuve • Epik Bilim Kurgu",
     quote: "Korku akıl katilidir. Korkunun üzerimden ve içimden geçmesine izin vereceğim.",
     note: "Anıtsal ses tasarımı, çöl sinematografisi ve mesih mitinin karanlık yüzünü işleyen modern bilim kurgu klasiği.",
-    gradient: "from-orange-950/50 to-stone-950/50",
+    gradient: "from-orange-950/40 to-stone-950/40",
   },
   {
     title: "The Matrix (1999)",
@@ -642,11 +642,10 @@ const MOVIES_DATA = [
     tag: "Wachowski Kardeşler • Bilim Kurgu",
     quote: "Yolu bilmekle o yolda yürümek arasında fark vardır.",
     note: "Felsefi alt metni, cyberpunk estetiği ve görsel efekt devrimiyle sinema tarihini ikiye bölen başyapıt.",
-    gradient: "from-green-950/50 to-black/50",
+    gradient: "from-green-950/40 to-black/40",
   },
 ];
 
-// 2027 yeni yıl dilekleri ve şans kurabiyesi mesajları
 const NEW_YEAR_WISHES = [
   "2027; emeklerinin karşılığını aldığın, sağlık ve huzurla dolu bir yıl olsun.",
   "Yeni yıl sana güzel insanlar, temiz başlangıçlar ve unutulmaz anılar getirsin.",
@@ -893,7 +892,7 @@ const IntroSplash = ({ onEnter }) => (
           onClick={onEnter}
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
-          className="mt-8 inline-flex items-center gap-3 rounded-xl border border-amber-100/35 bg-[#d2b36b]/15 px-8 py-3.5 text-xs font-semibold tracking-[.2em] text-amber-50 backdrop-blur-sm transition hover:bg-[#d2b36b]/25 cursor-pointer"
+          className="mt-8 inline-flex items-center gap-3 rounded-xl border border-amber-100/45 bg-[#d2b36b]/15 px-8 py-3.5 text-xs font-semibold tracking-[.2em] text-amber-50 transition hover:bg-[#d2b36b]/25 cursor-pointer"
         >
           SİSTEME GİR <span className="text-base">→</span>
         </motion.button>
@@ -924,8 +923,8 @@ const NewYearFeature = ({ isDay, soundFx }) => {
 
   return (
     <div
-      className={`crystal-glass relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] px-4 py-3.5 sm:px-7 ${
-        isDay ? "crystal-glass-day" : "crystal-glass-night"
+      className={`real-glass relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] px-4 py-3.5 sm:px-7 ${
+        isDay ? "real-glass-day" : "real-glass-night"
       }`}
     >
       <div className="relative flex items-center gap-3 sm:gap-7">
@@ -935,20 +934,20 @@ const NewYearFeature = ({ isDay, soundFx }) => {
           className="group relative shrink-0 rounded-2xl transition hover:scale-105 active:scale-95 cursor-pointer"
         >
           <TreeArtwork compact />
-          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/40 bg-black/35 px-2.5 py-1 text-[9px] font-semibold text-amber-100">
+          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/45 bg-black/35 px-2.5 py-1 text-[9px] font-semibold text-amber-100">
             DİLEK TUT ✨
           </span>
         </button>
 
         <div className="min-w-0 flex-1 py-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-white/35 bg-black/20 px-3 py-1 text-[10px] font-semibold tracking-widest text-amber-200">
+            <span className="rounded-full border border-white/40 bg-black/25 px-3 py-1 text-[10px] font-semibold tracking-widest text-amber-200">
               2027 YENİ YIL
             </span>
-            <span className="text-[10px] text-white/85 drop-shadow">• Bir dilek seç</span>
+            <span className="glass-text text-[10px] text-white/95">• Bir dilek seç</span>
           </div>
 
-          <h2 className="mt-2 text-lg font-semibold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] sm:text-xl">
+          <h2 className="glass-text mt-2 text-lg font-bold text-white sm:text-xl">
             Yeni yıl ağacı
           </h2>
 
@@ -959,7 +958,7 @@ const NewYearFeature = ({ isDay, soundFx }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.35 }}
-              className="mt-1.5 min-h-[42px] text-xs leading-6 text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.85)] sm:text-sm"
+              className="glass-text mt-1.5 min-h-[42px] text-xs font-medium leading-6 text-white sm:text-sm"
             >
               {NEW_YEAR_WISHES[wishIndex]}
             </motion.p>
@@ -967,7 +966,7 @@ const NewYearFeature = ({ isDay, soundFx }) => {
 
           <button
             onClick={nextWish}
-            className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/35 bg-black/25 px-3.5 py-2 text-[11px] font-semibold text-white transition hover:bg-black/40 cursor-pointer"
+            className="glass-text mt-2 inline-flex items-center gap-2 rounded-full border border-white/45 bg-black/20 px-3.5 py-2 text-[11px] font-semibold text-white transition hover:bg-black/35 cursor-pointer"
           >
             <Sparkles className="h-3.5 w-3.5 text-amber-300" />
             Başka bir dilek dile
@@ -976,13 +975,13 @@ const NewYearFeature = ({ isDay, soundFx }) => {
       </div>
 
       <div className="relative mt-3 flex flex-col gap-2 border-t border-white/25 pt-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2 text-xs text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+        <div className="glass-text flex items-center gap-2 text-xs font-medium text-white">
           <Cookie className="h-5 w-5 text-amber-300" />
           <span>Bir de şans kurabiyeni kır…</span>
         </div>
         <button
           onClick={openFortune}
-          className="rounded-full border border-amber-200/45 bg-amber-400/20 px-4 py-2 text-[11px] font-bold text-amber-100 transition hover:bg-amber-400/35 cursor-pointer"
+          className="glass-text rounded-full border border-amber-200/50 bg-amber-400/20 px-4 py-2 text-[11px] font-bold text-amber-100 transition hover:bg-amber-400/35 cursor-pointer"
         >
           🥠 Şansımı Öğren
         </button>
@@ -994,11 +993,11 @@ const NewYearFeature = ({ isDay, soundFx }) => {
             initial={{ opacity: 0, height: 0, y: 8 }}
             animate={{ opacity: 1, height: "auto", y: 0 }}
             exit={{ opacity: 0, height: 0, y: 6 }}
-            className="relative mt-3 overflow-hidden rounded-xl border border-white/30 bg-black/25 px-4 py-3"
+            className="relative mt-3 overflow-hidden rounded-xl border border-white/35 bg-black/25 px-4 py-3"
           >
             <div className="flex items-start gap-2">
               <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-              <p className="text-xs leading-6 text-amber-50 drop-shadow sm:text-sm">
+              <p className="glass-text text-xs leading-6 text-amber-50 sm:text-sm">
                 {FORTUNE_MESSAGES[fortuneIndex]}
               </p>
             </div>
@@ -1110,18 +1109,18 @@ const WordGuessGame = () => {
   const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
   return (
-    <div className="crystal-card mx-auto w-full max-w-xl rounded-3xl p-4 text-white sm:p-7">
+    <div className="real-card glass-text mx-auto w-full max-w-xl rounded-3xl p-4 text-white sm:p-7">
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
           <span className="text-[10px] font-bold tracking-[.25em] text-violet-300">
             FARUK OS • MİNİ OYUN
           </span>
           <h3 className="mt-1 text-2xl font-bold">5 Harf</h3>
-          <p className="mt-1 text-xs text-white/80">Kelimeyi bulmak için 6 hakkın var.</p>
+          <p className="mt-1 text-xs text-white/90">Kelimeyi bulmak için 6 hakkın var.</p>
         </div>
-        <div className="rounded-2xl border border-white/25 bg-black/25 px-3 py-2 text-center">
+        <div className="rounded-2xl border border-white/35 bg-black/25 px-3 py-2 text-center">
           <div className="text-xl font-bold tabular-nums">{Math.max(0, 6 - guesses.length)}</div>
-          <div className="text-[9px] uppercase tracking-wider text-white/70">Kalan hak</div>
+          <div className="text-[9px] uppercase tracking-wider text-white/80">Kalan hak</div>
         </div>
       </div>
 
@@ -1140,13 +1139,13 @@ const WordGuessGame = () => {
                   key={i}
                   className={`flex aspect-square items-center justify-center rounded-lg border text-xl font-black sm:rounded-xl sm:text-2xl ${
                     status === "correct"
-                      ? "border-emerald-300/70 bg-emerald-500/80"
+                      ? "border-emerald-300/80 bg-emerald-500/80"
                       : status === "present"
-                      ? "border-amber-300/70 bg-amber-500/80"
+                      ? "border-amber-300/80 bg-amber-500/80"
                       : status === "absent"
-                      ? "border-white/20 bg-black/45 text-white/60"
-                      : "border-white/25 bg-black/20"
-                  } ${filled && !locked ? "border-violet-300/80 bg-violet-500/25" : ""}`}
+                      ? "border-white/30 bg-black/45 text-white/75"
+                      : "border-white/35 bg-black/15"
+                  } ${filled && !locked ? "border-violet-300/90 bg-violet-500/25" : ""}`}
                 >
                   {word[i] || ""}
                 </div>
@@ -1158,7 +1157,7 @@ const WordGuessGame = () => {
 
       <p
         aria-live="polite"
-        className="my-4 min-h-10 rounded-xl border border-white/20 bg-black/25 px-3 py-2 text-center text-xs leading-6 text-white"
+        className="my-4 min-h-10 rounded-xl border border-white/30 bg-black/25 px-3 py-2 text-center text-xs leading-6 text-white"
       >
         {notice}
       </p>
@@ -1170,13 +1169,13 @@ const WordGuessGame = () => {
               <button
                 key={ch}
                 onClick={() => addLetter(ch)}
-                className={`h-10 min-w-0 flex-1 rounded-md border border-white/20 text-xs font-bold cursor-pointer sm:h-11 ${
+                className={`h-10 min-w-0 flex-1 rounded-md border border-white/30 text-xs font-bold cursor-pointer sm:h-11 ${
                   keyStatus[ch] === "correct"
                     ? "bg-emerald-500/85 text-white"
                     : keyStatus[ch] === "present"
                     ? "bg-amber-500/85 text-white"
                     : keyStatus[ch] === "absent"
-                    ? "bg-black/45 text-white/40"
+                    ? "bg-black/45 text-white/50"
                     : "bg-black/25 text-white hover:bg-white/20"
                 }`}
               >
@@ -1187,13 +1186,13 @@ const WordGuessGame = () => {
               <>
                 <button
                   onClick={removeLetter}
-                  className="rounded-md border border-white/20 bg-black/30 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-white/30 bg-black/30 px-2 text-[10px] font-bold cursor-pointer"
                 >
                   ⌫
                 </button>
                 <button
                   onClick={submit}
-                  className="rounded-md border border-violet-300/50 bg-violet-500/80 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-violet-300/60 bg-violet-500/80 px-2 text-[10px] font-bold cursor-pointer"
                 >
                   GİR
                 </button>
@@ -1206,12 +1205,12 @@ const WordGuessGame = () => {
       {finished && (
         <button
           onClick={reset}
-          className="mt-5 w-full rounded-xl border border-violet-300/50 bg-violet-500/80 px-4 py-3 text-sm font-bold text-white transition hover:bg-violet-500 cursor-pointer"
+          className="mt-5 w-full rounded-xl border border-violet-300/60 bg-violet-500/80 px-4 py-3 text-sm font-bold text-white transition hover:bg-violet-500 cursor-pointer"
         >
           Yeni Kelime Oyna ↻
         </button>
       )}
-      <p className="mt-4 text-center text-[10px] text-white/70">
+      <p className="mt-4 text-center text-[10px] text-white/85">
         Yeşil: doğru harf ve yer • Sarı: kelimede var • Gri: kelimede yok
       </p>
     </div>
@@ -1296,20 +1295,20 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
   return (
     <div className="relative">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-xs text-white/85 drop-shadow">
+        <span className="glass-text text-xs text-white/95">
           Sağa kaydırarak veya okları kullanarak gezebilirsin → ({items.length} Yapım)
         </span>
         <div className="flex gap-2">
           <button
             onClick={() => scroll("left")}
-            className="rounded-xl border border-white/30 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
+            className="rounded-xl border border-white/40 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
             title="Sola Kaydır"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={() => scroll("right")}
-            className="rounded-xl border border-white/30 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
+            className="rounded-xl border border-white/40 bg-black/25 p-2 text-white transition hover:bg-black/45 cursor-pointer"
             title="Sağa Kaydır"
           >
             <ChevronRight className="h-4 w-4" />
@@ -1325,7 +1324,7 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
         {items.map((item) => (
           <div
             key={item.title}
-            className="crystal-card snap-start shrink-0 w-[85vw] sm:w-[370px] flex flex-col justify-between overflow-hidden rounded-2xl text-white"
+            className="real-card glass-text snap-start shrink-0 w-[85vw] sm:w-[370px] flex flex-col justify-between overflow-hidden rounded-2xl text-white"
           >
             <div>
               <div className={`relative h-52 w-full bg-gradient-to-br ${item.gradient}`}>
@@ -1336,9 +1335,9 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
                   onError={(e) => (e.currentTarget.style.display = "none")}
                   className="h-full w-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
                 <span
-                  className={`absolute top-3 left-3 rounded-full border border-white/30 bg-black/45 px-3 py-1 text-xs font-semibold ${
+                  className={`absolute top-3 left-3 rounded-full border border-white/35 bg-black/45 px-3 py-1 text-xs font-semibold ${
                     accentColor === "emerald" ? "text-emerald-300" : "text-indigo-300"
                   }`}
                 >
@@ -1347,18 +1346,18 @@ const HorizontalMediaCarousel = ({ items, accentColor = "emerald" }) => {
               </div>
 
               <div className="p-5">
-                <h3 className="text-xl font-bold text-white drop-shadow">{item.title}</h3>
+                <h3 className="text-xl font-bold text-white">{item.title}</h3>
 
                 <blockquote
                   className={`mt-3 rounded-xl border-l-4 ${
                     accentColor === "emerald" ? "border-emerald-400" : "border-indigo-400"
-                  } border border-white/20 bg-black/25 p-3 text-xs sm:text-sm italic text-white/95`}
+                  } border border-white/25 bg-black/25 p-3 text-xs sm:text-sm italic text-white`}
                 >
-                  <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-65" />
+                  <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-75" />
                   "{item.quote}"
                 </blockquote>
 
-                <p className="mt-3.5 text-xs sm:text-sm leading-relaxed text-white/90">
+                <p className="mt-3.5 text-xs sm:text-sm leading-relaxed text-white/95">
                   {item.note}
                 </p>
               </div>
@@ -1433,15 +1432,15 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 playClickSound(soundFx);
                 setActiveFilter(cat);
               }}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${
+              className={`glass-text rounded-full px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${
                 activeFilter === cat
-                  ? "border border-white/50 bg-white/25 text-white shadow"
-                  : "border border-white/20 bg-black/25 text-white/80 hover:bg-white/15"
+                  ? "border border-white/60 bg-black/40 text-white shadow"
+                  : "border border-white/30 bg-black/20 text-white/90 hover:bg-black/35"
               }`}
             >
               {cat}
               {cat === "Favorilerim" && Object.values(likedMovies).filter(Boolean).length > 0 && (
-                <span className="ml-1.5 rounded-full bg-rose-500/80 px-1.5 py-0.2 text-[10px]">
+                <span className="ml-1.5 rounded-full bg-rose-500/85 px-1.5 py-0.2 text-[10px]">
                   {Object.values(likedMovies).filter(Boolean).length}
                 </span>
               )}
@@ -1453,7 +1452,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
           href="https://boxd.it/nouvT"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-indigo-300/40 bg-indigo-500/35 px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-500/60"
+          className="glass-text inline-flex items-center gap-1.5 rounded-full border border-indigo-300/50 bg-indigo-500/35 px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-500/60"
         >
           <span>Letterboxd</span>
           <ExternalLink className="h-3.5 w-3.5" />
@@ -1462,7 +1461,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
 
       {/* Instagram Tarzı Dikey Kart Akışı */}
       {filteredItems.length === 0 ? (
-        <div className="crystal-card rounded-3xl p-8 text-center text-sm text-white/80">
+        <div className="real-card glass-text rounded-3xl p-8 text-center text-sm text-white">
           Henüz favorilediğin film yok. Kartlara çift tıklayarak veya kalbe basarak ekleyebilirsin.
         </div>
       ) : (
@@ -1471,22 +1470,20 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
           return (
             <article
               key={item.title}
-              className="crystal-card overflow-hidden rounded-3xl text-white transition-all duration-300"
+              className="real-card glass-text overflow-hidden rounded-3xl text-white transition-all duration-300"
             >
               {/* IG Post Üst Başlık */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/15">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-white/25">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-indigo-300/45 bg-indigo-500/25 text-xs font-bold text-indigo-200">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-indigo-300/55 bg-indigo-500/30 text-xs font-bold text-indigo-100">
                     {idx + 1}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="truncate text-sm font-bold text-white drop-shadow">
-                      {item.title}
-                    </h3>
-                    <p className="truncate text-[11px] text-white/75">{item.tag}</p>
+                    <h3 className="truncate text-sm font-bold text-white">{item.title}</h3>
+                    <p className="truncate text-[11px] text-white/85">{item.tag}</p>
                   </div>
                 </div>
-                <span className="shrink-0 rounded-full border border-white/20 bg-black/25 px-2.5 py-0.5 text-[10px] font-medium text-white/80">
+                <span className="shrink-0 rounded-full border border-white/30 bg-black/25 px-2.5 py-0.5 text-[10px] font-medium text-white/90">
                   Arşiv #{idx + 1}
                 </span>
               </div>
@@ -1504,7 +1501,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                   onError={(e) => (e.currentTarget.style.display = "none")}
                   className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-[1.02]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
 
                 <AnimatePresence>
                   {heartBurst === item.title && (
@@ -1526,7 +1523,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => toggleLike(item.title)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/20 px-3 py-1.5 text-xs font-semibold transition hover:bg-white/15 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-black/25 px-3 py-1.5 text-xs font-semibold transition hover:bg-black/40 cursor-pointer"
                   >
                     <Heart
                       className={`h-4 w-4 transition ${
@@ -1538,7 +1535,7 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
 
                   <button
                     onClick={() => handleCopyQuote(item.title, item.quote)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/20 px-3 py-1.5 text-xs font-medium text-white/90 transition hover:bg-white/15 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-black/25 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-black/40 cursor-pointer"
                   >
                     {copiedQuote === item.title ? (
                       <>
@@ -1554,17 +1551,17 @@ const InstagramMovieFeed = ({ items, soundFx }) => {
                   </button>
                 </div>
 
-                <span className="text-[10px] text-white/55">Çift tıkla ❤️</span>
+                <span className="text-[10px] text-white/80">Çift tıkla ❤️</span>
               </div>
 
               {/* Replik ve Açıklama Alanı */}
               <div className="px-4 pb-4 pt-2 space-y-2.5">
-                <blockquote className="rounded-xl border-l-4 border-indigo-400 border border-white/15 bg-black/25 px-3 py-2 text-xs sm:text-sm italic text-white/95">
-                  <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-65" />
+                <blockquote className="rounded-xl border-l-4 border-indigo-400 border border-white/25 bg-black/25 px-3 py-2 text-xs sm:text-sm italic text-white">
+                  <Quote className="inline h-3.5 w-3.5 mr-1.5 opacity-75" />
                   "{item.quote}"
                 </blockquote>
 
-                <p className="text-xs sm:text-sm leading-relaxed text-white/90">
+                <p className="text-xs sm:text-sm leading-relaxed text-white">
                   <span className="font-bold text-white mr-1.5">farukkocer</span>
                   {item.note}
                 </p>
@@ -1589,7 +1586,6 @@ export default function App() {
   const [islandOpen, setIslandOpen] = useState(false);
   const [boostSnow, setBoostSnow] = useState(false);
   const [zenMode, setZenMode] = useState(false);
-  const [ultraClearGlass, setUltraClearGlass] = useState(true);
 
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [spotlightQuery, setSpotlightQuery] = useState("");
@@ -1772,7 +1768,6 @@ export default function App() {
     weekday: "long",
   });
 
-  // Spotlight arama sonuçları
   const getSpotlightResults = () => {
     const q = spotlightQuery.trim().toLocaleLowerCase("tr-TR");
     if (!q) {
@@ -1855,16 +1850,16 @@ export default function App() {
       if (activeTab === 0) {
         return (
           <div className="space-y-6">
-            <div className="crystal-card rounded-2xl p-6 text-white">
+            <div className="real-card glass-text rounded-2xl p-6 text-white">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-amber-400/20 px-3 py-1 text-xs font-medium text-amber-200">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/50 bg-amber-400/20 px-3 py-1 text-xs font-medium text-amber-200">
                     <Cpu className="h-3.5 w-3.5" /> Otomasyon Teknikeri
                   </span>
-                  <h3 className="mt-3 text-2xl font-bold text-white drop-shadow">
+                  <h3 className="mt-3 text-2xl font-bold text-white">
                     Endüstriyel Otomasyon & Akıllı Tarım Teknolojileri
                   </h3>
-                  <p className="mt-1 text-sm text-white/80">
+                  <p className="mt-1 text-sm text-white/90">
                     Vegevital Tarım A.Ş. • İstanbul Üniversitesi-Cerrahpaşa Mezunu
                   </p>
                 </div>
@@ -1872,20 +1867,20 @@ export default function App() {
                   href="https://www.linkedin.com/in/farukkocer/"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-[#0A66C2]/85 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-[#0A66C2]"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 bg-[#0A66C2]/85 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-[#0A66C2]"
                 >
                   <span>LinkedIn Profilim</span>
                   <ExternalLink className="h-4 w-4" />
                 </a>
               </div>
 
-              <p className="mt-5 text-sm sm:text-base leading-relaxed text-white/95">
+              <p className="mt-5 text-sm sm:text-base leading-relaxed text-white">
                 İstanbul Üniversitesi-Cerrahpaşa <strong>Kontrol ve Otomasyon Teknolojisi</strong> mezunuyum.
                 Şu anda <strong>Vegevital Tarım A.Ş.</strong> bünyesinde Otomasyon Teknikeri olarak akıllı sera
                 sistemleri, iklimlendirme ve sulama otomasyonu, SCADA kontrol yazılımları, saha sensör izleme ve
                 CO₂ iklim kontrol ünitelerinin yönetimi üzerine çalışıyorum.
               </p>
-              <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/85">
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/95">
                 Üniversite eğitimim ve <strong>Yılmaz Redüktör</strong> stajım sırasında edindiğim PLC programlama
                 (TIA Portal), AC motor sürücüleri (VFD/İnvertör) ve güç elektroniği tecrübemi, tarım teknolojileri
                 ile endüstriyel otomasyonun kesişim noktasında sahaya uyguluyorum.
@@ -1893,24 +1888,24 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="crystal-card rounded-2xl p-4 text-white">
+              <div className="real-card glass-text rounded-2xl p-4 text-white">
                 <Sprout className="h-6 w-6 text-emerald-300" />
                 <h4 className="mt-2 font-semibold">Akıllı Sera Sistemleri</h4>
-                <p className="mt-1 text-xs text-white/80">
+                <p className="mt-1 text-xs text-white/90">
                   İklim kontrolü, CO₂ dozajlama, sulama otomasyonu ve gerçek zamanlı sensör takibi.
                 </p>
               </div>
-              <div className="crystal-card rounded-2xl p-4 text-white">
+              <div className="real-card glass-text rounded-2xl p-4 text-white">
                 <Cpu className="h-6 w-6 text-amber-300" />
                 <h4 className="mt-2 font-semibold">PLC & SCADA</h4>
-                <p className="mt-1 text-xs text-white/80">
+                <p className="mt-1 text-xs text-white/90">
                   Siemens TIA Portal tabanlı kontrol mimarileri ve endüstriyel saha izleme ekranları.
                 </p>
               </div>
-              <div className="crystal-card rounded-2xl p-4 text-white">
+              <div className="real-card glass-text rounded-2xl p-4 text-white">
                 <Briefcase className="h-6 w-6 text-sky-300" />
                 <h4 className="mt-2 font-semibold">Sürücü & Güç Elektroniği</h4>
-                <p className="mt-1 text-xs text-white/80">
+                <p className="mt-1 text-xs text-white/90">
                   AC motor sürücüleri (VFD), pano kablolama ve endüstriyel haberleşme protokolleri.
                 </p>
               </div>
@@ -1922,39 +1917,39 @@ export default function App() {
       if (activeTab === 1) {
         return (
           <div className="space-y-4">
-            <div className="crystal-card rounded-2xl p-5 text-white">
+            <div className="real-card glass-text rounded-2xl p-5 text-white">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-emerald-300">
                   Mevcut Görev • 2026 - Günümüz
                 </span>
-                <span className="rounded-full border border-emerald-300/35 bg-emerald-400/20 px-2.5 py-0.5 text-xs text-emerald-200">
+                <span className="rounded-full border border-emerald-300/45 bg-emerald-400/20 px-2.5 py-0.5 text-xs text-emerald-200">
                   Aktif
                 </span>
               </div>
               <h4 className="mt-1 text-lg font-bold">Otomasyon Teknikeri — Vegevital Tarım A.Ş.</h4>
-              <p className="mt-2 text-sm text-white/85">
+              <p className="mt-2 text-sm text-white/95">
                 Modern sera tesislerinde iklimlendirme, sulama otomasyonu, SCADA kontrol sistemleri, CO₂ üniteleri ve saha sensör ağlarının kesintisiz yönetimi.
               </p>
             </div>
 
-            <div className="crystal-card rounded-2xl p-5 text-white">
+            <div className="real-card glass-text rounded-2xl p-5 text-white">
               <span className="text-xs font-semibold uppercase tracking-wider text-amber-300">
                 Staj Deneyimi • Ağustos 2026
               </span>
               <h4 className="mt-1 text-lg font-bold">
                 Endüstriyel Otomasyon Stajyeri — Yılmaz Redüktör
               </h4>
-              <p className="mt-2 text-sm text-white/85">
+              <p className="mt-2 text-sm text-white/95">
                 AC motor sürücüleri (VFD/İnvertör), güç elektroniği testleri, Modbus RTU haberleşme ve PLC/HMI pano entegrasyonu üzerine saha uygulaması.
               </p>
             </div>
 
-            <div className="crystal-card rounded-2xl p-5 text-white">
+            <div className="real-card glass-text rounded-2xl p-5 text-white">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-300">
                 <GraduationCap className="h-4 w-4" /> Eğitim
               </div>
               <h4 className="mt-1 text-lg font-bold">İstanbul Üniversitesi-Cerrahpaşa</h4>
-              <p className="mt-1 text-sm text-white/85">
+              <p className="mt-1 text-sm text-white/95">
                 Kontrol ve Otomasyon Teknolojisi Programı (Önlisans Mezunu)
               </p>
             </div>
@@ -1975,7 +1970,7 @@ export default function App() {
             "AutoCAD Teknik Çizim",
             "Python & Gömülü Sistemler",
           ].map((skill) => (
-            <div key={skill} className="crystal-card rounded-xl px-4 py-3 text-sm font-medium text-white">
+            <div key={skill} className="real-card glass-text rounded-xl px-4 py-3 text-sm font-medium text-white">
               {skill}
             </div>
           ))}
@@ -1987,15 +1982,15 @@ export default function App() {
     if (activeFolder.id === "projelerim") {
       return (
         <div className="space-y-6">
-          <div className="crystal-card flex flex-col items-center justify-center rounded-2xl p-8 text-center text-white">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-400/20">
+          <div className="real-card glass-text flex flex-col items-center justify-center rounded-2xl p-8 text-center text-white">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-300/50 bg-cyan-400/20">
               <Hourglass className="h-8 w-8 animate-pulse text-cyan-300" />
             </div>
-            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-cyan-300/35 bg-cyan-400/20 px-3.5 py-1 text-xs font-semibold text-cyan-200">
+            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-cyan-300/45 bg-cyan-400/20 px-3.5 py-1 text-xs font-semibold text-cyan-200">
               <Wrench className="h-3.5 w-3.5" /> Gelişim Aşamasında
             </span>
             <h3 className="mt-3 text-2xl font-bold">Yeni Projeler Çok Yakında Burada</h3>
-            <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/85">
+            <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/95">
               Endüstriyel otomasyon, PLC/SCADA kontrol panoları, akıllı sera sulama ve gübreleme sistemleri ile gömülü yazılım projelerimi burada yayınlamak üzere hazırlıyorum.
             </p>
           </div>
@@ -2018,15 +2013,15 @@ export default function App() {
                 status: "Yakında",
               },
             ].map((proj) => (
-              <div key={proj.title} className="crystal-card flex flex-col justify-between rounded-2xl p-5 text-white">
+              <div key={proj.title} className="real-card glass-text flex flex-col justify-between rounded-2xl p-5 text-white">
                 <div>
-                  <span className="inline-block rounded-md border border-cyan-300/30 bg-cyan-400/20 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-200">
+                  <span className="inline-block rounded-md border border-cyan-300/40 bg-cyan-400/20 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-200">
                     {proj.status}
                   </span>
                   <h4 className="mt-2.5 font-bold">{proj.title}</h4>
-                  <p className="mt-1.5 text-xs leading-relaxed text-white/80">{proj.desc}</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-white/90">{proj.desc}</p>
                 </div>
-                <div className="mt-4 flex items-center gap-1.5 text-[11px] text-white/70">
+                <div className="mt-4 flex items-center gap-1.5 text-[11px] text-white/80">
                   <Hourglass className="h-3.5 w-3.5 text-cyan-300" />
                   <span>Yakında eklenecek</span>
                 </div>
@@ -2034,14 +2029,14 @@ export default function App() {
             ))}
           </div>
 
-          <div className="crystal-card flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl p-5 text-white">
+          <div className="real-card glass-text flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl p-5 text-white">
             <div className="flex items-center gap-3 text-center sm:text-left">
-              <div className="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/35 bg-cyan-400/20 text-cyan-200">
+              <div className="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/45 bg-cyan-400/20 text-cyan-200">
                 <Mail className="h-5 w-5" />
               </div>
               <div>
                 <h4 className="text-sm sm:text-base font-bold">Proje & İş Birliği İletişimi</h4>
-                <p className="text-xs mt-0.5 text-white/80">
+                <p className="text-xs mt-0.5 text-white/90">
                   Projeler hakkında konuşmak veya ulaşmak için e-posta gönderebilirsin:{" "}
                   <a
                     href="mailto:kocerfaruk27@gmail.com"
@@ -2056,14 +2051,14 @@ export default function App() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={handleCopyMail}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-black/25 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-white/20 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/35 bg-black/25 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-black/45 cursor-pointer"
               >
                 {copiedMail ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
                 <span>{copiedMail ? "Kopyalandı" : "Adresi Kopyala"}</span>
               </button>
               <a
                 href="mailto:kocerfaruk27@gmail.com"
-                className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-300/45 bg-cyan-500/80 px-4 py-2 text-xs font-semibold text-white transition hover:bg-cyan-500"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-300/55 bg-cyan-500/80 px-4 py-2 text-xs font-semibold text-white transition hover:bg-cyan-500"
               >
                 <Mail className="h-3.5 w-3.5" />
                 <span>Mail Gönder</span>
@@ -2092,9 +2087,9 @@ export default function App() {
 
       return (
         <div>
-          <div className="crystal-card mb-5 flex flex-col gap-4 rounded-2xl p-4 text-white sm:flex-row sm:items-center sm:justify-between">
+          <div className="real-card glass-text mb-5 flex flex-col gap-4 rounded-2xl p-4 text-white sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 items-center gap-4">
-              <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/25 bg-black/25 shadow-inner">
+              <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/25 shadow-inner">
                 <div className="absolute bottom-2 h-2 w-20 rounded-full bg-black/40" />
                 <div
                   className="relative h-[70px] w-[70px] rounded-full border-[5px] border-[#17151b] bg-[repeating-radial-gradient(circle,#39333d_0px,#39333d_2px,#17151b_3px,#17151b_4px)] shadow-xl"
@@ -2108,12 +2103,12 @@ export default function App() {
               </div>
               <div className="min-w-0">
                 <h3 className="font-bold">Pikap • Arka Plan Müziği</h3>
-                <p className="mt-1 text-xs text-white/85">
+                <p className="mt-1 text-xs text-white/90">
                   {musicPlaying
                     ? "Plak dönüyor, müzik çalıyor…"
                     : "Plak durdu. İstediğinde yeniden başlat."}
                 </p>
-                <p className="mt-1 text-[10px] text-white/65">
+                <p className="mt-1 text-[10px] text-white/80">
                   Toplam {MUSIC_DATA.length} sanatçı & grup
                 </p>
               </div>
@@ -2121,7 +2116,7 @@ export default function App() {
 
             <button
               onClick={toggleMusic}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-300/45 bg-rose-500/75 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-500 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-300/55 bg-rose-500/75 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-500 cursor-pointer"
             >
               {musicPlaying ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               <span>{musicPlaying ? "Müziği Durdur" : "Müziği Başlat"}</span>
@@ -2137,10 +2132,10 @@ export default function App() {
                     playClickSound(soundFx);
                     setMusicFilter(cat);
                   }}
-                  className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition cursor-pointer ${
+                  className={`glass-text rounded-xl px-3.5 py-2 text-xs font-semibold transition cursor-pointer ${
                     musicFilter === cat
-                      ? "border border-white/50 bg-white/25 text-white shadow-sm"
-                      : "border border-white/20 bg-black/25 text-white/80 hover:bg-white/15"
+                      ? "border border-white/60 bg-black/40 text-white shadow-sm"
+                      : "border border-white/30 bg-black/20 text-white/90 hover:bg-black/35"
                   }`}
                 >
                   {cat}
@@ -2149,13 +2144,13 @@ export default function App() {
             </div>
 
             <div className="relative sm:w-64">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/70" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/80" />
               <input
                 type="text"
                 value={musicSearch}
                 onChange={(e) => setMusicSearch(e.target.value)}
                 placeholder="Sanatçı veya şarkı ara..."
-                className="w-full rounded-xl border border-white/25 bg-black/25 py-2 pl-9 pr-3 text-xs text-white placeholder-white/60 focus:border-white/50 focus:outline-none"
+                className="w-full rounded-xl border border-white/35 bg-black/25 py-2 pl-9 pr-3 text-xs text-white placeholder-white/70 focus:border-white/65 focus:outline-none"
               />
             </div>
           </div>
@@ -2164,7 +2159,7 @@ export default function App() {
             {filteredMusic.map((item) => (
               <div
                 key={item.artist}
-                className="crystal-card group flex flex-col justify-between overflow-hidden rounded-3xl text-white transition-all duration-300 hover:-translate-y-1"
+                className="real-card glass-text group flex flex-col justify-between overflow-hidden rounded-3xl text-white transition-all duration-300 hover:-translate-y-1"
               >
                 <div>
                   <div className="relative h-40 w-full overflow-hidden bg-black/20">
@@ -2175,29 +2170,27 @@ export default function App() {
                       onError={(e) => (e.currentTarget.style.display = "none")}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <span className="absolute top-3 right-3 rounded-full border border-white/35 bg-black/35 px-2.5 py-0.5 text-[10px] font-semibold text-white">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <span className="absolute top-3 right-3 rounded-full border border-white/40 bg-black/40 px-2.5 py-0.5 text-[10px] font-semibold text-white">
                       {item.category}
                     </span>
                   </div>
                   <div className="p-5 pt-3.5">
-                    <span className="text-[11px] uppercase tracking-wider text-white/75">
+                    <span className="text-[11px] uppercase tracking-wider text-white/85">
                       {item.genre}
                     </span>
-                    <h4 className="mt-1 text-xl font-bold text-white drop-shadow">
-                      {item.artist}
-                    </h4>
-                    <p className="mt-2 text-xs leading-relaxed text-white/90">{item.vibe}</p>
+                    <h4 className="mt-1 text-xl font-bold text-white">{item.artist}</h4>
+                    <p className="mt-2 text-xs leading-relaxed text-white/95">{item.vibe}</p>
                   </div>
                 </div>
 
-                <div className="border-t border-white/15 px-5 pb-5 pt-3">
-                  <span className="text-[11px] font-semibold text-white/75">Öne Çıkanlar:</span>
+                <div className="border-t border-white/20 px-5 pb-5 pt-3">
+                  <span className="text-[11px] font-semibold text-white/85">Öne Çıkanlar:</span>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {item.songs.map((song) => (
                       <span
                         key={song}
-                        className="rounded-lg border border-white/25 bg-black/25 px-2.5 py-1 text-xs text-white/95"
+                        className="rounded-lg border border-white/30 bg-black/25 px-2.5 py-1 text-xs text-white"
                       >
                         {song}
                       </span>
@@ -2225,48 +2218,48 @@ export default function App() {
     if (activeFolder.id === "hakkimda") {
       return (
         <div className="space-y-6">
-          <div className="crystal-card rounded-2xl p-6 text-white">
+          <div className="real-card glass-text rounded-2xl p-6 text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-              <span className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/25 px-3 py-1 text-white">
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/35 bg-black/25 px-3 py-1 text-white">
                 <MapPin className="h-3.5 w-3.5 text-amber-300" />
                 Aslen Ağrılı • İzmir'de Yaşıyor
               </span>
-              <span className="rounded-full border border-white/25 bg-black/25 px-3 py-1 text-white">
+              <span className="rounded-full border border-white/35 bg-black/25 px-3 py-1 text-white">
                 21 Yaşında
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/40 bg-red-500/30 px-3 py-1 text-amber-200">
+              <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/45 bg-red-500/30 px-3 py-1 text-amber-200">
                 <Trophy className="h-3.5 w-3.5" /> Galatasaraylı
               </span>
             </div>
 
             <h3 className="mt-4 text-2xl font-bold">Merhaba, ben Muhammed Faruk Köçer.</h3>
-            <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/95">
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-white">
               21 yaşındayım, aslen Ağrılıyım. İstanbul Üniversitesi-Cerrahpaşa Kontrol ve Otomasyon Teknolojisi bölümünden mezun olduktan sonra iş sebebiyle İzmir'e yerleştim. Şu an modern sera tesislerinde otomasyon teknikeri olarak çalışıyorum.
             </p>
-            <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/85">
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/95">
               İşim gereği gün içinde PLC, SCADA ve saha kontrol sistemleriyle ilgileniyorum. Boş zamanlarımda ise müzik dinlemeyi, iyi filmler ve diziler izlemeyi, spor yapmayı ve Galatasaray maçlarını takip etmeyi seviyorum. Bu siteyi de hem öğrendiklerimi biriktirmek hem de sevdiğim şeyleri tek bir yerde toplamak için kurdum.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="crystal-card rounded-2xl p-4 text-white">
+            <div className="real-card glass-text rounded-2xl p-4 text-white">
               <span className="text-xs font-semibold text-amber-300">Memleket & Şehir</span>
               <h4 className="mt-1 font-bold">Ağrı & İzmir</h4>
-              <p className="mt-1 text-xs text-white/80">
+              <p className="mt-1 text-xs text-white/90">
                 Memleketim Ağrı, üniversite yıllarım İstanbul'da geçti; şimdi ise hayatıma İzmir'de devam ediyorum.
               </p>
             </div>
-            <div className="crystal-card rounded-2xl p-4 text-white">
+            <div className="real-card glass-text rounded-2xl p-4 text-white">
               <span className="text-xs font-semibold text-amber-300">Takım</span>
               <h4 className="mt-1 font-bold">Galatasaray</h4>
-              <p className="mt-1 text-xs text-white/80">
+              <p className="mt-1 text-xs text-white/90">
                 Çocukluktan gelen sarı-kırmızı tutkusu; maç günleri benim için ayrı bir keyif.
               </p>
             </div>
-            <div className="crystal-card rounded-2xl p-4 text-white">
+            <div className="real-card glass-text rounded-2xl p-4 text-white">
               <span className="text-xs font-semibold text-sky-300">Hedef</span>
               <h4 className="mt-1 font-bold">Kendi Sistemlerimi Kurmak</h4>
-              <p className="mt-1 text-xs text-white/80">
+              <p className="mt-1 text-xs text-white/90">
                 Otomasyon ve yazılım tarafında sahada tecrübe kazanıp ileride kendi projelerimi hayata geçirmek.
               </p>
             </div>
@@ -2278,22 +2271,22 @@ export default function App() {
     // 7. BANA MESAJ BIRAK
     return (
       <div className="mx-auto max-w-xl">
-        <div className="crystal-card rounded-2xl p-6 text-white">
+        <div className="real-card glass-text rounded-2xl p-6 text-white">
           <h3 className="text-xl font-bold">Anonim Not Bırak</h3>
-          <p className="mt-1.5 text-xs sm:text-sm text-white/85">
+          <p className="mt-1.5 text-xs sm:text-sm text-white/95">
             İsim veya e-posta yazmak zorunda değilsin. Düşünceni, bir film/şarkı önerini ya da selamını doğrudan bana iletebilirsin.
           </p>
 
           {noteStatus === "sent" ? (
-            <div className="mt-6 flex flex-col items-center rounded-2xl border border-emerald-300/40 bg-emerald-500/25 p-6 text-center">
+            <div className="mt-6 flex flex-col items-center rounded-2xl border border-emerald-300/45 bg-emerald-500/25 p-6 text-center">
               <CheckCircle2 className="h-10 w-10 text-emerald-300" />
               <h4 className="mt-3 font-bold">Mesajın Bana Ulaştı!</h4>
-              <p className="mt-1 text-xs text-white/90">
+              <p className="mt-1 text-xs text-white">
                 Notun doğrudan e-posta kutuma düştü. Teşekkürler!
               </p>
               <button
                 onClick={() => setNoteStatus("idle")}
-                className="mt-4 rounded-xl border border-white/30 bg-black/25 px-4 py-2 text-xs font-semibold text-white hover:bg-white/20 cursor-pointer"
+                className="mt-4 rounded-xl border border-white/35 bg-black/25 px-4 py-2 text-xs font-semibold text-white hover:bg-black/45 cursor-pointer"
               >
                 Yeni Mesaj Yaz
               </button>
@@ -2306,7 +2299,7 @@ export default function App() {
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 placeholder="Buraya istediğin her şeyi yazabilirsin (tamamen anonim)..."
-                className="w-full rounded-xl border border-white/25 bg-black/25 p-4 text-sm text-white placeholder-white/60 focus:border-white/50 focus:outline-none"
+                className="w-full rounded-xl border border-white/35 bg-black/25 p-4 text-sm text-white placeholder-white/70 focus:border-white/65 focus:outline-none"
               />
 
               {noteStatus === "error" && <p className="text-xs text-rose-300">{noteErrorMsg}</p>}
@@ -2314,7 +2307,7 @@ export default function App() {
               <button
                 type="submit"
                 disabled={noteStatus === "sending"}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-sky-300/40 bg-sky-500/80 px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-sky-500 disabled:opacity-50 cursor-pointer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-sky-300/50 bg-sky-500/80 px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-sky-500 disabled:opacity-50 cursor-pointer"
               >
                 <Send className="h-4 w-4" />
                 <span>{noteStatus === "sending" ? "Gönderiliyor..." : "Anonim Olarak Gönder"}</span>
@@ -2327,22 +2320,10 @@ export default function App() {
   };
 
   return (
-    <div
-      className={`faruk-os ${
-        ultraClearGlass ? "glass-mode-clear" : "glass-mode-frosted"
-      } relative min-h-[100svh] w-full overflow-x-hidden select-none font-sans text-white`}
-    >
+    <div className="faruk-os relative min-h-[100svh] w-full overflow-x-hidden select-none font-sans text-white">
       <style>{`
         .faruk-os {
           isolation: isolate;
-          --glass-blur-sm: 2px;
-          --glass-blur-md: 3px;
-          --glass-blur-lg: 5px;
-        }
-        .faruk-os.glass-mode-frosted {
-          --glass-blur-sm: 12px;
-          --glass-blur-md: 16px;
-          --glass-blur-lg: 20px;
         }
 
         .faruk-wallpaper {
@@ -2354,90 +2335,95 @@ export default function App() {
           will-change: transform;
         }
 
-        /* Kristal Şeffaf Cam (Arkadaki manzara bulanıklaşmadan görünür) */
-        .crystal-glass {
-          -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(125%);
-          backdrop-filter: blur(var(--glass-blur-sm)) saturate(125%);
-        }
-        .crystal-glass-night {
-          background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(10,18,28,0.18) 55%, rgba(255,255,255,0.06) 100%);
-          border: 1px solid rgba(255,255,255,0.32);
-          border-top-color: rgba(255,255,255,0.62);
-          border-left-color: rgba(255,255,255,0.46);
-          box-shadow: 0 14px 36px rgba(0,0,0,0.22), inset 0 1px 1px rgba(255,255,255,0.35);
-        }
-        .crystal-glass-day {
-          background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.12) 100%);
-          border: 1px solid rgba(255,255,255,0.48);
-          border-top-color: rgba(255,255,255,0.78);
-          border-left-color: rgba(255,255,255,0.62);
-          box-shadow: 0 12px 30px rgba(0,0,0,0.14), inset 0 1px 1px rgba(255,255,255,0.52);
+        /* Kar üzerinde beyaz yazıların net okunması için keskin derinlik gölgesi */
+        .glass-text {
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.45);
         }
 
-        .crystal-folder {
-          -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(125%);
-          backdrop-filter: blur(var(--glass-blur-sm)) saturate(125%);
+        /* GERÇEK PENCERE CAMI: Sıfır blur, arkadaki manzara %100 keskin, sadece ışık kırılması */
+        .real-glass {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
         }
-        .crystal-folder-night {
-          background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(8,16,24,0.16) 60%, rgba(255,255,255,0.06) 100%);
-          border: 1px solid rgba(255,255,255,0.30);
-          border-top-color: rgba(255,255,255,0.60);
-          border-left-color: rgba(255,255,255,0.44);
-          box-shadow: 0 10px 26px rgba(0,0,0,0.20), inset 0 1px 1px rgba(255,255,255,0.32);
-        }
-        .crystal-folder-night:hover {
-          background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(8,16,24,0.12) 60%, rgba(255,255,255,0.12) 100%);
-          border-color: rgba(255,255,255,0.55);
-          box-shadow: 0 16px 34px rgba(0,0,0,0.26), inset 0 1px 1px rgba(255,255,255,0.48);
-        }
-        .crystal-folder-day {
-          background: linear-gradient(145deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.04) 60%, rgba(255,255,255,0.14) 100%);
-          border: 1px solid rgba(255,255,255,0.46);
-          border-top-color: rgba(255,255,255,0.75);
-          border-left-color: rgba(255,255,255,0.60);
-          box-shadow: 0 10px 24px rgba(0,0,0,0.14), inset 0 1px 1px rgba(255,255,255,0.50);
-        }
-        .crystal-folder-day:hover {
-          background: linear-gradient(145deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 60%, rgba(255,255,255,0.20) 100%);
-          border-color: rgba(255,255,255,0.70);
-        }
-
-        .crystal-card {
-          background: linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(10,18,28,0.28) 60%, rgba(255,255,255,0.05) 100%);
+        .real-glass-night {
+          background: linear-gradient(130deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 26%, rgba(8,14,22,0.12) 60%, rgba(255,255,255,0.04) 100%);
           border: 1px solid rgba(255,255,255,0.28);
-          border-top-color: rgba(255,255,255,0.54);
-          border-left-color: rgba(255,255,255,0.38);
-          -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(130%);
-          backdrop-filter: blur(var(--glass-blur-md)) saturate(130%);
-          box-shadow: 0 12px 30px rgba(0,0,0,0.24), inset 0 1px 1px rgba(255,255,255,0.28);
+          border-top-color: rgba(255,255,255,0.68);
+          border-left-color: rgba(255,255,255,0.50);
+          box-shadow: 0 18px 42px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.52), inset 1px 0 0 rgba(255,255,255,0.24);
         }
-        .crystal-card:hover {
-          background: linear-gradient(145deg, rgba(255,255,255,0.14) 0%, rgba(10,18,28,0.24) 60%, rgba(255,255,255,0.08) 100%);
-          border-color: rgba(255,255,255,0.44);
-        }
-
-        .crystal-dock {
-          background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(10,18,28,0.20) 100%);
-          border: 1px solid rgba(255,255,255,0.34);
-          border-top-color: rgba(255,255,255,0.62);
-          -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(135%);
-          backdrop-filter: blur(var(--glass-blur-md)) saturate(135%);
-          box-shadow: 0 14px 36px rgba(0,0,0,0.26), inset 0 1px 1px rgba(255,255,255,0.38);
+        .real-glass-day {
+          background: linear-gradient(130deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 26%, rgba(255,255,255,0.01) 60%, rgba(255,255,255,0.06) 100%);
+          border: 1px solid rgba(255,255,255,0.42);
+          border-top-color: rgba(255,255,255,0.82);
+          border-left-color: rgba(255,255,255,0.62);
+          box-shadow: 0 14px 36px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.68), inset 1px 0 0 rgba(255,255,255,0.34);
         }
 
-        .crystal-window {
-          -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(135%);
-          backdrop-filter: blur(var(--glass-blur-lg)) saturate(135%);
-          border: 1px solid rgba(255,255,255,0.36);
+        .real-folder {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+        }
+        .real-folder-night {
+          background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.02) 32%, rgba(6,12,20,0.10) 70%, rgba(255,255,255,0.05) 100%);
+          border: 1px solid rgba(255,255,255,0.26);
           border-top-color: rgba(255,255,255,0.66);
           border-left-color: rgba(255,255,255,0.48);
-          box-shadow: 0 28px 70px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.36);
+          box-shadow: 0 12px 28px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.48);
         }
-        .crystal-window-night {
-          background: linear-gradient(145deg, rgba(12,20,30,0.34) 0%, rgba(8,14,22,0.44) 100%);
+        .real-folder-night:hover {
+          background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 35%, rgba(6,12,20,0.06) 70%, rgba(255,255,255,0.09) 100%);
+          border-color: rgba(255,255,255,0.62);
+          box-shadow: 0 18px 36px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.72);
         }
-        .crystal-window-day {
-          background: linear-gradient(145deg, rgba(20,34,48,0.24) 0%, rgba(12,22,34,0.34) 100%);
+        .real-folder-day {
+          background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 32%, rgba(255,255,255,0.01) 70%, rgba(255,255,255,0.08) 100%);
+          border: 1px solid rgba(255,255,255,0.42);
+          border-top-color: rgba(255,255,255,0.80);
+          border-left-color: rgba(255,255,255,0.60);
+          box-shadow: 0 12px 26px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.64);
+        }
+        .real-folder-day:hover {
+          background: linear-gradient(135deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0.03) 70%, rgba(255,255,255,0.12) 100%);
+          border-color: rgba(255,255,255,0.78);
+        }
+
+        .real-card {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+          background: linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.02) 28%, rgba(8,14,22,0.18) 70%, rgba(255,255,255,0.04) 100%);
+          border: 1px solid rgba(255,255,255,0.28);
+          border-top-color: rgba(255,255,255,0.62);
+          border-left-color: rgba(255,255,255,0.44);
+          box-shadow: 0 14px 34px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.42);
+        }
+        .real-card:hover {
+          border-color: rgba(255,255,255,0.52);
+          background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 28%, rgba(8,14,22,0.15) 70%, rgba(255,255,255,0.06) 100%);
+        }
+
+        .real-dock {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+          background: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 45%, rgba(8,14,22,0.14) 100%);
+          border: 1px solid rgba(255,255,255,0.34);
+          border-top-color: rgba(255,255,255,0.72);
+          box-shadow: 0 16px 38px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.56);
+        }
+
+        .real-window {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+          border: 1px solid rgba(255,255,255,0.36);
+          border-top-color: rgba(255,255,255,0.75);
+          border-left-color: rgba(255,255,255,0.55);
+          box-shadow: 0 30px 80px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.56), inset 1px 0 0 rgba(255,255,255,0.28);
+        }
+        .real-window-night {
+          background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 22%, rgba(8,14,22,0.24) 65%, rgba(8,14,22,0.30) 100%);
+        }
+        .real-window-day {
+          background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 22%, rgba(12,20,32,0.14) 65%, rgba(12,20,32,0.20) 100%);
         }
 
         button { -webkit-tap-highlight-color: transparent; }
@@ -2458,8 +2444,8 @@ export default function App() {
       <div
         className={`fixed inset-0 z-[-2] pointer-events-none transition-all duration-1000 ${
           isDay
-            ? "bg-gradient-to-b from-black/10 via-transparent to-black/20"
-            : "bg-gradient-to-b from-[#060e15]/22 via-transparent to-black/38"
+            ? "bg-gradient-to-b from-black/5 via-transparent to-black/15"
+            : "bg-gradient-to-b from-[#060e15]/15 via-transparent to-black/28"
         }`}
         aria-hidden="true"
       />
@@ -2467,13 +2453,13 @@ export default function App() {
       {/* Masaüstü Kar Yağışı Efekti */}
       {entered && <SnowfallCanvas boostSnow={boostSnow} />}
 
-      {/* Üst Şeffaf Cam Durum Çubuğu & Dinamik Ada */}
-      <header className="crystal-glass relative z-20 flex items-center justify-between gap-2 border-b border-white/25 bg-black/15 px-3 py-2 text-xs font-medium text-white sm:px-6">
+      {/* Üst Gerçek Cam Durum Çubuğu & Dinamik Ada */}
+      <header className="real-glass real-glass-night glass-text relative z-20 flex items-center justify-between gap-2 border-x-0 border-t-0 border-b border-white/30 px-3 py-2 text-xs font-medium text-white sm:px-6">
         <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-300/50 bg-sky-400/25 text-[11px] font-black text-sky-200">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-300/60 bg-sky-400/20 text-[11px] font-black text-sky-200">
             F
           </span>
-          <span className="tracking-wide font-semibold drop-shadow">Faruk OS</span>
+          <span className="tracking-wide font-semibold">Faruk OS</span>
         </div>
 
         {/* Merkez Dinamik Cam Ada */}
@@ -2483,7 +2469,7 @@ export default function App() {
               playClickSound(soundFx);
               setIslandOpen((v) => !v);
             }}
-            className="flex items-center gap-2.5 rounded-full border border-white/35 bg-black/30 px-3.5 py-1 text-[11px] font-medium text-white shadow-lg transition hover:border-white/60 hover:bg-black/45 cursor-pointer"
+            className="flex items-center gap-2.5 rounded-full border border-white/45 bg-black/25 px-3.5 py-1 text-[11px] font-medium text-white shadow-lg transition hover:border-white/75 hover:bg-black/40 cursor-pointer"
           >
             <span className="relative flex h-2 w-2">
               <span
@@ -2497,7 +2483,7 @@ export default function App() {
                 }`}
               />
             </span>
-            <span className="hidden md:inline text-white/95">{formattedDate}</span>
+            <span className="hidden md:inline text-white">{formattedDate}</span>
             <span className="md:hidden text-white">{formattedTime}</span>
             {musicPlaying && (
               <span className="flex items-end gap-0.5 h-3" aria-hidden="true">
@@ -2515,14 +2501,14 @@ export default function App() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.94 }}
                 transition={{ duration: 0.18 }}
-                className="crystal-window crystal-window-night absolute left-1/2 top-10 z-40 w-72 -translate-x-1/2 rounded-3xl p-4 text-white shadow-2xl sm:w-80"
+                className="real-window real-window-night glass-text absolute left-1/2 top-10 z-40 w-72 -translate-x-1/2 rounded-3xl p-4 text-white shadow-2xl sm:w-80"
               >
-                <div className="flex items-center justify-between border-b border-white/20 pb-2.5">
+                <div className="flex items-center justify-between border-b border-white/25 pb-2.5">
                   <div className="flex items-center gap-2">
                     <Terminal className="h-4 w-4 text-sky-300" />
                     <span className="text-xs font-bold tracking-wide">Hızlı Kontrol Merkezi</span>
                   </div>
-                  <span className="text-[10px] text-white/75">İzmir • Aktif</span>
+                  <span className="text-[10px] text-white/85">İzmir • Aktif</span>
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-2">
@@ -2533,14 +2519,14 @@ export default function App() {
                     }}
                     className={`flex items-center gap-2 rounded-2xl border p-2.5 text-left text-xs transition cursor-pointer ${
                       boostSnow
-                        ? "border-sky-300/60 bg-sky-400/25 text-white"
-                        : "border-white/20 bg-black/20 text-white/85 hover:bg-white/15"
+                        ? "border-sky-300/70 bg-sky-400/25 text-white"
+                        : "border-white/25 bg-black/20 text-white hover:bg-black/35"
                     }`}
                   >
                     <Sparkles className="h-4 w-4 shrink-0 text-sky-300" />
                     <div>
                       <div className="font-semibold">Tipi Modu</div>
-                      <div className="text-[10px] text-white/70">{boostSnow ? "Açık" : "Normal"}</div>
+                      <div className="text-[10px] text-white/80">{boostSnow ? "Açık" : "Normal"}</div>
                     </div>
                   </button>
 
@@ -2551,70 +2537,50 @@ export default function App() {
                     }}
                     className={`flex items-center gap-2 rounded-2xl border p-2.5 text-left text-xs transition cursor-pointer ${
                       zenMode
-                        ? "border-emerald-300/60 bg-emerald-400/25 text-white"
-                        : "border-white/20 bg-black/20 text-white/85 hover:bg-white/15"
+                        ? "border-emerald-300/70 bg-emerald-400/25 text-white"
+                        : "border-white/25 bg-black/20 text-white hover:bg-black/35"
                     }`}
                   >
                     <Compass className="h-4 w-4 shrink-0 text-emerald-300" />
                     <div>
                       <div className="font-semibold">Manzara</div>
-                      <div className="text-[10px] text-white/70">{zenMode ? "Sade" : "Tam"}</div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      playClickSound(soundFx);
-                      setUltraClearGlass((v) => !v);
-                    }}
-                    className={`flex items-center gap-2 rounded-2xl border p-2.5 text-left text-xs transition cursor-pointer ${
-                      ultraClearGlass
-                        ? "border-cyan-300/60 bg-cyan-400/25 text-white"
-                        : "border-white/20 bg-black/20 text-white/85 hover:bg-white/15"
-                    }`}
-                  >
-                    <Eye className="h-4 w-4 shrink-0 text-cyan-300" />
-                    <div>
-                      <div className="font-semibold">Cam Netliği</div>
-                      <div className="text-[10px] text-white/70">
-                        {ultraClearGlass ? "Kristal" : "Buzlu"}
-                      </div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={pickRandomSuggestion}
-                    className="flex items-center gap-2 rounded-2xl border border-amber-300/40 bg-amber-400/15 p-2.5 text-left text-xs text-white transition hover:bg-amber-400/25 cursor-pointer"
-                  >
-                    <Shuffle className="h-4 w-4 shrink-0 text-amber-300" />
-                    <div>
-                      <div className="font-semibold">Bana Öner</div>
-                      <div className="text-[10px] text-white/70">Film / Müzik</div>
+                      <div className="text-[10px] text-white/80">{zenMode ? "Sade" : "Tam"}</div>
                     </div>
                   </button>
                 </div>
 
+                <button
+                  onClick={pickRandomSuggestion}
+                  className="mt-2 flex w-full items-center justify-between rounded-2xl border border-amber-300/45 bg-amber-400/15 p-2.5 text-left text-xs text-white transition hover:bg-amber-400/25 cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <Shuffle className="h-4 w-4 shrink-0 text-amber-300" />
+                    <span className="font-semibold">Arşivden Rastgele Öner</span>
+                  </div>
+                  <span className="text-[10px] text-amber-200">Film / Müzik</span>
+                </button>
+
                 {randomPick && (
                   <div
                     onClick={() => openFolder(FOLDERS.find((f) => f.id === randomPick.folderId))}
-                    className="mt-2.5 cursor-pointer rounded-2xl border border-amber-300/40 bg-amber-400/15 p-2.5 transition hover:bg-amber-400/25"
+                    className="mt-2 cursor-pointer rounded-2xl border border-amber-300/50 bg-black/30 p-2.5 transition hover:bg-black/45"
                   >
                     <div className="text-[10px] font-bold uppercase tracking-wider text-amber-200">
                       🎲 {randomPick.type} (Açmak için tıkla)
                     </div>
                     <div className="mt-0.5 text-xs font-bold text-white">{randomPick.title}</div>
-                    <div className="text-[11px] text-white/80">{randomPick.detail}</div>
+                    <div className="text-[11px] text-white/85">{randomPick.detail}</div>
                   </div>
                 )}
 
-                <div className="mt-2.5 flex items-center justify-between rounded-2xl border border-white/20 bg-black/25 px-3 py-2">
+                <div className="mt-2.5 flex items-center justify-between rounded-2xl border border-white/25 bg-black/25 px-3 py-2">
                   <div className="flex items-center gap-2 text-xs">
                     <Radio className="h-3.5 w-3.5 text-rose-300" />
                     <span>Arka Plan Müziği</span>
                   </div>
                   <button
                     onClick={toggleMusic}
-                    className="rounded-lg border border-white/30 bg-white/15 px-2.5 py-1 text-[11px] font-semibold hover:bg-white/25 cursor-pointer"
+                    className="rounded-lg border border-white/35 bg-white/15 px-2.5 py-1 text-[11px] font-semibold hover:bg-white/25 cursor-pointer"
                   >
                     {musicPlaying ? "Durdur" : "Çal"}
                   </button>
@@ -2632,11 +2598,11 @@ export default function App() {
               setSpotlightQuery("");
             }}
             title="Hızlı Arama (Ctrl + K)"
-            className="flex items-center gap-1.5 rounded-lg border border-white/25 bg-black/20 px-2.5 py-1 text-[11px] text-white transition hover:bg-white/20 cursor-pointer"
+            className="flex items-center gap-1.5 rounded-lg border border-white/35 bg-black/20 px-2.5 py-1 text-[11px] text-white transition hover:bg-black/35 cursor-pointer"
           >
             <Search className="h-3.5 w-3.5 text-sky-300" />
-            <span className="hidden lg:inline text-white/85">Ara</span>
-            <kbd className="hidden xl:inline-flex items-center gap-0.5 rounded border border-white/25 bg-white/10 px-1 text-[9px] text-white/75">
+            <span className="hidden lg:inline">Ara</span>
+            <kbd className="hidden xl:inline-flex items-center gap-0.5 rounded border border-white/30 bg-black/25 px-1 text-[9px] text-white/90">
               <Command className="h-2.5 w-2.5" />K
             </kbd>
           </button>
@@ -2646,17 +2612,17 @@ export default function App() {
               playClickSound(soundFx);
               setThemeMode((v) => (v === "day" ? "night" : "day"));
             }}
-            title={isDay ? "Koyu Cam Modu" : "Açık Cam Modu"}
-            className="flex items-center gap-1 rounded-lg border border-white/25 bg-black/20 px-2.5 py-1 text-[11px] text-amber-200 transition hover:bg-white/20 cursor-pointer"
+            title={isDay ? "Koyu Cam Tonu" : "Açık Cam Tonu"}
+            className="flex items-center gap-1 rounded-lg border border-white/35 bg-black/20 px-2.5 py-1 text-[11px] text-amber-200 transition hover:bg-black/35 cursor-pointer"
           >
-            {isDay ? <Sun className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-            <span className="hidden md:inline">{isDay ? "Açık Cam" : "Kristal Cam"}</span>
+            {isDay ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            <span className="hidden md:inline">{isDay ? "Gündüz Cam" : "Gece Cam"}</span>
           </button>
 
           <button
             onClick={toggleMusic}
             title={musicPlaying ? "Müziği Durdur" : "Müziği Çal"}
-            className="flex items-center gap-1 rounded-lg border border-white/25 bg-black/20 px-2.5 py-1 text-[11px] text-amber-200 transition hover:bg-white/20 cursor-pointer"
+            className="flex items-center gap-1 rounded-lg border border-white/35 bg-black/20 px-2.5 py-1 text-[11px] text-amber-200 transition hover:bg-black/35 cursor-pointer"
           >
             {musicPlaying ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
             <span className="hidden sm:inline">{musicPlaying ? "Müzik Açık" : "Müzik Kapalı"}</span>
@@ -2664,7 +2630,7 @@ export default function App() {
 
           <Wifi className="hidden sm:block w-3.5 h-3.5" />
           <Battery className="hidden sm:block w-4 h-4" />
-          <span className="hidden md:inline font-semibold text-white drop-shadow">{formattedTime}</span>
+          <span className="hidden md:inline font-semibold text-white">{formattedTime}</span>
         </div>
       </header>
 
@@ -2676,16 +2642,16 @@ export default function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSpotlightOpen(false)}
-            className="fixed inset-0 z-40 flex items-start justify-center bg-black/35 px-4 pt-20"
+            className="fixed inset-0 z-40 flex items-start justify-center bg-black/20 px-4 pt-20"
           >
             <motion.div
               initial={{ opacity: 0, y: -12, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.96 }}
               onClick={(e) => e.stopPropagation()}
-              className="crystal-window crystal-window-night w-full max-w-lg overflow-hidden rounded-3xl text-white"
+              className="real-window real-window-night glass-text w-full max-w-lg overflow-hidden rounded-3xl text-white"
             >
-              <div className="flex items-center gap-3 border-b border-white/20 px-4 py-3.5">
+              <div className="flex items-center gap-3 border-b border-white/25 px-4 py-3.5">
                 <Search className="h-5 w-5 text-sky-300" />
                 <input
                   autoFocus
@@ -2693,11 +2659,11 @@ export default function App() {
                   value={spotlightQuery}
                   onChange={(e) => setSpotlightQuery(e.target.value)}
                   placeholder="Film, dizi, sanatçı veya klasör ara..."
-                  className="w-full bg-transparent text-sm text-white placeholder-white/60 focus:outline-none"
+                  className="w-full bg-transparent text-sm text-white placeholder-white/70 focus:outline-none"
                 />
                 <button
                   onClick={() => setSpotlightOpen(false)}
-                  className="rounded-lg border border-white/25 bg-white/10 px-2 py-0.5 text-[10px] text-white/80 cursor-pointer"
+                  className="rounded-lg border border-white/35 bg-black/25 px-2 py-0.5 text-[10px] text-white cursor-pointer"
                 >
                   ESC
                 </button>
@@ -2707,13 +2673,13 @@ export default function App() {
                   <button
                     key={`${res.badge}-${res.label}-${i}`}
                     onClick={res.onSelect}
-                    className="flex w-full items-center justify-between rounded-2xl px-3.5 py-2.5 text-left transition hover:bg-white/15 cursor-pointer"
+                    className="flex w-full items-center justify-between rounded-2xl px-3.5 py-2.5 text-left transition hover:bg-black/30 cursor-pointer"
                   >
                     <div className="min-w-0 pr-2">
                       <div className="truncate text-sm font-semibold text-white">{res.label}</div>
-                      <div className="truncate text-xs text-white/70">{res.sub}</div>
+                      <div className="truncate text-xs text-white/85">{res.sub}</div>
                     </div>
-                    <span className="shrink-0 rounded-full border border-white/25 bg-black/30 px-2.5 py-0.5 text-[10px] font-semibold text-sky-200">
+                    <span className="shrink-0 rounded-full border border-white/35 bg-black/30 px-2.5 py-0.5 text-[10px] font-semibold text-sky-200">
                       {res.badge}
                     </span>
                   </button>
@@ -2729,7 +2695,7 @@ export default function App() {
         {/* 2027 Yılbaşı Ağacı ve Şans Kurabiyesi */}
         {!zenMode && <NewYearFeature isDay={isDay} soundFx={soundFx} />}
 
-        {/* Şeffaf Kristal Cam Klasör Izgarası */}
+        {/* Gerçek Saydam Cam Klasör Izgarası */}
         {!zenMode && (
           <div className="my-auto py-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 2xl:grid-cols-8">
@@ -2739,19 +2705,19 @@ export default function App() {
                   <button
                     key={folder.id}
                     onClick={() => openFolder(folder)}
-                    className={`crystal-folder group flex min-w-0 touch-manipulation flex-col items-center rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 active:scale-[.97] cursor-pointer sm:rounded-3xl sm:p-4 ${
-                      isDay ? "crystal-folder-day" : "crystal-folder-night"
+                    className={`real-folder glass-text group flex min-w-0 touch-manipulation flex-col items-center rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 active:scale-[.97] cursor-pointer sm:rounded-3xl sm:p-4 ${
+                      isDay ? "real-folder-day" : "real-folder-night"
                     }`}
                   >
                     <div
-                      className={`flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/35 shadow-inner`}
+                      className={`flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/45 shadow-inner`}
                     >
-                      <Icon className={`h-7 w-7 sm:h-8 sm:w-8 ${folder.iconColor} drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]`} />
+                      <Icon className={`h-7 w-7 sm:h-8 sm:w-8 ${folder.iconColor} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`} />
                     </div>
-                    <span className="mt-2.5 text-center text-xs font-semibold tracking-wide text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] sm:text-sm">
+                    <span className="mt-2.5 text-center text-xs font-bold tracking-wide text-white sm:text-sm">
                       {folder.title}
                     </span>
-                    <span className="mt-0.5 text-center text-[10px] leading-tight text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)] sm:text-[11px]">
+                    <span className="mt-0.5 text-center text-[10px] leading-tight text-white/95 sm:text-[11px]">
                       {folder.subtitle}
                     </span>
                   </button>
@@ -2761,8 +2727,8 @@ export default function App() {
           </div>
         )}
 
-        {/* Alt Şeffaf Cam Floating Dock */}
-        <div className="crystal-dock mx-auto mt-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-3xl px-3 py-2 sm:gap-2.5">
+        {/* Alt Saydam Cam Floating Dock */}
+        <div className="real-dock mx-auto mt-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-3xl px-3 py-2 sm:gap-2.5">
           {FOLDERS.map((folder) => {
             const Icon = folder.icon;
             return (
@@ -2770,16 +2736,16 @@ export default function App() {
                 key={`dock-${folder.id}`}
                 onClick={() => openFolder(folder)}
                 title={folder.title}
-                className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/35 transition-transform hover:-translate-y-1.5 hover:scale-110 active:scale-90 cursor-pointer`}
+                className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${folder.accent} border border-white/45 transition-transform hover:-translate-y-1.5 hover:scale-110 active:scale-90 cursor-pointer`}
               >
-                <Icon className={`h-5 w-5 ${folder.iconColor} drop-shadow`} />
+                <Icon className={`h-5 w-5 ${folder.iconColor} drop-shadow-[0_2px_3px_rgba(0,0,0,0.75)]`} />
               </button>
             );
           })}
         </div>
       </main>
 
-      {/* Tam Ekran Kristal Şeffaf Cam Klasör Penceresi (Arkadaki manzara görünür) */}
+      {/* Tam Ekran Gerçek Pencere Camı Klasör Penceresi (Arkadaki manzara tamamen net) */}
       <AnimatePresence>
         {activeFolder && (
           <motion.div
@@ -2789,7 +2755,7 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.16 }}
             onClick={closeFolder}
-            className="fixed inset-0 z-30 flex items-center justify-center bg-black/15 p-0 sm:p-4 md:p-6"
+            className="fixed inset-0 z-30 flex items-center justify-center bg-transparent p-0 sm:p-4 md:p-6"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.97, y: 10 }}
@@ -2797,23 +2763,23 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.97, y: 10 }}
               transition={{ duration: 0.18 }}
               onClick={(e) => e.stopPropagation()}
-              className={`crystal-window flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden text-white sm:h-[min(92dvh,900px)] sm:rounded-3xl ${
-                isDay ? "crystal-window-day" : "crystal-window-night"
+              className={`real-window flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden text-white sm:h-[min(92dvh,900px)] sm:rounded-3xl ${
+                isDay ? "real-window-day" : "real-window-night"
               }`}
             >
               {/* Üst Pencere Çubuğu */}
-              <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/20 bg-black/20 px-3 py-3 sm:px-5 sm:py-3.5">
+              <div className="glass-text flex shrink-0 items-center justify-between gap-2 border-b border-white/25 bg-black/15 px-3 py-3 sm:px-5 sm:py-3.5">
                 <button
                   onClick={closeFolder}
-                  className="flex items-center gap-2 rounded-xl border border-white/30 bg-black/25 px-3.5 py-2 text-sm font-medium text-white transition hover:bg-white/20 cursor-pointer"
+                  className="flex items-center gap-2 rounded-xl border border-white/40 bg-black/25 px-3.5 py-2 text-sm font-medium text-white transition hover:bg-black/45 cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   <span>Masaüstü</span>
                 </button>
 
                 <div className="flex items-center gap-2.5">
-                  <activeFolder.icon className={`h-5 w-5 ${activeFolder.iconColor} drop-shadow`} />
-                  <h2 className="text-sm font-bold tracking-wide drop-shadow sm:text-lg">
+                  <activeFolder.icon className={`h-5 w-5 ${activeFolder.iconColor} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`} />
+                  <h2 className="text-sm font-bold tracking-wide sm:text-lg">
                     {activeFolder.title}
                   </h2>
                 </div>
@@ -2831,7 +2797,7 @@ export default function App() {
 
               {/* Alt Sekmeler */}
               {activeFolder.tabs.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto border-b border-white/20 bg-black/15 px-5 py-2.5">
+                <div className="glass-text flex gap-2 overflow-x-auto border-b border-white/25 bg-black/10 px-5 py-2.5">
                   {activeFolder.tabs.map((tab, idx) => (
                     <button
                       key={tab}
@@ -2841,8 +2807,8 @@ export default function App() {
                       }}
                       className={`rounded-xl px-4 py-1.5 text-sm font-medium whitespace-nowrap transition cursor-pointer ${
                         activeTab === idx
-                          ? "border border-white/40 bg-white/20 text-white"
-                          : "text-white/80 hover:text-white"
+                          ? "border border-white/55 bg-black/35 text-white"
+                          : "text-white/90 hover:text-white"
                       }`}
                     >
                       {tab}
@@ -2857,10 +2823,10 @@ export default function App() {
               </div>
 
               {/* Mobil Alt Çubuk */}
-              <div className="sm:hidden flex justify-center border-t border-white/20 bg-black/20 py-3">
+              <div className="sm:hidden flex justify-center border-t border-white/25 bg-black/15 py-3">
                 <button
                   onClick={closeFolder}
-                  className="h-1.5 w-32 rounded-full bg-white/50 active:bg-white"
+                  className="h-1.5 w-32 rounded-full bg-white/60 active:bg-white"
                 />
               </div>
             </motion.div>
