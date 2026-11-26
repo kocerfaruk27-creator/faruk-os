@@ -52,10 +52,57 @@ import {
   Command,
   Orbit,
   HelpCircle,
-  RotateCcw,
+  SkipForward,
+  Disc3,
 } from "lucide-react";
 
 const FORMSPREE_URL = "https://formspree.io/f/xnpdpzwg";
+
+const PLAYLIST_TRACKS = [
+  { id: "last-christmas", title: "Last Christmas", artist: "Wham!", src: "/muzik.mp3" },
+  { id: "gene-sen", title: "Gene Sen", artist: "Sattas", src: "/muzikler/gene-sen.mp3" },
+  { id: "maalesef", title: "Maalesef", artist: "Mansur Ark", src: "/muzikler/maalesef.mp3" },
+  { id: "other-people", title: "Other People", artist: "LP", src: "/muzikler/other-people.mp3" },
+  { id: "sen-benimle-degilsin", title: "Sen Benimle Değilsin", artist: "Uğur Aydın", src: "/muzikler/sen-benimle-degilsin.mp3" },
+  { id: "extreme-ways", title: "Extreme Ways", artist: "Moby", src: "/muzikler/extreme-ways.mp3" },
+  { id: "crush", title: "Crush!", artist: "Crush", src: "/muzikler/crush.mp3" },
+  { id: "naptin-kendinle", title: "Naptın Kendinle", artist: "Adamlar", src: "/muzikler/naptin-kendinle.mp3" },
+  { id: "yavru-ejdera", title: "Yavru Ejdera", artist: "Son Feci Bisiklet", src: "/muzikler/yavru-ejdera.mp3" },
+  { id: "ben-hala-seninim", title: "Ben Hala Seninim", artist: "Kreş", src: "/muzikler/ben-hala-seninim.mp3" },
+  { id: "lafini-balla", title: "Lafını Balla", artist: "Dolu Kadehi Ters Tut", src: "/muzikler/lafini-balla.mp3" },
+  { id: "jack-sparrow-theme", title: "Jack Sparrow Theme", artist: "Hans Zimmer", src: "/muzikler/jack-sparrow-theme.mp3" },
+  { id: "yok", title: "Y.O.K", artist: "Çilekeş", src: "/muzikler/yok.mp3" },
+  { id: "takim-elbise-suratli-adamlar", title: "Takım Elbise Suratlı Adamlar", artist: "Kreş", src: "/muzikler/takim-elbise-suratli-adamlar.mp3" },
+  { id: "messages-from-the-stars", title: "Messages from the Stars", artist: "The Rah Band", src: "/muzikler/messages-from-the-stars.mp3" },
+  { id: "gurbet", title: "Gurbet", artist: "Duman", src: "/muzikler/gurbet.mp3" },
+  { id: "yalan", title: "Yalan", artist: "Dolu Kadehi Ters Tut", src: "/muzikler/yalan.mp3" },
+  { id: "sunflower", title: "Sunflower", artist: "Post Malone & Swae Lee", src: "/muzikler/sunflower.mp3" },
+  { id: "daydream", title: "Daydream", artist: "Wallace Collection", src: "/muzikler/daydream.mp3" },
+  { id: "ma-meilleure-ennemie", title: "Ma Meilleure Ennemie", artist: "Stromae & Pomme", src: "/muzikler/ma-meilleure-ennemie.mp3" },
+  { id: "nightcall", title: "Nightcall", artist: "Kavinsky", src: "/muzikler/nightcall.mp3" },
+  { id: "bu-nasil-ask", title: "Bu Nasıl Aşk", artist: "Uğur Aydın", src: "/muzikler/bu-nasil-ask.mp3" },
+  { id: "hurts", title: "Hurts", artist: "Arşiv", src: "/muzikler/hurts.mp3" },
+  { id: "drugs", title: "Drugs", artist: "Arşiv", src: "/muzikler/drugs.mp3" },
+  { id: "my-type", title: "My Type", artist: "Saint Motel", src: "/muzikler/my-type.mp3" },
+  { id: "sex-drugs-etc", title: "Sex, Drugs, Etc.", artist: "Beach Weather", src: "/muzikler/sex-drugs-etc.mp3" },
+  { id: "amour-plastique", title: "Amour Plastique", artist: "Videoclub", src: "/muzikler/amour-plastique.mp3" },
+  { id: "kisisel-bir-intihar", title: "Kişisel Bir İntihar", artist: "Arşiv", src: "/muzikler/kisisel-bir-intihar.mp3" },
+  { id: "sevince", title: "Sevince", artist: "Erkin Koray", src: "/muzikler/sevince.mp3" },
+  { id: "where-is-my-mind", title: "Where Is My Mind?", artist: "Pixies", src: "/muzikler/where-is-my-mind.mp3" },
+  { id: "koca-bir-sacmalik", title: "Koca Bir Saçmalık", artist: "Jakuzi", src: "/muzikler/koca-bir-sacmalik.mp3" },
+  { id: "karam", title: "Karam", artist: "Hakan Peker", src: "/muzikler/karam.mp3" },
+  { id: "okyanus", title: "Okyanus", artist: "Derya Uluğ", src: "/muzikler/okyanus.mp3" },
+  { id: "uctu-uctu", title: "Uçtu Uçtu", artist: "Arşiv", src: "/muzikler/uctu-uctu.mp3" },
+  { id: "orda-ortada", title: "Orda Ortada", artist: "Arşiv", src: "/muzikler/orda-ortada.mp3" },
+  { id: "yanmis-icinden", title: "Yanmış İçinden", artist: "Arşiv", src: "/muzikler/yanmis-icinden.mp3" },
+  { id: "resimdeki-gozyaslari", title: "Resimdeki Gözyaşları", artist: "Cem Karaca", src: "/muzikler/resimdeki-gozyaslari.mp3" },
+  { id: "time", title: "Time", artist: "Pink Floyd", src: "/muzikler/time.mp3" },
+  { id: "bu-partide-yalnizsin", title: "Bu Partide Yalnızsın", artist: "Arşiv", src: "/muzikler/bu-partide-yalnizsin.mp3" },
+  { id: "sadece-sevilmek-istedim", title: "Sadece Sevilmek İstedim", artist: "Arşiv", src: "/muzikler/sadece-sevilmek-istedim.mp3" },
+  { id: "keske", title: "Keşke", artist: "Yalın", src: "/muzikler/keske.mp3" },
+  { id: "matrix-theme", title: "Matrix Theme (Clubbed to Death)", artist: "Rob Dougan", src: "/muzikler/matrix-theme.mp3" },
+  { id: "denize-dogru", title: "Denize Doğru", artist: "Arşiv", src: "/muzikler/denize-dogru.mp3" },
+];
 
 const playClickSound = (soundEnabled) => {
   if (!soundEnabled) return;
@@ -1174,7 +1221,6 @@ const IntroSplash = ({ onEnter }) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Derin gece, ufuk parlamasi ve kuzey isiklari */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -1230,7 +1276,6 @@ const IntroSplash = ({ onEnter }) => {
         ))}
       </div>
 
-      {/* Uzak dag silueti */}
       <svg
         viewBox="0 0 1200 210"
         preserveAspectRatio="none"
@@ -1257,7 +1302,6 @@ const IntroSplash = ({ onEnter }) => {
         />
       </svg>
 
-      {/* Ust kontrol satiri */}
       <div className="relative z-20 flex w-full max-w-5xl items-center justify-between gap-3">
         <span className="rounded-full border border-white/20 bg-white/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-[.24em] text-amber-100/90">
           FARUK OS <span className="text-white/45">/</span> 2027
@@ -1280,7 +1324,6 @@ const IntroSplash = ({ onEnter }) => {
         </div>
       </div>
 
-      {/* Ana sinematik sahne */}
       <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-5xl flex-col items-center justify-center py-3">
         <AnimatePresence mode="wait">
           {countdown && (
@@ -1366,7 +1409,6 @@ const IntroSplash = ({ onEnter }) => {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:gap-12"
             >
-              {/* Cam kar kuresi */}
               <motion.div
                 initial={{ scale: 0.85, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -2523,6 +2565,8 @@ export default function App() {
   const [now, setNow] = useState(new Date());
   const [themeMode, setThemeMode] = useState("night");
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const [availableTracks, setAvailableTracks] = useState([PLAYLIST_TRACKS[0]]);
+  const [currentTrack, setCurrentTrack] = useState(PLAYLIST_TRACKS[0]);
   const [soundFx] = useState(true);
 
   const [islandOpen, setIslandOpen] = useState(false);
@@ -2551,19 +2595,83 @@ export default function App() {
   const modalScrollRef = useRef(null);
   const modalContentRef = useRef(null);
 
+  // Sadece public/muzikler/ klasörüne yüklenmiş mevcut mp3 dosyalarını tespit eder
   useEffect(() => {
+    let cancelled = false;
+    const detectAvailableTracks = async () => {
+      const checks = await Promise.all(
+        PLAYLIST_TRACKS.map(async (track) => {
+          try {
+            const res = await fetch(track.src, { method: "HEAD" });
+            const contentType = res.headers.get("content-type") || "";
+            if (res.ok && !contentType.includes("text/html")) {
+              return track;
+            }
+            return null;
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      if (cancelled) return;
+      const valid = checks.filter(Boolean);
+      if (valid.length > 0) {
+        setAvailableTracks(valid);
+        const randomInitial = valid[Math.floor(Math.random() * valid.length)];
+        setCurrentTrack(randomInitial);
+      }
+    };
+
+    detectAvailableTracks();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Seçilen şarkıyı Howler ile hazırlar
+  useEffect(() => {
+    if (fadeTimerRef.current) {
+      clearTimeout(fadeTimerRef.current);
+      fadeTimerRef.current = null;
+    }
+    if (howlRef.current) {
+      howlRef.current.unload();
+      howlRef.current = null;
+      soundIdRef.current = null;
+    }
+
     const sound = new Howl({
-      src: ["/muzik.mp3"],
-      loop: true,
+      src: [currentTrack.src],
+      loop: availableTracks.length <= 1,
       volume: 0.35,
       html5: true,
+      onend: () => {
+        if (availableTracks.length > 1) {
+          const candidates = availableTracks.filter((t) => t.id !== currentTrack.id);
+          const next = candidates[Math.floor(Math.random() * candidates.length)];
+          setCurrentTrack(next);
+        }
+      },
     });
     howlRef.current = sound;
+
+    if (musicPlaying) {
+      const id = sound.play();
+      soundIdRef.current = id;
+      sound.volume(0.12, id);
+      if (sound.playing(id)) {
+        sound.fade(0.12, 0.35, 650, id);
+      } else {
+        sound.once("play", () => sound.fade(0.12, 0.35, 650, id), id);
+      }
+    }
+
     return () => {
       if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
       sound.unload();
     };
-  }, []);
+  }, [currentTrack, availableTracks]);
 
   useEffect(() => {
     if (entered && !zenMode && !gravityMode) {
@@ -2712,6 +2820,24 @@ export default function App() {
       sound.pause();
     }
     setMusicPlaying(false);
+  };
+
+  const switchToNextTrack = () => {
+    playClickSound(soundFx);
+    if (availableTracks.length <= 1) {
+      startMusicSmoothly();
+      return;
+    }
+    const candidates = availableTracks.filter((t) => t.id !== currentTrack.id);
+    const next = candidates[Math.floor(Math.random() * candidates.length)];
+    setMusicPlaying(true);
+    setCurrentTrack(next);
+  };
+
+  const selectSpecificTrack = (track) => {
+    playClickSound(soundFx);
+    setMusicPlaying(true);
+    setCurrentTrack(track);
   };
 
   const handleEnterSystem = () => {
@@ -3238,40 +3364,85 @@ export default function App() {
 
       return (
         <div>
-          <div className="real-card glass-text mb-5 flex flex-col gap-4 rounded-2xl p-4 text-white sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-4">
-              <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/40 shadow-inner">
-                <div className="absolute bottom-2 h-2 w-20 rounded-full bg-black/40" />
-                <div
-                  className="relative h-[70px] w-[70px] rounded-full border-[5px] border-[#17151b] bg-[repeating-radial-gradient(circle,#39333d_0px,#39333d_2px,#17151b_3px,#17151b_4px)] shadow-xl"
-                  style={{ animation: musicPlaying ? "spin 4s linear infinite" : "none" }}
-                >
-                  <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-200/50 bg-rose-500">
-                    <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black" />
+          <div className="real-card glass-text mb-5 rounded-2xl p-4 text-white">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/40 shadow-inner">
+                  <div className="absolute bottom-2 h-2 w-20 rounded-full bg-black/40" />
+                  <div
+                    className="relative h-[70px] w-[70px] rounded-full border-[5px] border-[#17151b] bg-[repeating-radial-gradient(circle,#39333d_0px,#39333d_2px,#17151b_3px,#17151b_4px)] shadow-xl"
+                    style={{ animation: musicPlaying ? "spin 4s linear infinite" : "none" }}
+                  >
+                    <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-200/50 bg-rose-500">
+                      <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black" />
+                    </div>
                   </div>
+                  <div className="absolute right-2 top-2 h-12 w-2 origin-top rotate-[25deg] rounded-full bg-gradient-to-b from-slate-200 to-slate-500 shadow" />
                 </div>
-                <div className="absolute right-2 top-2 h-12 w-2 origin-top rotate-[25deg] rounded-full bg-gradient-to-b from-slate-200 to-slate-500 shadow" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-rose-300">
+                    <Disc3 className={`h-3.5 w-3.5 ${musicPlaying ? "animate-spin" : ""}`} />
+                    <span>Şu An Plakta</span>
+                  </div>
+                  <h3 className="mt-0.5 truncate text-base font-bold sm:text-lg">
+                    {currentTrack.title}
+                  </h3>
+                  <p className="truncate text-xs text-white/90">{currentTrack.artist}</p>
+                  <p className="mt-1 text-[10px] text-white/75">
+                    {musicPlaying ? "Plak dönüyor..." : "Plak durdu"} • Yüklü Parça:{" "}
+                    {availableTracks.length} / {PLAYLIST_TRACKS.length}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <h3 className="font-bold">Pikap • Arka Plan Müziği</h3>
-                <p className="mt-1 text-xs text-white/90">
-                  {musicPlaying
-                    ? "Plak dönüyor, müzik çalıyor…"
-                    : "Plak durdu. İstediğinde yeniden başlat."}
-                </p>
-                <p className="mt-1 text-[10px] text-white/80">
-                  Toplam {MUSIC_DATA.length} sanatçı & grup
-                </p>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={toggleMusic}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-300/55 bg-rose-500/75 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-500 cursor-pointer"
+                >
+                  {musicPlaying ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                  <span>{musicPlaying ? "Durdur" : "Başlat"}</span>
+                </button>
+
+                {availableTracks.length > 1 && (
+                  <button
+                    onClick={switchToNextTrack}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/35 bg-white/10 px-3.5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20 cursor-pointer"
+                    title="Rastgele Başka Şarkıya Geç"
+                  >
+                    <SkipForward className="h-4 w-4 text-amber-300" />
+                    <span>Değiştir</span>
+                  </button>
+                )}
               </div>
             </div>
 
-            <button
-              onClick={toggleMusic}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-300/55 bg-rose-500/75 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-500 cursor-pointer"
-            >
-              {musicPlaying ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              <span>{musicPlaying ? "Müziği Durdur" : "Müziği Başlat"}</span>
-            </button>
+            {availableTracks.length > 1 && (
+              <div className="mt-3.5 border-t border-white/20 pt-3">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-white/80">
+                  Plak Kutusundaki Mevcut Parçalar (Seçmek için tıkla):
+                </span>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {availableTracks.map((tr) => {
+                    const isCurrent = tr.id === currentTrack.id;
+                    return (
+                      <button
+                        key={tr.id}
+                        onClick={() => selectSpecificTrack(tr)}
+                        className={`rounded-full px-3 py-1 text-[11px] font-medium transition cursor-pointer ${
+                          isCurrent
+                            ? "border border-rose-300 bg-rose-500/40 text-white font-bold"
+                            : "border border-white/25 bg-black/25 text-white/85 hover:bg-white/15"
+                        }`}
+                      >
+                        {isCurrent && musicPlaying ? "▶ " : ""}
+                        {tr.title} — {tr.artist}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mb-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -3760,17 +3931,33 @@ export default function App() {
                   </div>
                 )}
 
-                <div className="mt-2.5 flex items-center justify-between rounded-2xl border border-white/25 bg-black/25 px-3 py-2">
-                  <div className="flex items-center gap-2 text-xs">
-                    <Radio className="h-3.5 w-3.5 text-rose-300" />
-                    <span>Arka Plan Müziği</span>
+                <div className="mt-2.5 rounded-2xl border border-white/25 bg-black/25 px-3 py-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-2 text-xs">
+                      <Radio className="h-3.5 w-3.5 shrink-0 text-rose-300" />
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold text-white">{currentTrack.title}</div>
+                        <div className="truncate text-[10px] text-white/75">{currentTrack.artist}</div>
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {availableTracks.length > 1 && (
+                        <button
+                          onClick={switchToNextTrack}
+                          title="Sonraki Şarkı"
+                          className="rounded-lg border border-white/30 bg-white/10 p-1.5 hover:bg-white/20 cursor-pointer"
+                        >
+                          <SkipForward className="h-3.5 w-3.5 text-amber-200" />
+                        </button>
+                      )}
+                      <button
+                        onClick={toggleMusic}
+                        className="rounded-lg border border-white/35 bg-white/15 px-2.5 py-1 text-[11px] font-semibold hover:bg-white/25 cursor-pointer"
+                      >
+                        {musicPlaying ? "Durdur" : "Çal"}
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    onClick={toggleMusic}
-                    className="rounded-lg border border-white/35 bg-white/15 px-2.5 py-1 text-[11px] font-semibold hover:bg-white/25 cursor-pointer"
-                  >
-                    {musicPlaying ? "Durdur" : "Çal"}
-                  </button>
                 </div>
               </motion.div>
             )}
@@ -3809,12 +3996,24 @@ export default function App() {
 
           <button
             onClick={toggleMusic}
-            title={musicPlaying ? "Müziği Durdur" : "Müziği Çal"}
+            title={musicPlaying ? `Çalıyor: ${currentTrack.title} (Durdur)` : `Çal: ${currentTrack.title}`}
             className="flex items-center gap-1 rounded-lg border border-white/35 bg-black/20 px-2.5 py-1 text-[11px] text-amber-200 transition hover:bg-black/35 cursor-pointer"
           >
             {musicPlaying ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-            <span className="hidden sm:inline">{musicPlaying ? "Müzik Açık" : "Müzik Kapalı"}</span>
+            <span className="hidden sm:inline max-w-[125px] truncate">
+              {musicPlaying ? currentTrack.title : "Müzik Kapalı"}
+            </span>
           </button>
+
+          {availableTracks.length > 1 && (
+            <button
+              onClick={switchToNextTrack}
+              title="Rastgele Başka Şarkı Çal"
+              className="flex items-center justify-center rounded-lg border border-white/35 bg-black/20 p-1.5 text-amber-200 transition hover:bg-black/35 cursor-pointer"
+            >
+              <SkipForward className="h-3.5 w-3.5" />
+            </button>
+          )}
 
           <Wifi className="hidden sm:block w-3.5 h-3.5" />
           <Battery className="hidden sm:block w-4 h-4" />
@@ -3886,7 +4085,7 @@ export default function App() {
       >
         {!zenMode && <NewYearFeature isDay={isDay} soundFx={soundFx} />}
 
-        {/* Gerçek Saydam Cam Klasör & 2D Yerçekimi Izgarası (Mobilde 2x5, Masaüstünde 5x2 Dengeli Düzen) */}
+        {/* Gerçek Saydam Cam Klasör & 2D Yerçekimi Izgarası */}
         {!zenMode && (
           <div id="tour-folders" className="my-auto py-5 sm:py-6">
             <div
