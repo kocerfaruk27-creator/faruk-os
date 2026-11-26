@@ -53,6 +53,9 @@ import {
   Orbit,
   HelpCircle,
   SkipForward,
+  SkipBack,
+  Play,
+  Pause,
   Disc3,
 } from "lucide-react";
 
@@ -81,27 +84,27 @@ const PLAYLIST_TRACKS = [
   { id: "ma-meilleure-ennemie", title: "Ma Meilleure Ennemie", artist: "Stromae & Pomme", src: "/muzikler/ma-meilleure-ennemie.mp3" },
   { id: "nightcall", title: "Nightcall", artist: "Kavinsky", src: "/muzikler/nightcall.mp3" },
   { id: "bu-nasil-ask", title: "Bu Nasıl Aşk", artist: "Uğur Aydın", src: "/muzikler/bu-nasil-ask.mp3" },
-  { id: "hurts", title: "Hurts", artist: "Arşiv", src: "/muzikler/hurts.mp3" },
-  { id: "drugs", title: "Drugs", artist: "Arşiv", src: "/muzikler/drugs.mp3" },
+  { id: "hurts", title: "Hurts", artist: "Joy Crookes", src: "/muzikler/hurts.mp3" },
+  { id: "drugs", title: "Drugs", artist: "Upsahl", src: "/muzikler/drugs.mp3" },
   { id: "my-type", title: "My Type", artist: "Saint Motel", src: "/muzikler/my-type.mp3" },
   { id: "sex-drugs-etc", title: "Sex, Drugs, Etc.", artist: "Beach Weather", src: "/muzikler/sex-drugs-etc.mp3" },
   { id: "amour-plastique", title: "Amour Plastique", artist: "Videoclub", src: "/muzikler/amour-plastique.mp3" },
-  { id: "kisisel-bir-intihar", title: "Kişisel Bir İntihar", artist: "Arşiv", src: "/muzikler/kisisel-bir-intihar.mp3" },
+  { id: "kisisel-bir-intihar", title: "Kişisel Bir İntihar", artist: "Kres", src: "/muzikler/kisisel-bir-intihar.mp3" },
   { id: "sevince", title: "Sevince", artist: "Erkin Koray", src: "/muzikler/sevince.mp3" },
   { id: "where-is-my-mind", title: "Where Is My Mind?", artist: "Pixies", src: "/muzikler/where-is-my-mind.mp3" },
   { id: "koca-bir-sacmalik", title: "Koca Bir Saçmalık", artist: "Jakuzi", src: "/muzikler/koca-bir-sacmalik.mp3" },
   { id: "karam", title: "Karam", artist: "Hakan Peker", src: "/muzikler/karam.mp3" },
   { id: "okyanus", title: "Okyanus", artist: "Derya Uluğ", src: "/muzikler/okyanus.mp3" },
-  { id: "uctu-uctu", title: "Uçtu Uçtu", artist: "Arşiv", src: "/muzikler/uctu-uctu.mp3" },
-  { id: "orda-ortada", title: "Orda Ortada", artist: "Arşiv", src: "/muzikler/orda-ortada.mp3" },
-  { id: "yanmis-icinden", title: "Yanmış İçinden", artist: "Arşiv", src: "/muzikler/yanmis-icinden.mp3" },
+  { id: "uctu-uctu", title: "Uçtu Uçtu", artist: "Adamlar", src: "/muzikler/uctu-uctu.mp3" },
+  { id: "orda-ortada", title: "Orda Ortada", artist: "Adamlar", src: "/muzikler/orda-ortada.mp3" },
+  { id: "yanmis-icinden", title: "Yanmış İçinden", artist: "Adamlar", src: "/muzikler/yanmis-icinden.mp3" },
   { id: "resimdeki-gozyaslari", title: "Resimdeki Gözyaşları", artist: "Cem Karaca", src: "/muzikler/resimdeki-gozyaslari.mp3" },
   { id: "time", title: "Time", artist: "Pink Floyd", src: "/muzikler/time.mp3" },
-  { id: "bu-partide-yalnizsin", title: "Bu Partide Yalnızsın", artist: "Arşiv", src: "/muzikler/bu-partide-yalnizsin.mp3" },
-  { id: "sadece-sevilmek-istedim", title: "Sadece Sevilmek İstedim", artist: "Arşiv", src: "/muzikler/sadece-sevilmek-istedim.mp3" },
+  { id: "bu-partide-yalnizsin", title: "Bu Partide Yalnızsın", artist: "Lin Pesto", src: "/muzikler/bu-partide-yalnizsin.mp3" },
+  { id: "sadece-sevilmek-istedim", title: "Sadece Sevilmek İstedim", artist: "Lin Pesto", src: "/muzikler/sadece-sevilmek-istedim.mp3" },
   { id: "keske", title: "Keşke", artist: "Yalın", src: "/muzikler/keske.mp3" },
   { id: "matrix-theme", title: "Matrix Theme (Clubbed to Death)", artist: "Rob Dougan", src: "/muzikler/matrix-theme.mp3" },
-  { id: "denize-dogru", title: "Denize Doğru", artist: "Arşiv", src: "/muzikler/denize-dogru.mp3" },
+  { id: "denize-dogru", title: "Denize Doğru", artist: "Mustafa Sandal", src: "/muzikler/denize-dogru.mp3" },
 ];
 
 const playClickSound = (soundEnabled) => {
@@ -918,21 +921,6 @@ const MOVIES_DATA = [
   },
 ];
 
-const NEW_YEAR_WISHES = [
-  "2027; emeklerinin karşılığını aldığın, sağlık ve huzurla dolu bir yıl olsun.",
-  "Yeni yıl sana güzel insanlar, temiz başlangıçlar ve unutulmaz anılar getirsin.",
-  "Hayal ettiğin kapılar birer birer açılsın; şans bu yıl senden yana olsun.",
-  "Kendine inandığın, cesaretini kaybetmediğin ve gurur duyduğun bir yıl olsun.",
-  "2027'de evine bereket, kalbine huzur, yoluna ışık dolsun.",
-  "Ertelediğin güzelliklere başladığın, küçük adımlarla büyük yollar aldığın bir yıl olsun.",
-  "Gülüşünün eksilmediği, sevdiklerinle sağlıkla bir arada olduğun bir yıl dilerim.",
-  "Bu yıl beklenmedik güzellikler, tatlı tesadüfler ve bolca iyi haber seninle olsun.",
-  "Zor günler geride, güzel ihtimaller önünde olsun. Mutlu yıllar!",
-  "2027 sana hem dinlenecek zaman hem de gerçekleşecek hayaller getirsin.",
-  "Attığın her adım seni olmak istediğin insana biraz daha yaklaştırsın.",
-  "Yeni yıl; cesaret, sağlık, sevgi ve içten bir kahkaha ile gelsin.",
-];
-
 const FORTUNE_MESSAGES = [
   "Beklediğin haber, tam da umudunu kestiğin anda gelebilir.",
   "Küçük bir cesaret, büyük bir değişimin ilk adımı olacak.",
@@ -966,631 +954,250 @@ const FORTUNE_MESSAGES = [
   "2027 sana sağlık, bereket, sevgi ve kendin olabildiğin bir hayat getirsin.",
 ];
 
-const TreeArtwork = ({ compact = false }) => {
-  const branches = [
-    "M251 62 C239 77 226 91 205 105 C220 104 235 100 247 94 C230 116 207 132 178 147 C199 145 221 138 239 128 C222 151 194 170 160 187",
-    "M249 83 C264 96 278 106 301 116 C283 118 269 114 255 108 C274 131 298 145 324 160 C302 158 280 151 261 142 C282 166 310 181 340 198",
-    "M245 124 C226 139 207 156 181 174 C203 170 221 164 239 155 C216 181 188 199 151 218 C181 216 214 206 240 193",
-    "M255 142 C276 153 294 168 319 181 C299 180 280 175 261 166 C285 190 314 207 351 224 C321 222 287 212 260 198",
-    "M246 181 C221 198 194 217 160 238 C188 236 219 226 242 213 C213 242 177 263 130 283 C166 282 211 269 244 250",
-    "M254 204 C278 220 303 236 337 248 C310 250 282 241 258 229 C284 255 316 274 365 291 C326 290 286 276 257 257",
-    "M247 245 C224 260 198 280 168 300 C196 299 223 289 245 276 C224 298 202 315 177 329",
-    "M253 265 C275 278 299 295 330 310 C300 308 277 299 256 286 C275 306 294 321 317 334",
-    "M238 102 C221 109 207 118 190 132 M262 116 C282 122 299 134 314 147",
-    "M230 158 C210 167 195 180 178 195 M270 178 C292 188 309 201 326 216",
-  ];
-  const needles = [
-    "M226 103l-24 -9 M217 112l-28 -2 M208 126l-26 3 M193 144l-27 6 M178 162l-26 8",
-    "M274 103l24 -9 M283 112l28 -2 M292 126l26 3 M307 144l26 6 M322 162l26 8",
-    "M211 174l-31 -7 M198 190l-34 3 M180 208l-36 12 M164 228l-39 15",
-    "M289 174l31 -7 M302 190l34 3 M320 208l36 12 M336 228l39 15",
-    "M205 247l-43 7 M190 267l-48 17 M295 247l43 7 M310 267l48 17",
-  ];
-  const ornaments = [
-    [226, 133],
-    [278, 145],
-    [192, 184],
-    [309, 193],
-    [244, 205],
-    [171, 240],
-    [330, 247],
-    [250, 265],
-    [210, 284],
-    [292, 286],
-  ];
+// Gerçekçi Vinil Pikap Görseli (SVG çizim değil, fiziksel plak dokusu, ışık yansıması ve hareketli pikap kolu)
+const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
   return (
-    <motion.svg
-      viewBox="0 0 500 390"
-      className={compact ? "w-32 sm:w-40" : "w-72 sm:w-[27rem]"}
-      role="img"
-      aria-label="Elle çizilmiş, ışıklarla süslü çam ağacı"
+    <button
+      type="button"
+      onClick={onToggle}
+      title={isPlaying ? "Plağa dokun ve durdur" : "Plağa dokun ve başlat"}
+      className="group relative flex h-32 w-36 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-gradient-to-br from-[#1b1f27] via-[#101318] to-[#080a0d] p-2 shadow-[0_14px_30px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.16)] transition-transform active:scale-95 cursor-pointer sm:h-36 sm:w-40"
     >
-      <ellipse cx="250" cy="354" rx="130" ry="12" fill="#dce9e2" opacity=".12" />
-      <motion.path
-        d="M250 322 C247 337 248 346 250 354"
-        fill="none"
-        stroke="#76513a"
-        strokeWidth="19"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.15 }}
-      />
-      <motion.path
-        d="M250 48 C236 65 232 79 250 91 C268 79 264 65 250 48Z"
-        fill="none"
-        stroke="#d8b66a"
-        strokeWidth="3"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.9 }}
-        transition={{ duration: 1, delay: 3.4 }}
-      />
-      <motion.path
-        d="M250 42 C247 53 237 57 226 58 C238 63 245 70 250 82 C255 70 262 63 274 58 C263 57 253 53 250 42Z"
-        fill="#e8c778"
-        opacity=".9"
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 3.8, duration: 1 }}
-        style={{ transformOrigin: "250px 62px" }}
-      />
-      {branches.map((d, i) => (
-        <motion.path
-          key={i}
-          d={d}
-          fill="none"
-          stroke={["#174b35", "#246344", "#2d704a", "#174b35"][i % 4]}
-          strokeWidth={i < 2 ? 12 : i < 8 ? 10 : 4.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.96 }}
-          transition={{ duration: 1.05, ease: "easeInOut", delay: 0.35 + i * 0.37 }}
-        />
-      ))}
-      {needles.map((d, i) => (
-        <motion.path
-          key={i}
-          d={d}
-          fill="none"
-          stroke={i % 2 ? "#477b50" : "#6c9660"}
-          strokeWidth="3.8"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.75 }}
-          transition={{ duration: 0.8, delay: 1.25 + i * 0.48 }}
-        />
-      ))}
-      <motion.path
-        d="M250 89 C228 126 220 171 250 211 C280 171 272 126 250 89"
-        fill="none"
-        stroke="#9ab17a"
-        strokeWidth="2"
-        opacity=".38"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2, delay: 2.1 }}
-      />
-      {ornaments.map(([x, y], i) => (
-        <motion.g
-          key={i}
-          initial={{ opacity: 0, scale: 0.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 4.05 + i * 0.13, duration: 0.45, type: "spring", stiffness: 120 }}
+      {/* Pikap tablası alt halkası */}
+      <div className="relative flex h-[106px] w-[106px] items-center justify-center rounded-full bg-[#060709] p-1 shadow-[inset_0_2px_10px_rgba(0,0,0,0.95),0_0_0_2px_rgba(255,255,255,0.08)] sm:h-[118px] sm:w-[118px]">
+        {/* Dönen Vinil Plak */}
+        <div
+          className="relative h-full w-full rounded-full shadow-2xl"
+          style={{
+            background:
+              "conic-gradient(from 35deg, #121316 0deg, #2b2e36 32deg, #111215 68deg, #191b20 140deg, #323640 198deg, #101114 240deg, #1c1e24 315deg, #121316 360deg)",
+            animation: "spin 3.8s linear infinite",
+            animationPlayState: isPlaying ? "running" : "paused",
+          }}
         >
-          <circle
-            cx={x}
-            cy={y}
-            r="8"
-            fill={["#a53d35", "#d2a94d", "#668aa0", "#a76b85"][i % 4]}
-            stroke="#ead9ae"
-            strokeWidth="1.4"
+          {/* Plak üzerindeki gerçekçi oluk halkaları */}
+          <div
+            className="absolute inset-[5px] rounded-full opacity-55"
+            style={{
+              background:
+                "repeating-radial-gradient(circle at center, rgba(255,255,255,0.11) 0px, rgba(255,255,255,0.11) 1px, transparent 1.5px, transparent 3.5px)",
+            }}
           />
-          <ellipse cx={x - 2.5} cy={y - 3} rx="2.2" ry="3.2" fill="#fff4d4" opacity=".65" />
-        </motion.g>
-      ))}
-      <motion.path
-        d="M250 88 C221 127 286 146 218 183 C177 207 292 235 204 274"
-        fill="none"
-        stroke="#d6b45e"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        opacity=".85"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2.4, delay: 3.5 }}
+          {/* Dış kenar parlaması */}
+          <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/15" />
+
+          {/* Orta Etiket (Plak Göbeği) */}
+          <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0b0d10] bg-gradient-to-br from-rose-500 via-amber-500 to-rose-700 shadow-inner sm:h-11 sm:w-11">
+            <div className="h-6 w-6 rounded-full border border-black/30" />
+            {/* Metal mil deliği */}
+            <div className="absolute h-2 w-2 rounded-full bg-[#d4d8df] ring-1 ring-black/70" />
+          </div>
+        </div>
+      </div>
+
+      {/* Pikap İğne Kolu (Çalarken plağın üzerine iner, durunca kenara çekilir) */}
+      <div
+        className="pointer-events-none absolute right-2.5 top-2.5 z-10 origin-top transition-transform duration-500 ease-out"
+        style={{
+          transform: isPlaying ? "rotate(23deg)" : "rotate(3deg)",
+        }}
+      >
+        {/* Kol Menteşe Tabanı */}
+        <div className="mx-auto h-4 w-4 rounded-full border border-white/25 bg-gradient-to-b from-zinc-300 to-zinc-600 shadow-md" />
+        {/* Metal Kol Çubuğu */}
+        <div className="mx-auto -mt-0.5 h-16 w-[3px] rounded-full bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-200 shadow sm:h-20" />
+        {/* İğne Kafası (Cartridge) */}
+        <div className="mx-auto -mt-0.5 h-3 w-2 rotate-12 rounded-sm bg-zinc-900 ring-1 ring-white/30" />
+      </div>
+
+      {/* Durum ışığı */}
+      <span
+        className={`absolute bottom-2 left-2.5 h-1.5 w-1.5 rounded-full transition-colors ${
+          isPlaying ? "bg-emerald-400 shadow-[0_0_8px_#34d399]" : "bg-zinc-500"
+        }`}
       />
-      {Array.from({ length: 9 }, (_, i) => (
-        <motion.circle
-          key={i}
-          cx={206 + ((i * 31) % 88)}
-          cy={120 + ((i * 23) % 157)}
-          r="3.2"
-          fill="#ffe6a0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.25, 0.95, 0.35] }}
-          transition={{ delay: 4.6 + i * 0.18, duration: 2.2, repeat: Infinity }}
-        />
-      ))}
-    </motion.svg>
+    </button>
   );
 };
 
-// Sinematik 2027 Giris Sahnesi: Mobil Performans & GPU Hizlandirma Optimize
+// Sakin, Doğal ve Gerçekçi 2027 Karşılama Ekranı (Ağır çekim 3-2-1 + Yumuşak konfeti + Tipografik kart)
 const IntroSplash = ({ onEnter }) => {
   const [sceneKey, setSceneKey] = useState(0);
-  const [phase, setPhase] = useState("three");
-  const [isMobile] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth < 768 : false
-  );
+  const [step, setStep] = useState(0); // 0: "3", 1: "2", 2: "1", 3: "2027", 4: "Greeting"
 
   useEffect(() => {
-    setPhase("three");
-    const timers = [
-      setTimeout(() => setPhase("two"), 950),
-      setTimeout(() => setPhase("one"), 1900),
-      setTimeout(() => {
-        setPhase("midnight");
-        try {
-          if (isMobile) {
-            confetti({
-              particleCount: 38,
-              spread: 75,
-              startVelocity: 32,
-              gravity: 0.9,
-              ticks: 110,
-              scalar: 0.9,
-              disableForReducedMotion: true,
-              origin: { x: 0.5, y: 0.5 },
-              colors: ["#f7d889", "#ffffff", "#9ed8e8", "#86efac"],
-            });
-          } else {
-            confetti({
-              particleCount: 150,
-              spread: 105,
-              startVelocity: 42,
-              gravity: 0.78,
-              ticks: 230,
-              scalar: 1.05,
-              origin: { x: 0.5, y: 0.48 },
-              colors: ["#f7d889", "#ffffff", "#9ed8e8", "#d8b4fe", "#86efac"],
-            });
-            setTimeout(
-              () =>
-                confetti({
-                  particleCount: 75,
-                  angle: 60,
-                  spread: 65,
-                  startVelocity: 38,
-                  origin: { x: 0.08, y: 0.62 },
-                  colors: ["#f7d889", "#ffffff", "#9ed8e8"],
-                }),
-              260
-            );
-            setTimeout(
-              () =>
-                confetti({
-                  particleCount: 75,
-                  angle: 120,
-                  spread: 65,
-                  startVelocity: 38,
-                  origin: { x: 0.92, y: 0.62 },
-                  colors: ["#f7d889", "#ffffff", "#86efac"],
-                }),
-              420
-            );
-          }
-        } catch (e) {}
-      }, 2850),
-      setTimeout(() => setPhase("globe"), 4700),
-      setTimeout(() => setPhase("greeting"), 6100),
-      setTimeout(() => setPhase("ready"), 7900),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, [sceneKey, isMobile]);
+    setStep(0);
+    const t1 = setTimeout(() => setStep(1), 1350);
+    const t2 = setTimeout(() => setStep(2), 2700);
+    const t3 = setTimeout(() => {
+      setStep(3);
+      try {
+        confetti({
+          particleCount: 55,
+          spread: 75,
+          startVelocity: 26,
+          gravity: 0.65,
+          ticks: 180,
+          scalar: 0.9,
+          origin: { x: 0.5, y: 0.5 },
+          colors: ["#fde68a", "#ffffff", "#bae6fd"],
+        });
+      } catch {}
+    }, 4100);
+    const t4 = setTimeout(() => setStep(4), 6000);
 
-  const replay = () => setSceneKey((value) => value + 1);
-  const countdown = phase === "three" || phase === "two" || phase === "one";
-  const revealYear = phase === "midnight";
-  const showGlobe = phase === "globe" || phase === "greeting" || phase === "ready";
-  const showGreeting = phase === "greeting" || phase === "ready";
-  const numeral = phase === "three" ? "3" : phase === "two" ? "2" : "1";
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, [sceneKey]);
 
-  const starCount = isMobile ? 8 : 34;
-  const snowCount = isMobile ? 8 : 42;
-  const globeSnowCount = isMobile ? 4 : 18;
-
-  const stars = Array.from({ length: starCount }, (_, i) => ({
-    left: `${(i * 37 + 5) % 97}%`,
-    top: `${(i * 23 + 4) % 72}%`,
-    delay: (i * 0.25) % 2.8,
-    size: i % 6 === 0 ? 3 : 2,
-  }));
-  const snow = Array.from({ length: snowCount }, (_, i) => ({
-    left: `${(i * 29 + 3) % 100}%`,
-    delay: (i * 0.4) % 5,
-    duration: 7 + (i % 4) * 1.4,
-    size: i % 5 === 0 ? 4 : 2.5,
-  }));
+  const countLabels = ["3", "2", "1"];
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#050b12] px-4 py-4 text-white sm:px-6 sm:py-6"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#06090f] px-5 py-6 text-white select-none"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.55, ease: "easeInOut" }}
     >
+      {/* Arka planda kendi dağ fotoğrafının çok hafif, flu gece silueti */}
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 22%, rgba(32,91,105,.38), transparent 52%), radial-gradient(ellipse at 12% 82%, rgba(30,64,85,.32), transparent 48%), linear-gradient(180deg,#03070d 0%,#081722 58%,#10232b 100%)",
-        }}
-      />
-      {!isMobile ? (
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-36 left-1/2 h-80 w-[135vw] -translate-x-1/2 rounded-[50%] opacity-40 blur-3xl will-change-transform"
-          style={{
-            background:
-              "linear-gradient(90deg,rgba(16,185,129,.22),rgba(56,189,248,.32),rgba(167,139,250,.2),rgba(52,211,153,.24))",
-          }}
-          animate={{ x: ["-51%", "-47%", "-51%"], scaleY: [1, 1.2, 1], opacity: [0.24, 0.48, 0.24] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ) : (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[120vw] -translate-x-1/2 rounded-[50%] opacity-35"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(56,189,248,.28), rgba(16,185,129,.14) 55%, transparent 75%)",
-          }}
-        />
-      )}
-
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {stars.map((star, i) => (
-          <span
-            key={`star-${i}`}
-            className="absolute rounded-full bg-sky-100 animate-pulse"
-            style={{
-              left: star.left,
-              top: star.top,
-              width: star.size,
-              height: star.size,
-              animationDelay: `${star.delay}s`,
-              animationDuration: `${2.5 + (i % 3)}s`,
-            }}
-          />
-        ))}
-        {snow.map((flake, i) => (
-          <motion.span
-            key={`snow-${i}`}
-            className="absolute rounded-full bg-white/75 will-change-transform"
-            style={{ left: flake.left, top: "-5%", width: flake.size, height: flake.size }}
-            animate={{ y: ["0vh", "110vh"] }}
-            transition={{ duration: flake.duration, repeat: Infinity, ease: "linear", delay: flake.delay }}
-          />
-        ))}
-      </div>
-
-      <svg
-        viewBox="0 0 1200 210"
-        preserveAspectRatio="none"
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 w-full sm:h-40"
-      >
-        <defs>
-          <linearGradient id="farukMountain" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#284653" />
-            <stop offset="100%" stopColor="#07121b" />
-          </linearGradient>
-          <linearGradient id="farukSnow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#dcebf0" stopOpacity=".42" />
-            <stop offset="100%" stopColor="#10212a" stopOpacity=".94" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0 130 130 58 240 119 390 35 540 124 690 48 840 120 1000 44 1120 112 1200 70V210H0Z"
-          fill="url(#farukMountain)"
-        />
-        <path
-          d="M0 160Q260 122 480 157T920 151T1200 145V210H0Z"
-          fill="url(#farukSnow)"
-        />
-      </svg>
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-20 scale-105"
+        style={{ backgroundImage: "url('/bg.jpg')", filter: "blur(18px)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#05080d]/85 via-[#070c14]/80 to-[#04060a]/95"
+      />
 
-      <div className="relative z-20 flex w-full max-w-5xl items-center justify-between gap-3">
-        <span className="rounded-full border border-white/20 bg-white/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-[.24em] text-amber-100/90">
-          FARUK OS <span className="text-white/45">/</span> 2027
+      {/* Üst bar */}
+      <div className="relative z-10 flex w-full max-w-4xl items-center justify-between">
+        <span className="text-[11px] font-semibold tracking-[0.28em] text-white/60 uppercase">
+          Faruk OS • 2027
         </span>
         <div className="flex items-center gap-2">
-          {phase === "ready" && (
+          {step === 4 && (
             <button
-              onClick={replay}
-              className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] text-white/90 transition hover:bg-white/20 cursor-pointer"
+              onClick={() => setSceneKey((k) => k + 1)}
+              className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] text-white/75 transition hover:bg-white/10 hover:text-white cursor-pointer"
             >
-              ↻ Tekrar izle
+              ↻ Tekrar
             </button>
           )}
           <button
             onClick={onEnter}
-            className="rounded-full border border-white/25 bg-black/35 px-3.5 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 cursor-pointer"
+            className="rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-medium text-white/85 transition hover:border-white/45 hover:bg-white/10 cursor-pointer"
           >
-            Atla →
+            Geç →
           </button>
         </div>
       </div>
 
-      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-5xl flex-col items-center justify-center py-3">
+      {/* Merkez sahne */}
+      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-xl flex-col items-center text-center">
         <AnimatePresence mode="wait">
-          {countdown && (
+          {step <= 2 && (
             <motion.div
-              key="countdown"
-              initial={{ opacity: 0, scale: 0.88 }}
+              key={`count-${step}`}
+              initial={{ opacity: 0, scale: 0.86 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.15 }}
-              transition={{ duration: 0.32 }}
-              className="flex flex-col items-center text-center"
+              exit={{ opacity: 0, scale: 1.08 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center"
             >
-              <div className="relative flex h-56 w-56 items-center justify-center rounded-full border border-white/15 bg-white/[.04] sm:h-64 sm:w-64 sm:shadow-[0_0_60px_rgba(56,189,248,.12)]">
-                <motion.div
-                  className="absolute inset-3 rounded-full border border-sky-200/20 will-change-transform"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                />
-                {!isMobile && (
-                  <motion.div
-                    className="absolute inset-6 rounded-full border border-dashed border-amber-200/25 will-change-transform"
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-                  />
-                )}
-                <motion.span
-                  key={numeral}
-                  initial={{ opacity: 0, y: 12, scale: 0.7 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 1.18 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
-                  className="font-mono text-8xl font-black text-white sm:text-9xl sm:drop-shadow-[0_0_20px_rgba(125,211,252,.6)]"
-                >
-                  {numeral}
-                </motion.span>
-                {!isMobile && (
-                  <motion.div
-                    className="absolute inset-0 rounded-full border-2 border-sky-200/45 will-change-transform"
-                    initial={{ scale: 0.88, opacity: 0.65 }}
-                    animate={{ scale: 1.28, opacity: 0 }}
-                    transition={{ duration: 1.1, repeat: Infinity, ease: "easeOut" }}
-                  />
-                )}
-              </div>
-              <p className="mt-7 text-[10px] font-bold tracking-[.38em] text-sky-100/75">YENİ BİR BAŞLANGICA</p>
-              <p className="mt-2 text-sm text-white/65">Son saniyeler...</p>
-            </motion.div>
-          )}
-
-          {revealYear && (
-            <motion.div
-              key="year"
-              initial={{ opacity: 0, scale: 0.72 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="relative flex flex-col items-center text-center"
-            >
-              {!isMobile && (
-                <motion.div
-                  className="absolute -inset-12 rounded-full border border-amber-200/35 will-change-transform"
-                  initial={{ scale: 0.5, opacity: 0.85 }}
-                  animate={{ scale: 2.1, opacity: 0 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                />
-              )}
-              <span className="rounded-full border border-amber-200/45 bg-amber-300/10 px-4 py-1.5 text-[10px] font-bold tracking-[.35em] text-amber-100">
-                00:00 · YENİ YIL
+              <span className="font-light tracking-tighter text-8xl text-white/95 sm:text-9xl tabular-nums">
+                {countLabels[step]}
               </span>
-              <h1 className="mt-4 bg-gradient-to-b from-white via-amber-100 to-amber-400 bg-clip-text text-8xl font-black tracking-[-.07em] text-transparent sm:text-[10rem]">
-                2027
-              </h1>
-              <p className="mt-1 text-xs font-semibold tracking-[.32em] text-emerald-100/85 sm:text-sm">
-                YENİ BİR YIL · YENİ İHTİMALLER
+              <div className="mt-6 h-[1px] w-16 bg-gradient-to-r from-transparent via-amber-200/50 to-transparent" />
+              <p className="mt-4 text-xs tracking-[0.32em] text-white/50 uppercase">
+                Yeni yıla saniyeler kala
               </p>
             </motion.div>
           )}
 
-          {showGlobe && (
+          {step === 3 && (
             <motion.div
-              key="finale"
+              key="year-2027"
+              initial={{ opacity: 0, y: 14, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center"
+            >
+              <span className="text-[11px] font-semibold tracking-[0.35em] text-amber-200/80 uppercase">
+                Hoş Geldin
+              </span>
+              <h1 className="mt-3 bg-gradient-to-b from-white via-white to-amber-200/90 bg-clip-text text-8xl font-extrabold tracking-tight text-transparent sm:text-9xl">
+                2027
+              </h1>
+              <p className="mt-3 text-sm text-white/65">
+                Yeni başlangıçlar, temiz sayfalar.
+              </p>
+            </motion.div>
+          )}
+
+          {step === 4 && (
+            <motion.div
+              key="greeting-card"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:gap-12"
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full rounded-3xl border border-white/15 bg-[#0d131c]/90 px-6 py-8 shadow-[0_24px_70px_rgba(0,0,0,0.75)] sm:px-10 sm:py-10"
             >
-              <motion.div
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="relative shrink-0"
-              >
-                {!isMobile && (
-                  <motion.div
-                    className="absolute -inset-8 rounded-full bg-sky-300/10 blur-3xl"
-                    animate={{ opacity: [0.25, 0.65, 0.25], scale: [0.9, 1.08, 0.9] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
-                )}
-                <svg
-                  viewBox="0 0 340 380"
-                  role="img"
-                  aria-label="2027 yazili, icinde isikli cam agac bulunan kar kuresi"
-                  className="relative h-64 w-56 sm:h-[21rem] sm:w-[19rem] sm:drop-shadow-[0_28px_35px_rgba(0,0,0,.65)]"
-                >
-                  <defs>
-                    <radialGradient id="snowGlass" cx="34%" cy="25%" r="75%">
-                      <stop offset="0%" stopColor="#b9e8f5" stopOpacity=".38" />
-                      <stop offset="48%" stopColor="#1d5267" stopOpacity=".35" />
-                      <stop offset="100%" stopColor="#06131f" stopOpacity=".92" />
-                    </radialGradient>
-                    <linearGradient id="snowBase" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#392a20" />
-                      <stop offset="25%" stopColor="#b58a4a" />
-                      <stop offset="52%" stopColor="#f1d28b" />
-                      <stop offset="78%" stopColor="#9a713b" />
-                      <stop offset="100%" stopColor="#33251c" />
-                    </linearGradient>
-                    <clipPath id="snowGlobeClip">
-                      <circle cx="170" cy="157" r="125" />
-                    </clipPath>
-                    {!isMobile && (
-                      <filter id="globeGlow">
-                        <feGaussianBlur stdDeviation="5" result="blur" />
-                        <feMerge>
-                          <feMergeNode in="blur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                    )}
-                  </defs>
-                  <ellipse cx="170" cy="354" rx="112" ry="13" fill="#000" opacity=".42" />
-                  <circle cx="170" cy="157" r="128" fill="url(#snowGlass)" stroke="#d9f5ff" strokeOpacity=".75" strokeWidth="3" />
-                  <g clipPath="url(#snowGlobeClip)">
-                    <path d="M40 246Q170 212 300 246V290H40Z" fill="#e8f4f7" opacity=".92" />
-                    <path d="M40 255Q120 232 190 251T300 248V290H40Z" fill="#b7dce8" opacity=".65" />
-                    <path d="M170 95L105 221Q170 239 235 221Z" fill="#123f30" stroke="#7bb78e" strokeOpacity=".55" strokeWidth="2" />
-                    <path d="M170 66L119 174Q170 191 221 174Z" fill="#176044" />
-                    <path d="M170 43L132 129Q170 145 208 129Z" fill="#207a50" />
-                    <path d="M165 215H175V247H165Z" fill="#76513a" />
-                    <path d="M170 42L170 221" stroke="#d2b36b" strokeOpacity=".45" strokeWidth="2" />
-                    <path
-                      d="M132 135Q170 153 208 135M116 181Q170 204 224 181M103 220Q170 242 237 220"
-                      fill="none"
-                      stroke="#f3d98e"
-                      strokeWidth="3"
-                      strokeDasharray="5 5"
-                    />
-                    {[
-                      [170, 72],
-                      [145, 113],
-                      [195, 119],
-                      [128, 161],
-                      [170, 167],
-                      [211, 165],
-                      [119, 204],
-                      [151, 211],
-                      [190, 211],
-                      [225, 201],
-                    ].map(([x, y], i) =>
-                      isMobile ? (
-                        <circle
-                          key={`light-${i}`}
-                          cx={x}
-                          cy={y}
-                          r="4.5"
-                          fill={["#ffe59a", "#fca5a5", "#9edcf2", "#fef3c7"][i % 4]}
-                          opacity="0.92"
-                        />
-                      ) : (
-                        <motion.circle
-                          key={`light-${i}`}
-                          cx={x}
-                          cy={y}
-                          r="4.5"
-                          fill={["#ffe59a", "#fca5a5", "#9edcf2", "#fef3c7"][i % 4]}
-                          filter="url(#globeGlow)"
-                          animate={{ opacity: [0.4, 1, 0.45] }}
-                          transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.13 }}
-                        />
-                      )
-                    )}
-                    <polygon
-                      points="170,22 176,37 192,38 180,48 184,64 170,55 156,64 160,48 148,38 164,37"
-                      fill="#ffe7a1"
-                      stroke="#f5bd56"
-                      strokeWidth="2"
-                    />
-                    {Array.from({ length: globeSnowCount }, (_, i) => (
-                      <motion.circle
-                        key={`globe-snow-${i}`}
-                        cx={65 + ((i * 47) % 210)}
-                        cy={48 + ((i * 31) % 190)}
-                        r={i % 4 === 0 ? 2.8 : 1.8}
-                        fill="#fff"
-                        animate={{ y: [0, 20, 0] }}
-                        transition={{ duration: 3 + (i % 3) * 0.6, repeat: Infinity, delay: i * 0.2 }}
-                      />
-                    ))}
-                  </g>
-                  <path d="M82 112A100 100 0 0 1 145 47" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" opacity=".48" />
-                  <path d="M73 146A111 111 0 0 1 91 91" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".3" />
-                  <rect x="89" y="282" width="162" height="18" rx="8" fill="#d6b46c" stroke="#f8e4ad" strokeWidth="1.5" />
-                  <path d="M70 298H270L257 343Q170 363 83 343Z" fill="url(#snowBase)" stroke="#e9ca87" strokeWidth="2" />
-                  <rect x="123" y="310" width="94" height="25" rx="7" fill="#171b1d" stroke="#e4c47e" strokeWidth="1.5" />
-                  <text x="170" y="328" textAnchor="middle" fill="#ffe6a0" fontSize="15" fontWeight="900" letterSpacing="3">
-                    2027
-                  </text>
-                </svg>
-              </motion.div>
+              <span className="inline-block rounded-full border border-amber-200/25 bg-amber-200/10 px-3.5 py-1 text-[10px] font-semibold tracking-[0.25em] text-amber-200 uppercase">
+                2027 • Yeni Yıl Mesajı
+              </span>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Faruk Mutlu Yıllar Diler
+              </h2>
+              <p className="mx-auto mt-3.5 max-w-md text-sm leading-relaxed text-white/75">
+                2027; sağlık, huzur, güzel tesadüfler ve emeklerinin karşılığını aldığın bir yıl olsun.
+              </p>
 
-              {showGreeting && (
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.08 }}
-                  className="flex max-w-md flex-col items-center rounded-[2rem] border border-amber-100/25 bg-[#0c1b26]/95 px-6 py-6 text-center shadow-[0_14px_35px_rgba(0,0,0,.45)] sm:bg-white/[.065] sm:backdrop-blur-xl md:items-start md:text-left sm:px-9 sm:py-8"
-                >
-                  <span className="rounded-full border border-amber-200/40 bg-amber-200/10 px-3.5 py-1.5 text-[10px] font-bold tracking-[.26em] text-amber-100">
-                    ✦ HOŞ GELDİN 2027 ✦
-                  </span>
-                  <h1 className="mt-4 bg-gradient-to-r from-white via-amber-100 to-amber-300 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">
-                    Faruk Mutlu Yıllar Diler
-                  </h1>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-sky-50/80">
-                    Sağlık, huzur, güzel başlangıçlar ve emeklerinin karşılığını aldığın harika bir yıl olsun.
-                  </p>
-                  {phase === "ready" && (
-                    <motion.button
-                      onClick={onEnter}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      whileHover={{ scale: 1.035, y: -2 }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ duration: 0.3 }}
-                      className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-amber-100/65 bg-gradient-to-r from-amber-300/20 via-emerald-300/15 to-sky-300/20 px-7 py-3.5 text-xs font-extrabold tracking-[.22em] text-amber-50 shadow-[0_12px_38px_rgba(251,191,36,.18)] transition hover:border-amber-100 hover:bg-amber-300/30 cursor-pointer md:w-auto sm:text-sm"
-                    >
-                      SİSTEME GİR <span className="text-lg">→</span>
-                    </motion.button>
-                  )}
-                </motion.div>
-              )}
+              <button
+                onClick={onEnter}
+                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-white px-7 py-3.5 text-xs font-bold tracking-[0.18em] text-[#070b11] transition hover:bg-amber-100 active:scale-[0.98] cursor-pointer sm:w-auto sm:text-sm"
+              >
+                <span>MASAÜSTÜNE GEÇ</span>
+                <span>→</span>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="relative z-20 flex min-h-8 items-center justify-center pb-1">
-        {phase !== "ready" && (
-          <div className="flex items-center gap-2 text-[10px] tracking-[.28em] text-white/65">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-200" />
-            2027 HAZIRLANIYOR
-          </div>
-        )}
+      {/* Alt ilerleme noktaları */}
+      <div className="relative z-10 flex items-center gap-2 pb-2">
+        {[0, 1, 2, 3, 4].map((dot) => (
+          <span
+            key={dot}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              step === dot ? "w-6 bg-amber-200" : "w-1.5 bg-white/25"
+            }`}
+          />
+        ))}
       </div>
     </motion.div>
   );
 };
 
-const NewYearFeature = ({ isDay, soundFx }) => {
-  const [wishIndex, setWishIndex] = useState(0);
+// Üst Mat Cam Plak Çalar & Şans Kurabiyesi Kartı (Spotify tarzı koyu mat cam)
+const MusicAndFortuneDeck = ({
+  soundFx,
+  currentTrack,
+  musicPlaying,
+  onToggleMusic,
+  onNextTrack,
+  onPrevTrack,
+  availableCount,
+  totalCount,
+}) => {
   const [fortuneIndex, setFortuneIndex] = useState(-1);
   const [lastFortune, setLastFortune] = useState(-1);
-
-  const nextWish = () => {
-    playClickSound(soundFx);
-    setWishIndex((v) => (v + 1) % NEW_YEAR_WISHES.length);
-  };
 
   const openFortune = () => {
     playClickSound(soundFx);
@@ -1602,7 +1209,7 @@ const NewYearFeature = ({ isDay, soundFx }) => {
     setFortuneIndex(next);
 
     confetti({
-      particleCount: 65,
+      particleCount: 55,
       spread: 70,
       origin: { y: 0.55 },
       colors: ["#fbbf24", "#38bdf8", "#f43f5e", "#34d399"],
@@ -1612,65 +1219,86 @@ const NewYearFeature = ({ isDay, soundFx }) => {
   return (
     <div
       id="tour-tree-card"
-      className={`real-glass relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] px-4 py-3.5 sm:px-7 ${
-        isDay ? "real-glass-day" : "real-glass-night"
-      }`}
+      className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b1118]/85 px-4 py-4 shadow-[0_22px_55px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-2xl sm:px-7 sm:py-5"
     >
-      <div className="relative flex items-center gap-3 sm:gap-7">
-        <button
-          onClick={nextWish}
-          title="Ağaca dokun ve yeni yıl dileği al"
-          className="group relative shrink-0 rounded-2xl transition hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          <TreeArtwork compact />
-          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/45 bg-black/35 px-2.5 py-1 text-[9px] font-semibold text-amber-100">
-            DİLEK TUT ✨
-          </span>
-        </button>
+      {/* Üst Kısım: Gerçekçi Plak & Spotify Tarzı Şarkı Kontrolü */}
+      <div className="flex items-center gap-4 sm:gap-6">
+        <RealisticVinylPlayer isPlaying={musicPlaying} onToggle={onToggleMusic} />
 
-        <div className="min-w-0 flex-1 py-2">
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-white/40 bg-black/25 px-3 py-1 text-[10px] font-semibold tracking-widest text-amber-200">
-              2027 YENİ YIL
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/35 bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-emerald-300 uppercase">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  musicPlaying ? "animate-ping bg-emerald-400" : "bg-zinc-400"
+                }`}
+              />
+              {musicPlaying ? "Plakta Çalıyor" : "Duraklatıldı"}
             </span>
-            <span className="glass-text text-[10px] text-white/95">• Bir dilek seç</span>
+            <span className="text-[11px] text-white/55">
+              {availableCount} / {totalCount} Parça
+            </span>
           </div>
 
-          <h2 className="glass-text mt-2 text-lg font-bold text-white sm:text-xl">
-            Yeni yıl ağacı
+          <h2 className="mt-2 truncate text-lg font-extrabold tracking-tight text-white sm:text-2xl">
+            {currentTrack.title}
           </h2>
+          <p className="mt-0.5 truncate text-xs font-medium text-white/75 sm:text-sm">
+            {currentTrack.artist}
+          </p>
 
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={wishIndex}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.35 }}
-              className="glass-text mt-1.5 min-h-[42px] text-xs font-medium leading-6 text-white sm:text-sm"
+          {/* Önceki / Oynat-Durdur / Sonraki Kontrolleri */}
+          <div className="mt-3.5 flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={onPrevTrack}
+              title="Önceki Şarkı"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-90 cursor-pointer"
             >
-              {NEW_YEAR_WISHES[wishIndex]}
-            </motion.p>
-          </AnimatePresence>
+              <SkipBack className="h-4 w-4" />
+            </button>
 
-          <button
-            onClick={nextWish}
-            className="glass-text mt-2 inline-flex items-center gap-2 rounded-full border border-white/45 bg-black/20 px-3.5 py-2 text-[11px] font-semibold text-white transition hover:bg-black/35 cursor-pointer"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-            Başka bir dilek dile
-          </button>
+            <button
+              type="button"
+              onClick={onToggleMusic}
+              title={musicPlaying ? "Durdur" : "Oynat"}
+              className="flex h-10 items-center gap-2 rounded-full bg-white px-4 text-xs font-bold text-[#0b1118] shadow-md transition hover:bg-amber-100 active:scale-95 cursor-pointer"
+            >
+              {musicPlaying ? (
+                <>
+                  <Pause className="h-4 w-4 fill-current" />
+                  <span>Durdur</span>
+                </>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 fill-current" />
+                  <span>Oynat</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={onNextTrack}
+              title="Sonraki Şarkı"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-90 cursor-pointer"
+            >
+              <SkipForward className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="relative mt-3 flex flex-col gap-2 border-t border-white/25 pt-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="glass-text flex items-center gap-2 text-xs font-medium text-white">
-          <Cookie className="h-5 w-5 text-amber-300" />
-          <span>Bir de şans kurabiyeni kır…</span>
+      {/* Alt Kısım: Şans Kurabiyesi */}
+      <div className="mt-4 flex flex-col gap-2.5 border-t border-white/15 pt-3.5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 text-xs font-medium text-white/85">
+          <Cookie className="h-4 w-4 shrink-0 text-amber-300" />
+          <span>Günün şans kurabiyesini kır…</span>
         </div>
         <button
+          type="button"
           onClick={openFortune}
-          className="glass-text rounded-full border border-amber-200/50 bg-amber-400/20 px-4 py-2 text-[11px] font-bold text-amber-100 transition hover:bg-amber-400/35 cursor-pointer"
+          className="rounded-full border border-amber-300/40 bg-amber-400/15 px-4 py-1.5 text-[11px] font-bold text-amber-200 transition hover:bg-amber-400/25 active:scale-95 cursor-pointer"
         >
           🥠 Şansımı Öğren
         </button>
@@ -1679,14 +1307,14 @@ const NewYearFeature = ({ isDay, soundFx }) => {
       <AnimatePresence>
         {fortuneIndex >= 0 && (
           <motion.div
-            initial={{ opacity: 0, height: 0, y: 8 }}
+            initial={{ opacity: 0, height: 0, y: 6 }}
             animate={{ opacity: 1, height: "auto", y: 0 }}
-            exit={{ opacity: 0, height: 0, y: 6 }}
-            className="relative mt-3 overflow-hidden rounded-xl border border-white/35 bg-black/25 px-4 py-3"
+            exit={{ opacity: 0, height: 0, y: 4 }}
+            className="mt-3 overflow-hidden rounded-2xl border border-amber-200/25 bg-white/[0.06] px-4 py-3"
           >
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2.5">
               <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-              <p className="glass-text text-xs leading-6 text-amber-50 sm:text-sm">
+              <p className="text-xs leading-relaxed text-amber-50 sm:text-sm">
                 {FORTUNE_MESSAGES[fortuneIndex]}
               </p>
             </div>
@@ -1697,15 +1325,11 @@ const NewYearFeature = ({ isDay, soundFx }) => {
   );
 };
 
-const WORD_BANK = [
-  "DENIZ", "KITAP", "DUNYA", "SEHIR", "YOLCU", "BULUT", "BAHAR", "KUMRU", "KEDER", "NEFES",
-  "ORMAN", "KAHVE", "SABAH", "GULUS", "GUNES", "YAZAR", "MASAL", "KALBI", "AKSAM", "SEVGI",
-  "DURAK", "DOKUZ", "BILGI", "SAYGI", "ISLIK", "YEMEK", "KUZEY", "GOLGE", "KIRAZ", "YAGIZ",
-];
 const WORD_ANSWERS = [
-  "DENIZ", "KITAP", "DUNYA", "SEHIR", "YOLCU", "BULUT", "BAHAR", "KUMRU", "KEDER", "NEFES",
-  "ORMAN", "KAHVE", "SABAH", "GULUS", "GUNES", "MASAL", "SEVGI", "DURAK", "BILGI", "KUZEY",
-];
+  "DENİZ", "KİTAP", "DÜNYA", "ŞEHİR", "YOLCU", "BULUT", "BAHAR", "KUMRU", "KEDER", "NEFES",
+  "ORMAN", "KAHVE", "SABAH", "GÜLÜŞ", "GÜNEŞ", "MASAL", "SEVGİ", "DURAK", "BİLGİ", "KUZEY",
+  "YILDIZ", "YAĞMUR", "RÜZGAR", "KALEM", "ÇİÇEK", "DENGE", "UMUT", "ZAMAN", "HAYAL", "DOST",
+].filter((w) => w.length === 5);
 
 const WordGuessGame = () => {
   const [answer, setAnswer] = useState(
@@ -1713,7 +1337,7 @@ const WordGuessGame = () => {
   );
   const [guesses, setGuesses] = useState([]);
   const [current, setCurrent] = useState("");
-  const [notice, setNotice] = useState("Günün 5 harfli kelimesini 6 denemede bul.");
+  const [notice, setNotice] = useState("5 harfli herhangi bir Türkçe kelime yazıp tahmin et.");
   const [finished, setFinished] = useState(false);
   const [round, setRound] = useState(0);
 
@@ -1729,19 +1353,17 @@ const WordGuessGame = () => {
   const submit = () => {
     if (finished) return;
     if (current.length !== 5) {
-      setNotice("Lütfen 5 harfli bir kelime gir.");
+      setNotice("Lütfen 5 harf tamamla.");
       return;
     }
-    if (!WORD_BANK.includes(current) && !WORD_ANSWERS.includes(current)) {
-      setNotice("Bu kelime oyun sözlüğünde yok. Başka bir kelime dene.");
-      return;
-    }
+
     const next = [...guesses, current];
     setGuesses(next);
     setCurrent("");
+
     if (current === answer) {
       setFinished(true);
-      setNotice(`Tebrikler! ${next.length} denemede buldun. 🎉`);
+      setNotice(`Tebrikler! ${next.length} denemede "${answer}" kelimesini buldun. 🎉`);
       confetti({
         particleCount: 110,
         spread: 85,
@@ -1749,7 +1371,7 @@ const WordGuessGame = () => {
       });
     } else if (next.length === 6) {
       setFinished(true);
-      setNotice(`Bu turun kelimesi ${answer} idi. Bir tur daha?`);
+      setNotice(`Bu turun kelimesi "${answer}" idi. Tekrar oynamak ister misin?`);
     } else {
       setNotice(
         current
@@ -1761,25 +1383,28 @@ const WordGuessGame = () => {
   };
 
   const addLetter = (ch) => {
-    if (!finished && current.length < 5) setCurrent((v) => v + ch);
+    if (!finished && current.length < 5) {
+      setCurrent((v) => v + ch);
+    }
   };
-  const removeLetter = () => setCurrent((v) => v.slice(0, -1));
+  const removeLetter = () => {
+    if (!finished) {
+      setCurrent((v) => v.slice(0, -1));
+    }
+  };
 
   useEffect(() => {
-    const normalizeTurkish = (raw) => {
-      const map = { ç: "C", Ç: "C", ğ: "G", Ğ: "G", ı: "I", İ: "I", ö: "O", Ö: "O", ş: "S", Ş: "S", ü: "U", Ü: "U" };
-      if (map[raw]) return map[raw];
-      if (/^[a-zA-Z]$/.test(raw)) return raw.toUpperCase();
-      return null;
-    };
-
     const onKey = (e) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (e.key === "Enter") submit();
-      else if (e.key === "Backspace") removeLetter();
-      else {
-        const mapped = normalizeTurkish(e.key);
-        if (mapped) addLetter(mapped);
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      } else if (e.key === "Backspace") {
+        e.preventDefault();
+        removeLetter();
+      } else if (/^[a-zA-ZçğıİöşüÇĞÖŞÜ]$/.test(e.key)) {
+        const upperTr = e.key.toLocaleUpperCase("tr-TR");
+        if (upperTr.length === 1) addLetter(upperTr);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -1791,7 +1416,7 @@ const WordGuessGame = () => {
     setGuesses([]);
     setCurrent("");
     setFinished(false);
-    setNotice("Yeni kelime hazır. Bol şans!");
+    setNotice("Yeni 5 harfli kelime hazır. Bol şans!");
     setRound((v) => v + 1);
   };
 
@@ -1800,17 +1425,22 @@ const WordGuessGame = () => {
   );
   const statusFor = (word, i) =>
     word[i] === answer[i] ? "correct" : answer.includes(word[i]) ? "present" : "absent";
-  const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+
+  const keyboard = [
+    ["E", "R", "T", "Y", "U", "I", "O", "P", "Ğ", "Ü"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ş", "İ"],
+    ["Z", "C", "V", "B", "N", "M", "Ö", "Ç"],
+  ];
 
   return (
     <div className="real-card glass-text mx-auto w-full max-w-xl rounded-3xl p-4 text-white sm:p-7">
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
           <span className="text-[10px] font-bold tracking-[.25em] text-violet-300">
-            FARUK OS • MİNİ OYUN
+            FARUK OS • KELİME OYUNU
           </span>
           <h3 className="mt-1 text-2xl font-bold">5 Harf</h3>
-          <p className="mt-1 text-xs text-white/90">Kelimeyi bulmak için 6 hakkın var.</p>
+          <p className="mt-1 text-xs text-white/90">İstediğin 5 harfli Türkçe kelimeyi yazabilirsin.</p>
         </div>
         <div className="rounded-2xl border border-white/35 bg-black/35 px-3 py-2 text-center">
           <div className="text-xl font-bold tabular-nums">{Math.max(0, 6 - guesses.length)}</div>
@@ -1856,12 +1486,13 @@ const WordGuessGame = () => {
         {notice}
       </p>
 
-      <div className="mx-auto w-full max-w-[390px] space-y-1.5">
+      <div className="mx-auto w-full max-w-[440px] space-y-1.5">
         {keyboard.map((row, i) => (
-          <div key={row} className="flex justify-center gap-1">
-            {[...row].map((ch) => (
+          <div key={i} className="flex justify-center gap-1">
+            {row.map((ch) => (
               <button
                 key={ch}
+                type="button"
                 onClick={() => addLetter(ch)}
                 className={`h-10 min-w-0 flex-1 rounded-md border border-white/30 text-xs font-bold cursor-pointer sm:h-11 ${
                   keyStatus[ch] === "correct"
@@ -1879,14 +1510,16 @@ const WordGuessGame = () => {
             {i === 2 && (
               <>
                 <button
+                  type="button"
                   onClick={removeLetter}
-                  className="rounded-md border border-white/30 bg-white/10 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-white/30 bg-white/10 px-2.5 text-[11px] font-bold cursor-pointer hover:bg-white/20"
                 >
                   ⌫
                 </button>
                 <button
+                  type="button"
                   onClick={submit}
-                  className="rounded-md border border-violet-300/60 bg-violet-500/85 px-2 text-[10px] font-bold cursor-pointer"
+                  className="rounded-md border border-violet-300/60 bg-violet-500/85 px-2.5 text-[11px] font-bold cursor-pointer hover:bg-violet-500"
                 >
                   GİR
                 </button>
@@ -1898,6 +1531,7 @@ const WordGuessGame = () => {
 
       {finished && (
         <button
+          type="button"
           onClick={reset}
           className="mt-5 w-full rounded-xl border border-violet-300/60 bg-violet-500/85 px-4 py-3 text-sm font-bold text-white transition hover:bg-violet-500 cursor-pointer"
         >
@@ -2648,9 +2282,9 @@ export default function App() {
       html5: true,
       onend: () => {
         if (availableTracks.length > 1) {
-          const candidates = availableTracks.filter((t) => t.id !== currentTrack.id);
-          const next = candidates[Math.floor(Math.random() * candidates.length)];
-          setCurrentTrack(next);
+          const curIdx = availableTracks.findIndex((t) => t.id === currentTrack.id);
+          const nextIdx = (curIdx + 1) % availableTracks.length;
+          setCurrentTrack(availableTracks[nextIdx]);
         }
       },
     });
@@ -2828,10 +2462,22 @@ export default function App() {
       startMusicSmoothly();
       return;
     }
-    const candidates = availableTracks.filter((t) => t.id !== currentTrack.id);
-    const next = candidates[Math.floor(Math.random() * candidates.length)];
+    const curIdx = availableTracks.findIndex((t) => t.id === currentTrack.id);
+    const nextIdx = (curIdx + 1) % availableTracks.length;
     setMusicPlaying(true);
-    setCurrentTrack(next);
+    setCurrentTrack(availableTracks[nextIdx]);
+  };
+
+  const switchToPrevTrack = () => {
+    playClickSound(soundFx);
+    if (availableTracks.length <= 1) {
+      startMusicSmoothly();
+      return;
+    }
+    const curIdx = availableTracks.findIndex((t) => t.id === currentTrack.id);
+    const prevIdx = (curIdx - 1 + availableTracks.length) % availableTracks.length;
+    setMusicPlaying(true);
+    setCurrentTrack(availableTracks[prevIdx]);
   };
 
   const selectSpecificTrack = (track) => {
@@ -2913,9 +2559,9 @@ export default function App() {
           {
             element: "#tour-tree-card",
             popover: {
-              title: "2027 Dilek Ağacı & Şans Kurabiyesi",
+              title: "Plak Çalar & Şans Kurabiyesi",
               description:
-                "Ağaca tıklayarak yeni yıl dileği seçebilir veya şans kurabiyeni kırıp konfeti eşliğinde mesajını okuyabilirsin.",
+                "Plağa veya kontrollere basarak 40+ şarkılık arşivde gezinebilir, alttan şans kurabiyeni kırabilirsin.",
             },
           },
           {
@@ -3367,18 +3013,7 @@ export default function App() {
           <div className="real-card glass-text mb-5 rounded-2xl p-4 text-white">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-center gap-4">
-                <div className="relative flex h-24 w-28 shrink-0 items-center justify-center rounded-xl border border-white/35 bg-black/40 shadow-inner">
-                  <div className="absolute bottom-2 h-2 w-20 rounded-full bg-black/40" />
-                  <div
-                    className="relative h-[70px] w-[70px] rounded-full border-[5px] border-[#17151b] bg-[repeating-radial-gradient(circle,#39333d_0px,#39333d_2px,#17151b_3px,#17151b_4px)] shadow-xl"
-                    style={{ animation: musicPlaying ? "spin 4s linear infinite" : "none" }}
-                  >
-                    <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-200/50 bg-rose-500">
-                      <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black" />
-                    </div>
-                  </div>
-                  <div className="absolute right-2 top-2 h-12 w-2 origin-top rotate-[25deg] rounded-full bg-gradient-to-b from-slate-200 to-slate-500 shadow" />
-                </div>
+                <RealisticVinylPlayer isPlaying={musicPlaying} onToggle={toggleMusic} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-rose-300">
                     <Disc3 className={`h-3.5 w-3.5 ${musicPlaying ? "animate-spin" : ""}`} />
@@ -3396,6 +3031,16 @@ export default function App() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
+                {availableTracks.length > 1 && (
+                  <button
+                    onClick={switchToPrevTrack}
+                    className="inline-flex items-center justify-center rounded-xl border border-white/35 bg-white/10 p-2.5 text-white transition hover:bg-white/20 cursor-pointer"
+                    title="Önceki Şarkı"
+                  >
+                    <SkipBack className="h-4 w-4" />
+                  </button>
+                )}
+
                 <button
                   onClick={toggleMusic}
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-300/55 bg-rose-500/75 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-500 cursor-pointer"
@@ -3408,10 +3053,10 @@ export default function App() {
                   <button
                     onClick={switchToNextTrack}
                     className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/35 bg-white/10 px-3.5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20 cursor-pointer"
-                    title="Rastgele Başka Şarkıya Geç"
+                    title="Sonraki Şarkı"
                   >
                     <SkipForward className="h-4 w-4 text-amber-300" />
-                    <span>Değiştir</span>
+                    <span>Sonraki</span>
                   </button>
                 )}
               </div>
@@ -4008,7 +3653,7 @@ export default function App() {
           {availableTracks.length > 1 && (
             <button
               onClick={switchToNextTrack}
-              title="Rastgele Başka Şarkı Çal"
+              title="Sonraki Şarkıya Geç"
               className="flex items-center justify-center rounded-lg border border-white/35 bg-black/20 p-1.5 text-amber-200 transition hover:bg-black/35 cursor-pointer"
             >
               <SkipForward className="h-3.5 w-3.5" />
@@ -4083,7 +3728,18 @@ export default function App() {
           activeFolder ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       >
-        {!zenMode && <NewYearFeature isDay={isDay} soundFx={soundFx} />}
+        {!zenMode && (
+          <MusicAndFortuneDeck
+            soundFx={soundFx}
+            currentTrack={currentTrack}
+            musicPlaying={musicPlaying}
+            onToggleMusic={toggleMusic}
+            onNextTrack={switchToNextTrack}
+            onPrevTrack={switchToPrevTrack}
+            availableCount={availableTracks.length}
+            totalCount={PLAYLIST_TRACKS.length}
+          />
+        )}
 
         {/* Gerçek Saydam Cam Klasör & 2D Yerçekimi Izgarası */}
         {!zenMode && (
