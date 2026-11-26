@@ -954,7 +954,7 @@ const FORTUNE_MESSAGES = [
   "2027 sana sağlık, bereket, sevgi ve kendin olabildiğin bir hayat getirsin.",
 ];
 
-// Gerçekçi Vinil Pikap Görseli (SVG çizim değil, fiziksel plak dokusu, ışık yansıması ve hareketli pikap kolu)
+// Gerçekçi Vinil Pikap Görseli
 const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
   return (
     <button
@@ -963,9 +963,7 @@ const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
       title={isPlaying ? "Plağa dokun ve durdur" : "Plağa dokun ve başlat"}
       className="group relative flex h-32 w-36 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-gradient-to-br from-[#1b1f27] via-[#101318] to-[#080a0d] p-2 shadow-[0_14px_30px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.16)] transition-transform active:scale-95 cursor-pointer sm:h-36 sm:w-40"
     >
-      {/* Pikap tablası alt halkası */}
       <div className="relative flex h-[106px] w-[106px] items-center justify-center rounded-full bg-[#060709] p-1 shadow-[inset_0_2px_10px_rgba(0,0,0,0.95),0_0_0_2px_rgba(255,255,255,0.08)] sm:h-[118px] sm:w-[118px]">
-        {/* Dönen Vinil Plak */}
         <div
           className="relative h-full w-full rounded-full shadow-2xl"
           style={{
@@ -975,7 +973,6 @@ const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
             animationPlayState: isPlaying ? "running" : "paused",
           }}
         >
-          {/* Plak üzerindeki gerçekçi oluk halkaları */}
           <div
             className="absolute inset-[5px] rounded-full opacity-55"
             style={{
@@ -983,34 +980,26 @@ const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
                 "repeating-radial-gradient(circle at center, rgba(255,255,255,0.11) 0px, rgba(255,255,255,0.11) 1px, transparent 1.5px, transparent 3.5px)",
             }}
           />
-          {/* Dış kenar parlaması */}
           <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/15" />
 
-          {/* Orta Etiket (Plak Göbeği) */}
           <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0b0d10] bg-gradient-to-br from-rose-500 via-amber-500 to-rose-700 shadow-inner sm:h-11 sm:w-11">
             <div className="h-6 w-6 rounded-full border border-black/30" />
-            {/* Metal mil deliği */}
             <div className="absolute h-2 w-2 rounded-full bg-[#d4d8df] ring-1 ring-black/70" />
           </div>
         </div>
       </div>
 
-      {/* Pikap İğne Kolu (Çalarken plağın üzerine iner, durunca kenara çekilir) */}
       <div
         className="pointer-events-none absolute right-2.5 top-2.5 z-10 origin-top transition-transform duration-500 ease-out"
         style={{
           transform: isPlaying ? "rotate(23deg)" : "rotate(3deg)",
         }}
       >
-        {/* Kol Menteşe Tabanı */}
         <div className="mx-auto h-4 w-4 rounded-full border border-white/25 bg-gradient-to-b from-zinc-300 to-zinc-600 shadow-md" />
-        {/* Metal Kol Çubuğu */}
         <div className="mx-auto -mt-0.5 h-16 w-[3px] rounded-full bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-200 shadow sm:h-20" />
-        {/* İğne Kafası (Cartridge) */}
         <div className="mx-auto -mt-0.5 h-3 w-2 rotate-12 rounded-sm bg-zinc-900 ring-1 ring-white/30" />
       </div>
 
-      {/* Durum ışığı */}
       <span
         className={`absolute bottom-2 left-2.5 h-1.5 w-1.5 rounded-full transition-colors ${
           isPlaying ? "bg-emerald-400 shadow-[0_0_8px_#34d399]" : "bg-zinc-500"
@@ -1020,172 +1009,348 @@ const RealisticVinylPlayer = ({ isPlaying, onToggle }) => {
   );
 };
 
-// Sakin, Doğal ve Gerçekçi 2027 Karşılama Ekranı (Ağır çekim 3-2-1 + Yumuşak konfeti + Tipografik kart)
+// ============================================================================
+// SİNEMATİK & MİLYON DOLARLIK LÜKS GİRİŞ SAHNESİ (NOCTURNE OBSERVATORY • 2027)
+// - GPU hızlandırmalı hafif 60 FPS ışık partikülü & derinlik paralaksı (kasmaz!)
+// - Altın oranlı kademeli ağır çekim koreografi (3.8 saniyelik zarif açılış)
+// - "2027" yeni yıl dileği & "SİSTEME GEÇ" etkileşimli manyetik cam buton
+// ============================================================================
 const IntroSplash = ({ onEnter }) => {
   const [sceneKey, setSceneKey] = useState(0);
-  const [step, setStep] = useState(0); // 0: "3", 1: "2", 2: "1", 3: "2027", 4: "Greeting"
+  const [phase, setPhase] = useState(0); // 0: Boot/Horizon, 1: Emblem & 2027, 2: Wishes & CTA
+  const [isLeaving, setIsLeaving] = useState(false);
+  const canvasRef = useRef(null);
+  const stageRef = useRef(null);
 
+  // Hafif, sıfır-gecikmeli GPU Canvas: Yavaş süzülen altın/amber ışık tozları ve ufuk halesi
   useEffect(() => {
-    setStep(0);
-    const t1 = setTimeout(() => setStep(1), 1350);
-    const t2 = setTimeout(() => setStep(2), 2700);
-    const t3 = setTimeout(() => {
-      setStep(3);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    let animId;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const particleCount = width < 640 ? 34 : 58;
+    const motes = Array.from({ length: particleCount }, (_, i) => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 0.7 + Math.random() * 1.9,
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: -0.12 - Math.random() * 0.24,
+      twinkle: Math.random() * Math.PI * 2,
+      twinkleSpeed: 0.012 + Math.random() * 0.018,
+      isGold: i % 3 !== 0,
+    }));
+
+    const render = () => {
+      animId = requestAnimationFrame(render);
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < motes.length; i++) {
+        const p = motes[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.twinkle += p.twinkleSpeed;
+
+        if (p.y < -10) {
+          p.y = height + 10;
+          p.x = Math.random() * width;
+        }
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+
+        const alpha = 0.18 + ((Math.sin(p.twinkle) + 1) * 0.5) * 0.58;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.isGold
+          ? `rgba(253, 224, 141, ${alpha})`
+          : `rgba(226, 232, 240, ${alpha * 0.85})`;
+        ctx.fill();
+      }
+    };
+
+    animId = requestAnimationFrame(render);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
+  }, [sceneKey]);
+
+  // Sinematik Ağır Çekim Koreografi Zamanlaması
+  useEffect(() => {
+    setPhase(0);
+    const t1 = setTimeout(() => setPhase(1), 850);
+    const t2 = setTimeout(() => {
+      setPhase(2);
       try {
         confetti({
-          particleCount: 55,
-          spread: 75,
-          startVelocity: 26,
-          gravity: 0.65,
-          ticks: 180,
-          scalar: 0.9,
-          origin: { x: 0.5, y: 0.5 },
-          colors: ["#fde68a", "#ffffff", "#bae6fd"],
+          particleCount: 42,
+          spread: 68,
+          startVelocity: 22,
+          gravity: 0.55,
+          ticks: 190,
+          scalar: 0.85,
+          origin: { x: 0.5, y: 0.48 },
+          colors: ["#fde68a", "#f59e0b", "#ffffff", "#e0f2fe"],
         });
       } catch {}
-    }, 4100);
-    const t4 = setTimeout(() => setStep(4), 6000);
+    }, 2350);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
     };
   }, [sceneKey]);
 
-  const countLabels = ["3", "2", "1"];
+  // GSAP ile pürüzsüz harf & ışık girişi
+  useEffect(() => {
+    if (!stageRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".cinema-stagger",
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.05,
+          stagger: 0.16,
+          ease: "power3.out",
+          clearProps: "transform",
+        }
+      );
+    }, stageRef);
+    return () => ctx.revert();
+  }, [sceneKey]);
+
+  const handleProceed = () => {
+    if (isLeaving) return;
+    setIsLeaving(true);
+    try {
+      confetti({
+        particleCount: 55,
+        spread: 85,
+        startVelocity: 28,
+        gravity: 0.7,
+        ticks: 160,
+        scalar: 0.9,
+        origin: { x: 0.5, y: 0.58 },
+        colors: ["#fde68a", "#ffffff", "#38bdf8"],
+      });
+    } catch {}
+    setTimeout(() => {
+      onEnter();
+    }, 420);
+  };
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#06090f] px-5 py-6 text-white select-none"
+      ref={stageRef}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between overflow-hidden bg-[#04060a] px-5 py-6 text-white select-none sm:px-10 sm:py-8"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.55, ease: "easeInOut" }}
+      animate={{
+        opacity: isLeaving ? 0 : 1,
+        scale: isLeaving ? 1.03 : 1,
+      }}
+      exit={{ opacity: 0, scale: 1.03 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Arka planda kendi dağ fotoğrafının çok hafif, flu gece silueti */}
-      <div
+      {/* 1. Katman: Kendi dağ duvar kağıdının çok yavaş nefes alan sinematik silueti */}
+      <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-20 scale-105"
-        style={{ backgroundImage: "url('/bg.jpg')", filter: "blur(18px)" }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#05080d]/85 via-[#070c14]/80 to-[#04060a]/95"
+        initial={{ scale: 1.12, opacity: 0 }}
+        animate={{ scale: 1.03, opacity: 0.24 }}
+        transition={{ duration: 3.4, ease: [0.16, 1, 0.3, 1] }}
+        className="pointer-events-none absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/bg.jpg')", filter: "blur(10px) saturate(1.1)" }}
       />
 
-      {/* Üst bar */}
-      <div className="relative z-10 flex w-full max-w-4xl items-center justify-between">
-        <span className="text-[11px] font-semibold tracking-[0.28em] text-white/60 uppercase">
-          Faruk OS • 2027
-        </span>
+      {/* 2. Katman: Derin Gece & Altın Ufuk Işık Halesi */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 42%, rgba(245, 196, 105, 0.16) 0%, rgba(56, 189, 248, 0.06) 34%, rgba(4, 6, 10, 0.92) 78%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#030508]/85 via-transparent to-[#030508]/95"
+      />
+
+      {/* 3. Katman: 60 FPS GPU Altın Işık Partikülleri */}
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-[1]" />
+
+      {/* 4. Katman: İnce Mimari Köşe Çizgileri (Apple / A24 / Cartier estetiği) */}
+      <div className="pointer-events-none absolute inset-4 z-[2] hidden rounded-[2rem] border border-white/[0.07] sm:block" />
+
+      {/* Üst Zarif Durum Şeridi */}
+      <div className="cinema-stagger relative z-10 flex w-full max-w-5xl items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full border border-amber-200/35 bg-amber-200/10 text-[11px] font-bold tracking-wider text-amber-200">
+            FK
+          </span>
+          <div className="flex flex-col">
+            <span className="text-[11px] font-semibold tracking-[0.28em] text-white/85 uppercase">
+              Faruk OS • Edition 2027
+            </span>
+            <span className="text-[10px] tracking-[0.16em] text-white/40">
+              İZMİR • KİŞİSEL DİJİTAL ÇALIŞMA MASASI
+            </span>
+          </div>
+        </div>
+
         <div className="flex items-center gap-2">
-          {step === 4 && (
+          {phase >= 2 && (
             <button
+              type="button"
               onClick={() => setSceneKey((k) => k + 1)}
-              className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] text-white/75 transition hover:bg-white/10 hover:text-white cursor-pointer"
+              className="rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-medium text-white/70 transition hover:border-white/35 hover:bg-white/10 hover:text-white cursor-pointer"
             >
-              ↻ Tekrar
+              ↻ Tekrar İzle
             </button>
           )}
           <button
-            onClick={onEnter}
-            className="rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-medium text-white/85 transition hover:border-white/45 hover:bg-white/10 cursor-pointer"
+            type="button"
+            onClick={handleProceed}
+            className="rounded-full border border-white/20 bg-white/[0.06] px-4 py-1.5 text-[11px] font-medium tracking-wider text-white/85 transition hover:border-amber-200/50 hover:bg-white/10 hover:text-amber-100 cursor-pointer"
           >
-            Geç →
+            Atla →
           </button>
         </div>
       </div>
 
-      {/* Merkez sahne */}
-      <div key={sceneKey} className="relative z-10 my-auto flex w-full max-w-xl flex-col items-center text-center">
-        <AnimatePresence mode="wait">
-          {step <= 2 && (
+      {/* Merkez Sinematik Sahne */}
+      <div
+        key={sceneKey}
+        className="relative z-10 my-auto flex w-full max-w-2xl flex-col items-center text-center"
+      >
+        {/* Yavaşça Genişleyen Altın Ufuk Çizgisi ve Yıldız Amblemi */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-5 flex flex-col items-center"
+        >
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/30 bg-amber-200/[0.07] shadow-[0_0_40px_rgba(251,191,36,0.22)]">
             <motion.div
-              key={`count-${step}`}
-              initial={{ opacity: 0, scale: 0.86 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.08 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center"
-            >
-              <span className="font-light tracking-tighter text-8xl text-white/95 sm:text-9xl tabular-nums">
-                {countLabels[step]}
-              </span>
-              <div className="mt-6 h-[1px] w-16 bg-gradient-to-r from-transparent via-amber-200/50 to-transparent" />
-              <p className="mt-4 text-xs tracking-[0.32em] text-white/50 uppercase">
-                Yeni yıla saniyeler kala
-              </p>
-            </motion.div>
-          )}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-1 rounded-full border border-dashed border-amber-200/35"
+            />
+            <Sparkles className="h-5 w-5 text-amber-200" />
+          </div>
 
-          {step === 3 && (
-            <motion.div
-              key="year-2027"
-              initial={{ opacity: 0, y: 14, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center"
-            >
-              <span className="text-[11px] font-semibold tracking-[0.35em] text-amber-200/80 uppercase">
-                Hoş Geldin
-              </span>
-              <h1 className="mt-3 bg-gradient-to-b from-white via-white to-amber-200/90 bg-clip-text text-8xl font-extrabold tracking-tight text-transparent sm:text-9xl">
-                2027
-              </h1>
-              <p className="mt-3 text-sm text-white/65">
-                Yeni başlangıçlar, temiz sayfalar.
-              </p>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1.4, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-5 h-[1px] w-44 bg-gradient-to-r from-transparent via-amber-200/65 to-transparent sm:w-64"
+          />
+        </motion.div>
 
-          {step === 4 && (
-            <motion.div
-              key="greeting-card"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full rounded-3xl border border-white/15 bg-[#0d131c]/90 px-6 py-8 shadow-[0_24px_70px_rgba(0,0,0,0.75)] sm:px-10 sm:py-10"
-            >
-              <span className="inline-block rounded-full border border-amber-200/25 bg-amber-200/10 px-3.5 py-1 text-[10px] font-semibold tracking-[0.25em] text-amber-200 uppercase">
-                2027 • Yeni Yıl Mesajı
-              </span>
-              <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Faruk Mutlu Yıllar Diler
-              </h2>
-              <p className="mx-auto mt-3.5 max-w-md text-sm leading-relaxed text-white/75">
-                2027; sağlık, huzur, güzel tesadüfler ve emeklerinin karşılığını aldığın bir yıl olsun.
-              </p>
+        {/* Üst Etiket */}
+        <motion.span
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[11px] font-semibold tracking-[0.38em] text-amber-200/85 uppercase"
+        >
+          YENİ BİR DÖNEM BAŞLIYOR
+        </motion.span>
 
-              <button
-                onClick={onEnter}
-                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-white px-7 py-3.5 text-xs font-bold tracking-[0.18em] text-[#070b11] transition hover:bg-amber-100 active:scale-[0.98] cursor-pointer sm:w-auto sm:text-sm"
-              >
-                <span>MASAÜSTÜNE GEÇ</span>
-                <span>→</span>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Dev Sinematik 2027 Tipografisi */}
+        <motion.div
+          initial={{ opacity: 0, y: 22, scale: 0.94 }}
+          animate={{
+            opacity: phase >= 1 ? 1 : 0.15,
+            y: phase >= 1 ? 0 : 18,
+            scale: phase >= 1 ? 1 : 0.95,
+          }}
+          transition={{ duration: 1.25, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mt-2 select-none"
+        >
+          <h1
+            className="bg-gradient-to-b from-white via-[#fffbeb] to-[#f5d076] bg-clip-text text-[5.2rem] leading-none font-extrabold tracking-[-0.04em] text-transparent sm:text-[8.5rem]"
+            style={{
+              filter: "drop-shadow(0 18px 45px rgba(245, 180, 65, 0.22))",
+            }}
+          >
+            2027
+          </h1>
+        </motion.div>
+
+        {/* Kademeli Açılan 2027 İyi Dilek Kartı & Sisteme Geç Butonu */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{
+            opacity: phase >= 2 ? 1 : 0,
+            y: phase >= 2 ? 0 : 24,
+            pointerEvents: phase >= 2 ? "auto" : "none",
+          }}
+          transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-6 w-full rounded-[2rem] border border-white/15 bg-white/[0.035] px-6 py-7 shadow-[0_28px_80px_rgba(0,0,0,0.75),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl sm:px-10 sm:py-8"
+        >
+          <p className="text-xs font-semibold tracking-[0.26em] text-amber-200/90 uppercase">
+            2027 YILI İÇİN İYİ DİLEKLERİMLE
+          </p>
+
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            Yeni Yılın Kutlu Olsun, Hoş Geldin.
+          </h2>
+
+          <p className="mx-auto mt-3 max-w-lg text-xs leading-relaxed text-white/75 sm:text-sm">
+            2027 sana ve sevdiklerine sağlık, huzur, cesaret ve emeklerinin karşılığını fazlasıyla
+            aldığın unutulmaz bir yıl getirsin. Hazırsan çalışma masama geçelim.
+          </p>
+
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={handleProceed}
+              className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-[#fffbeb] via-white to-[#fde68a] px-8 py-4 text-xs font-extrabold tracking-[0.2em] text-[#06090f] shadow-[0_14px_38px_rgba(253,230,138,0.28)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_18px_48px_rgba(253,230,138,0.42)] active:scale-[0.98] cursor-pointer sm:w-auto sm:text-sm"
+            >
+              <span>SİSTEME GEÇ</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </button>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Alt ilerleme noktaları */}
-      <div className="relative z-10 flex items-center gap-2 pb-2">
-        {[0, 1, 2, 3, 4].map((dot) => (
-          <span
-            key={dot}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              step === dot ? "w-6 bg-amber-200" : "w-1.5 bg-white/25"
-            }`}
-          />
-        ))}
+      {/* Alt Zarif Sahne İlerleme Göstergesi */}
+      <div className="relative z-10 flex w-full max-w-5xl items-center justify-between pt-2 text-[10px] tracking-[0.24em] text-white/40 uppercase">
+        <span>MUHAMMED FARUK KÖÇER</span>
+        <div className="flex items-center gap-2">
+          {[0, 1, 2].map((idx) => (
+            <span
+              key={idx}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                phase >= idx ? "w-6 bg-amber-200/80" : "w-1.5 bg-white/20"
+              }`}
+            />
+          ))}
+        </div>
+        <span className="hidden sm:inline">SCROLL / CLICK TO ENTER</span>
       </div>
     </motion.div>
   );
 };
 
-// Üst Mat Cam Plak Çalar & Şans Kurabiyesi Kartı (Spotify tarzı koyu mat cam)
+// Üst Mat Cam Plak Çalar & Şans Kurabiyesi Kartı
 const MusicAndFortuneDeck = ({
   soundFx,
   currentTrack,
@@ -1221,7 +1386,6 @@ const MusicAndFortuneDeck = ({
       id="tour-tree-card"
       className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b1118]/85 px-4 py-4 shadow-[0_22px_55px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-2xl sm:px-7 sm:py-5"
     >
-      {/* Üst Kısım: Gerçekçi Plak & Spotify Tarzı Şarkı Kontrolü */}
       <div className="flex items-center gap-4 sm:gap-6">
         <RealisticVinylPlayer isPlaying={musicPlaying} onToggle={onToggleMusic} />
 
@@ -1247,7 +1411,6 @@ const MusicAndFortuneDeck = ({
             {currentTrack.artist}
           </p>
 
-          {/* Önceki / Oynat-Durdur / Sonraki Kontrolleri */}
           <div className="mt-3.5 flex items-center gap-2.5">
             <button
               type="button"
@@ -1289,7 +1452,6 @@ const MusicAndFortuneDeck = ({
         </div>
       </div>
 
-      {/* Alt Kısım: Şans Kurabiyesi */}
       <div className="mt-4 flex flex-col gap-2.5 border-t border-white/15 pt-3.5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-xs font-medium text-white/85">
           <Cookie className="h-4 w-4 shrink-0 text-amber-300" />
@@ -1711,7 +1873,7 @@ const FarukTerminal = ({ onOpenFolderById, onActivateGravity }) => {
   );
 };
 
-// Matter.js 2D Yerçekimi / Fizik Motoru Katmanı (Mobil Dokunmatik & Fare Uyumlu)
+// Matter.js 2D Yerçekimi / Fizik Motoru Katmanı
 const PhysicsDesktopOverlay = ({ items, initialRects, onExit, onOpenFolder }) => {
   const physicsSurfaceRef = useRef(null);
   const cardRefs = useRef([]);
@@ -2229,7 +2391,6 @@ export default function App() {
   const modalScrollRef = useRef(null);
   const modalContentRef = useRef(null);
 
-  // Sadece public/muzikler/ klasörüne yüklenmiş mevcut mp3 dosyalarını tespit eder
   useEffect(() => {
     let cancelled = false;
     const detectAvailableTracks = async () => {
@@ -2263,7 +2424,6 @@ export default function App() {
     };
   }, []);
 
-  // Seçilen şarkıyı Howler ile hazırlar
   useEffect(() => {
     if (fadeTimerRef.current) {
       clearTimeout(fadeTimerRef.current);
@@ -3421,7 +3581,6 @@ export default function App() {
 
       {entered && <SnowfallCanvas boostSnow={boostSnow} />}
 
-      {/* Matter.js 2D Yerçekimi Modu Aktifse */}
       {gravityMode && (
         <PhysicsDesktopOverlay
           items={DESKTOP_ITEMS}
@@ -3434,7 +3593,6 @@ export default function App() {
         />
       )}
 
-      {/* Üst Cam Durum Çubuğu & Dinamik Ada */}
       <header className="real-glass real-glass-night glass-text relative z-20 flex items-center justify-between gap-2 border-x-0 border-t-0 border-b border-white/30 px-3 py-2 text-xs font-medium text-white sm:px-6">
         <div className="flex items-center gap-2">
           <span className="flex h-5 w-5 items-center justify-center rounded-md border border-sky-300/60 bg-sky-400/20 text-[11px] font-black text-sky-200">
@@ -3443,7 +3601,6 @@ export default function App() {
           <span className="tracking-wide font-semibold">Faruk OS</span>
         </div>
 
-        {/* Merkez Dinamik Cam Ada */}
         <div id="tour-island" className="relative">
           <button
             onClick={() => {
@@ -3666,7 +3823,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Spotlight Hızlı Arama Modalı (Ctrl+K) */}
       <AnimatePresence>
         {spotlightOpen && (
           <motion.div
@@ -3722,7 +3878,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Ana Masaüstü Alanı */}
       <main
         className={`relative z-10 mx-auto flex min-h-[calc(100svh-48px)] max-w-7xl flex-col justify-between px-3 py-4 transition-opacity duration-200 sm:min-h-[calc(100dvh-76px)] sm:px-6 sm:py-6 lg:px-10 ${
           activeFolder ? "pointer-events-none opacity-0" : "opacity-100"
@@ -3741,7 +3896,6 @@ export default function App() {
           />
         )}
 
-        {/* Gerçek Saydam Cam Klasör & 2D Yerçekimi Izgarası */}
         {!zenMode && (
           <div id="tour-folders" className="my-auto py-5 sm:py-6">
             <div
@@ -3782,7 +3936,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Alt Saydam Cam Floating Dock */}
         <div className="real-dock mx-auto mt-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-3xl px-3 py-2 sm:gap-2.5">
           {DESKTOP_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -3800,7 +3953,6 @@ export default function App() {
         </div>
       </main>
 
-      {/* Klasör Penceresi */}
       <AnimatePresence>
         {activeFolder && activeTheme && (
           <motion.div
